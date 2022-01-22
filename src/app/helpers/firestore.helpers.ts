@@ -1,7 +1,7 @@
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { map, Observable, tap } from "rxjs";
-import * as Blocks from "../models/blocks.model";
-import * as Settings from "src/app/models/settings.model";
+import * as blocks from "../models/blocks.model";
+import * as settings from "src/app/models/settings.model";
 
 // @TODO: Want to safely check if no collection exists, if so
 // get default value from our app and then create it in FS?
@@ -14,26 +14,17 @@ import * as Settings from "src/app/models/settings.model";
 // Notes
 // An empty result by collection().valueChanges is also returned if collection doesnt exist.
 
-export function createWeeksInYear$(fs: AngularFirestore, debug?: boolean): Observable<Blocks.week[]> {
-    const methodName = 'createWeeksInYear$';
-    return (fs.collection('weeksInYear').valueChanges({ idField: 'id' }) as Observable<Blocks.week[]>)
-    .pipe(
-        tap((val) => debug ? console.log(`${methodName} val: `, val) : null),
-        map(blocks => blocks.map(block => {
-          return {
-            ...block,
-            date: block.date.toDate(),
-            isInFs: true
-          }
-        })));
-}
-
-// @TODO: Idk why it appears emits two values on an update (when debug true from tap op)
-export function createConfig$(fs: AngularFirestore, debug?: boolean): Observable<Settings.base> {
-    const methodName = 'createConfig$';
-    return (fs.collection('config').valueChanges() as Observable<Settings.base[]>)
-    .pipe(
-        tap((val) => debug ? console.log(`${methodName} val: `, val) : null),
-        map((configArr) => configArr[0])
-    );
+export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
+  const collection = `${year}_weeks`;
+  const logDescriptor = `Firestore pinged for ${collection}`;
+  return (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<blocks.week[]>)
+  .pipe(
+      tap((val) => debug ? console.log(`${logDescriptor} val: `, val) : null),
+      map(blocks => blocks.map(block => {
+        return {
+          ...block,
+          date: block.date.toDate(),
+          isInFs: true
+        }
+      })));
 }

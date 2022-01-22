@@ -1,3 +1,5 @@
+import {v4 as uuidv4} from 'uuid';
+
 export function genUid(){
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return uuidv4();
 }

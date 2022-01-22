@@ -1,9 +1,8 @@
 import { format, add, sub } from 'date-fns';
-import * as Settings from '../models/settings.model';
+import * as settings from '../models/settings.model';
 
-export function getFirstWeekOfThisYear() {
-    const targetYear = new Date().getFullYear();
-    const firstDayOfYear = new Date(targetYear, 0, 1);
+export function getFirstWeekByYear(year: number) {
+    const firstDayOfYear = new Date(year, 0, 1);
     if (format(firstDayOfYear, 'E') === 'Mon') {
         return firstDayOfYear;
     }
@@ -58,7 +57,7 @@ export function hoursMinutesNumToClockStr(hours: number, minutes: number): strin
     return clockStr;
 }
 
-export function reverseHoursMinutesStartToNum(hoursMinutesStr: string): Settings.day {
+export function reverseHoursMinutesStartToNum(hoursMinutesStr: string): settings.day {
     const startHours = parseInt(hoursMinutesStr.split(':')[0]);
     const startMinutes = parseInt(hoursMinutesStr.split(':')[1]);
     return { startHours, startMinutes };

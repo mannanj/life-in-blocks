@@ -22,3 +22,7 @@ export interface day extends base {
     isInPast?: boolean;
     activeBlockNo?: number;
 }
+
+export interface weeksByYear {
+    [key: number]: week[];
+}

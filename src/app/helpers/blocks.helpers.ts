@@ -1,4 +1,4 @@
-import * as Blocks from "../models/blocks.model";
+import * as blocks from "../models/blocks.model";
 
 const TEMP_PROPERTIES = [
     'isHovered',
@@ -15,7 +15,7 @@ function intersect(a: string[], b: string[]) {
     });
 }
 
-export function stripContextualData(block: Blocks.week|Blocks.day): Blocks.week|Blocks.day {
+export function stripContextualData(block: blocks.week|blocks.day): blocks.week|blocks.day {
     const propertiesToDelete = intersect(Object.keys(block), TEMP_PROPERTIES);
     if (propertiesToDelete.length > 0) {
         for (let i = 0; i < propertiesToDelete.length; i++) {

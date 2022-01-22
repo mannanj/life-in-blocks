@@ -1,4 +1,4 @@
-import * as iBlock from "./blocks.model";
+import * as blocks from "./blocks.model";
 
 export enum eType {
     year = 'YEAR',
@@ -11,5 +11,5 @@ export interface base {
     id: string;
     type: eType;
     headerText: string;
-    block: iBlock.week | iBlock.day;
+    block: blocks.week | blocks.day;
 }

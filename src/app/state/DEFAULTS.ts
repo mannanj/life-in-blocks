@@ -1,16 +1,16 @@
 
 import { add, set } from 'date-fns';
-import * as Blocks from 'src/app/models/blocks.model';
+import * as blocks from 'src/app/models/blocks.model';
 import * as cry from '../helpers/cryptography.helpers';
-import * as dh from '../helpers/date.helpers';
-import * as Settings from '../models/settings.model';
+import * as dth from '../helpers/datetime.helpers';
+import * as settings from '../models/settings.model';
 
-// Week
-function generateWeekBlockArray(): Blocks.week[] {
-  let weekBlocks = [] as Blocks.week[];
-  const firstWeek = dh.getFirstWeekOfThisYear();
+
+export function WEEKS(year: number): blocks.week[] {
+  let weeks = [] as blocks.week[];
+  const firstWeek = dth.getFirstWeekByYear(year);
   for (let i = 0; i < 52; i++) {
-      weekBlocks.push({
+    weeks.push({
           id: cry.genUid(),
           date: add(firstWeek, { weeks: i}),
           blockNo: i + 1,
@@ -18,17 +18,16 @@ function generateWeekBlockArray(): Blocks.week[] {
           contextText: ''
       });
   }
-  return weekBlocks;
+  weeks[0].journalEntry = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
+  weeks[0].contextText = 'side-project,cousins,league';
+  return weeks;
 }
-export const WEEKS: Blocks.week[] = generateWeekBlockArray();
-WEEKS[0].journalEntry = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
-WEEKS[0].contextText = 'side-project,cousins,league';
   
 // Day
 // There are 6 * 24hours = 144 blocks/day max.
 // & each block is 10 minutes-long.
-function generateDayBlockArray(): Blocks.day[] {
-  let dayBlocks = [] as Blocks.day[];
+function generateDayBlockArray(): blocks.day[] {
+  let dayBlocks = [] as blocks.day[];
   const startTime = set(new Date(Date.now()), {hours: 0, minutes: 0, seconds: 0} );
   dayBlocks.push({
     id: cry.genUid(),
@@ -51,7 +50,7 @@ function generateDayBlockArray(): Blocks.day[] {
 export const DAYS = generateDayBlockArray();
 
 // Config
-export const SETTINGS: Settings.base = {
+export const SETTINGS: settings.base = {
   day: {
     startHours: 8,
     startMinutes: 0
