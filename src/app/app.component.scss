@@ -1,0 +1,21 @@
+#page {
+    padding: 12px 24px;
+    color: #000000;
+    background-color: #fff;
+    height: calc(100vh - 50px);
+    font-family: 'BrokenWings', Helvetica, Arial, sans-serif;
+    font-size: 36px;
+}
+
+// Font from https://www.fontfabric.com/fonts/sprite-graffiti/#font-styles
+// More at https://cssauthor.com/free-graffiti-fonts-that-will-make-your-designs-pop/
+@font-face {
+    font-family: SpriteGraffiti;
+    src: url('/assets/fonts/spritegraffiti/SpriteGraffiti-Regular.eot');
+    src: url('/assets/fonts/spritegraffiti/SpriteGraffiti-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/assets/fonts/spritegraffiti/SpriteGraffiti-Regular.woff2') format('woff2'), url('/assets/fonts/spritegraffiti/SpriteGraffiti-Regular.woff') format('woff'), url('/assets/fonts/spritegraffiti/SpriteGraffiti-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: BrokenWings;
+    src: url('/assets/fonts/brokenwings/Broken-Wings.ttf') format('truetype');
+}
