@@ -103,6 +103,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "life-in-blocks:build:production",
+            "firebaseProject": "yourlifeinblocks",
+            "firebaseHostingSite": "yourlifeinblocks"
+          }
         }
       }
     }

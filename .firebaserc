@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "yourlifeinblocks": {
+      "hosting": {
+        "life-in-blocks": [
+          "yourlifeinblocks"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "yourlifeinblocks"
+  }
+}
