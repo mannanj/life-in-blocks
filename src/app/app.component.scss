@@ -3,10 +3,19 @@
     color: #000000;
     background-color: #fff;
     height: calc(100vh - 50px);
-    font-family: 'BrokenWings', Helvetica, Arial, sans-serif;
     font-size: 36px;
+
+    #header {
+        font-family: 'BrokenWings', Helvetica, Arial, sans-serif;
+    }
+
+    #main {
+        padding: 25px 15px;
+        font-family: 'Areminiscentsmile', Helvetica, Arial, sans-serif;
+    }
 }
 
+// Fonts
 // Font from https://www.fontfabric.com/fonts/sprite-graffiti/#font-styles
 // More at https://cssauthor.com/free-graffiti-fonts-that-will-make-your-designs-pop/
 @font-face {
@@ -18,4 +27,28 @@
 @font-face {
     font-family: BrokenWings;
     src: url('/assets/fonts/brokenwings/Broken-Wings.ttf') format('truetype');
+}
+@font-face {
+    font-family: Plena;
+    src: url('/assets/fonts/plena/Plena-Medium.otf') format('opentype');
+}
+@font-face {
+    font-family: Plena-italic;
+    src: url('/assets/fonts/plena/Plena-Mediumitalic.otf') format('opentype');
+}
+@font-face {
+    font-family: Areminiscentsmile;
+    src: url('/assets/fonts/areminiscentsmile/areminiscentsmile-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: Areminiscentsmile-Oblique;
+    src: url('/assets/fonts/areminiscentsmile/areminiscentsmile-RegularOblique.ttf') format('truetype');
+}
+@font-face {
+    font-family: Areminiscentsmile-Thin;
+    src: url('/assets/fonts/areminiscentsmile/areminiscentsmile-Thin.ttf') format('truetype');
+}
+@font-face {
+    font-family: Areminiscentsmile-ThinOblique;
+    src: url('/assets/fonts/areminiscentsmile/areminiscentsmile-ThinOblique.ttf') format('truetype');
 }
