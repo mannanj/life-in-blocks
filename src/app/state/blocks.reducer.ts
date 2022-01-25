@@ -1,8 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
 import * as blocks from '../models/blocks.model';
 import * as blockActions from './blocks.actions';
-import * as DEFAULTS from './DEFAULTS'; 
+import * as DEFAULTS from './DEFAULTS';
 
 export interface blocksState {
   weeksByYear: blocks.weeksByYear;
@@ -22,11 +21,7 @@ export const blocksReducer = createReducer(
 );
 
 function getDefault() {
-  return  {'weeksByYear': getWeeksByYear() };
-}
-
-function getWeeksByYear(): blocks.weeksByYear {
-  return { 2022: DEFAULTS.WEEKS(new Date().getFullYear()) };
+  return  {'weeksByYear': DEFAULTS.WEEKS_BY_YEAR() };
 }
 
 function setWeeksForYear(state: blocksState, blocks: blocks.week[], year: number) {

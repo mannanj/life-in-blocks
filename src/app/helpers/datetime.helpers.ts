@@ -27,11 +27,11 @@ export function getStartOfWeek() {
     return priorDay;
 }
 
-export function datesDaysMonthsYearsMatch(date1: Date, date2: Date) {
+export function matchDayMonthYear(date1: Date, date2: Date) {
     return format(date1, 'MM/dd/yyyy') === format(date2, 'MM/dd/yyyy');
 }
 
-export function getYearsInTimeWindow(startYear: number, totalYears: number): number[] {
+export function getYearsInRange(startYear: number, totalYears: number): number[] {
     const targetYear = startYear + totalYears;
     let years = [];
     startYear = startYear || 1990;  
@@ -39,26 +39,4 @@ export function getYearsInTimeWindow(startYear: number, totalYears: number): num
         years.push(startYear++);
     }   
     return years;
-}
-
-export function hoursMinutesNumToClockStr(hours: number, minutes: number): string {
-    let clockStr = '';
-    if (hours < 10) {
-        clockStr += '0' + hours.toString();
-    } else {
-        clockStr += hours.toString();
-    }
-    clockStr += ':';
-    if (minutes < 10) {
-        clockStr += '0' + minutes.toString();
-    } else {
-        clockStr += minutes.toString();
-    }
-    return clockStr;
-}
-
-export function reverseHoursMinutesStartToNum(hoursMinutesStr: string): settings.day {
-    const startHours = parseInt(hoursMinutesStr.split(':')[0]);
-    const startMinutes = parseInt(hoursMinutesStr.split(':')[1]);
-    return { startHours, startMinutes };
 }

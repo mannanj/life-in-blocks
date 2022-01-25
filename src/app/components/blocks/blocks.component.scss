@@ -1,0 +1,89 @@
+#container {
+    overflow-x: auto;
+    overflow-y: auto;
+
+    #top-control {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 25px;
+        max-height: 25px;
+        padding-left: 75px;
+
+        #timeline {
+            width: 100%;
+        }
+
+        .line {
+            border-top: 1px solid #23155F;
+            width: 100%;
+            height: 0;
+        }
+        .arrow-right {
+            font-size: 13px;
+            color: #23155F;
+        }
+        .label {
+            position: absolute;
+            margin-left: calc(50% - 105px);
+            background-color: white;
+            padding: 0 10px;
+        }
+    }
+    #main-area {
+        display: flex;
+
+        #left-control {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 25px;
+
+            .line {
+                border-left: 1px solid #23155F;
+                width: 0;
+                height: 100%;
+            }
+            .arrow-bottom {
+                font-size: 13px;
+                color: #23155F;
+                transform: rotate(90deg);
+            }
+            .label {
+                transform:rotate(-90deg);
+                position: absolute;
+                margin-top: calc(50% - 105px);
+                background-color: white;
+                padding: 0 10px;
+            }
+        }
+    }
+    #blocks {
+        .label {
+            margin-right: 10px;
+            font-size: 10px;
+            width: 25px;
+            min-width: 25px;
+            max-width: 25px;
+        }
+
+        .row {
+            display: flex;
+            padding: 2px;
+        }
+        .row > * {
+            margin-right: 10px;
+        }
+
+        .block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #23155F;
+            width: 25px;
+            min-width: 25px;
+            max-width: 25px;
+        }
+    }
+}

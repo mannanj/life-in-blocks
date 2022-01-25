@@ -18,9 +18,22 @@ export function WEEKS(year: number): blocks.week[] {
           contextText: ''
       });
   }
-  weeks[0].journalEntry = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
-  weeks[0].contextText = 'side-project,cousins,league';
+  // @TODO: Temp first data.
+  if (year === 2022) {
+    weeks[0].journalEntry = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
+    weeks[0].contextText = 'side-project,cousins,league';
+
+  }
   return weeks;
+}
+
+export function WEEKS_BY_YEAR(): blocks.weeksByYear {
+  const years = dth.getYearsInRange(1990, 90);
+  let weeksMap = {} as blocks.weeksByYear;
+  years.forEach(year => {
+    weeksMap[year] = WEEKS(year);
+  });
+  return weeksMap;
 }
   
 // Day
