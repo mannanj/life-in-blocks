@@ -1,8 +1,8 @@
 #page {
-    padding: 12px 24px;
+    margin: 24px 24px 24px 15px;
     color: #000000;
     background-color: #fff;
-    height: calc(100vh - 50px);
+    // height: calc(100vh - 50px);
     font-size: 14px;
 
     #header {
@@ -11,7 +11,9 @@
     }
 
     #main {
-        padding: 25px 15px;
+        // padding: 0 10px 0 5px;
+        margin-left: 5px;
+        margin-top: 5px; // not sure if I want but leaning on yes to separate content.
         font-family: 'Areminiscentsmile', Helvetica, Arial, sans-serif;
     }
 }

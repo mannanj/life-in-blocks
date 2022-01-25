@@ -1,32 +1,32 @@
 <!-- @TODO: Button to show dates on top of blocks or not. By default, none.
     Active block does have the selected style though. -->
-<div id="container">
-    <div id="top-control">
+<div id="x-container">
+    <div class="x-axis">
         <div class="line"></div>
-        <div class="arrow-right">
+        <div class="arrow">
             &#8250;      
         </div>
         <div class="label">Week</div>
     </div>
-    <div id="main-area">
-        <div id="left-control">
-            <div class="line"></div>
-            <div class="arrow-bottom">
-                &#8250;      
-            </div>
-            <div class="label">Year</div>
+</div>
+<div id="y-container">
+    <div class="y-axis">
+        <div class="line"></div>
+        <div class="arrow">
+            &#8250;      
         </div>
-        <div id="blocks">
-            <div 
-                *ngFor="let year of getObjectKeys(blocks)"
-                class="row">
-                <span class="label">{{ year }}</span>
-                <div 
-                    *ngFor="let week of blocks[strToNum(year)]"
-                    class="block">
-                    {{ week.blockNo }}
-                </div>
-            </div>
+        <div class="label">Year</div>
+    </div>
+</div>
+<div id="blocks">
+    <div 
+        *ngFor="let year of getObjectKeys(blocks)"
+        class="row">
+        <span class="label">{{ year }}</span>
+        <div 
+            *ngFor="let week of blocks[strToNum(year)]"
+            class="block">
+            {{ week.blockNo }}
         </div>
     </div>
 </div>
