@@ -59,4 +59,16 @@ export class BlocksComponent implements OnInit {
   strToNum(str: string) {
     return parseInt(str) ? parseInt(str) : 0;
   }
+
+  zoomIn() {
+    console.log('zoom in clicked');
+  }
+
+  zoomOut() {
+    console.log('zoom out clicked');
+  }
+
+  zoomReset() {
+    console.log('zoom Reset');
+  }
 }
