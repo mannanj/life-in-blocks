@@ -28,7 +28,7 @@ export function WEEKS(year: number): blocks.week[] {
 }
 
 export function WEEKS_BY_YEAR(): blocks.weeksByYear {
-  const years = dth.getYearsInRange(1990, 90);
+  const years: number[] = dth.getYearsInRange(1990, 90);
   let weeksMap = {} as blocks.weeksByYear;
   years.forEach(year => {
     weeksMap[year] = WEEKS(year);

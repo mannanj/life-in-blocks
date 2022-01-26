@@ -1,7 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as blocks from '../models/blocks.model';
 import * as blockActions from './blocks.actions';
+import * as dth from 'src/app/helpers/datetime.helpers';
 import * as DEFAULTS from './DEFAULTS';
+import { compareAsc, format } from 'date-fns';
 
 export interface blocksState {
   weeksByYear: blocks.weeksByYear;
@@ -17,17 +19,29 @@ export const blocksReducer = createReducer(
         weeksByYear
       }
   }),
-  on(blockActions.setWeeksForYear, (state, { blocks, year }) => setWeeksForYear(state, blocks, year)),
+  on(blockActions.setWeeksForYear, (state, { blocks, year }) => {
+    let weeksByYear = {...state.weeksByYear};
+    return {
+      ...state,
+      weeksByYear
+    };
+  }),
 );
 
 function getDefault() {
-  return  {'weeksByYear': DEFAULTS.WEEKS_BY_YEAR() };
-}
-
-function setWeeksForYear(state: blocksState, blocks: blocks.week[], year: number) {
-  let weeksByYear = {...state.weeksByYear};
-  return {
-    ...state,
-    weeksByYear
-  };
+  const years = Object.keys(DEFAULTS.WEEKS_BY_YEAR());
+  let weeksByYear = {} as blocks.weeksByYear;
+  // Set flags
+  const thisWeek = dth.getStartOfWeek();
+  years.forEach(year => {
+    weeksByYear[parseInt(year)] = DEFAULTS.WEEKS_BY_YEAR()[parseInt(year)].map(week => {
+      if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
+        week.isNow = true;
+      } else if (compareAsc(thisWeek, week.date) === 1) {
+        week.isInPast = true;
+      }      
+      return {...week};
+    });
+  });
+  return  {'weeksByYear': weeksByYear };
 }

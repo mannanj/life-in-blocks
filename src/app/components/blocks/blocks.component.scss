@@ -1,8 +1,10 @@
+@import 'src/app/styles/_styles';
+
 #x-container {
     position: absolute;
     width: calc(100% - 135px);
     padding-left: 75px;
-    background-color: white;
+    margin-top: -37px; // must fix placement since #blocks below moves this div down.
 
     .x-axis {
         display: flex;
@@ -34,7 +36,7 @@
     position: absolute;
     height: calc(100vh - 115px);
     padding-top: 40px;
-    background-color: white;
+    margin-top: -37px; // must fix placement since #blocks below moves this div down.
 
     .y-axis {
         display: flex;
@@ -69,7 +71,7 @@
 #blocks {
     overflow-x: auto;
     overflow-y: auto;
-    padding: 37px 0 0 37px;
+    margin: 37px 0 0 37px;
     max-height: calc(100vh - 115px);
     height: auto;
     width: auto;
@@ -99,20 +101,28 @@
         justify-content: center;
         align-items: center;
         border: 1px solid #23155F;
-        width: 25px;
-        min-width: 25px;
-        max-width: 25px;
+        width: 25px; min-width: 25px; max-width: 25px !important;
+        height: 25px; min-height: 25px; max-height: 25px !important;
+        background-color: white;
     }
-}
-#chart-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
-    z-index: 1;
-    width: 150px;
-    background-color: white;
-    box-shadow: 0px 10px 50px -20px gray; // adjustment to sizes.
+        
+    .past {
+        opacity: 0.5;
+        border: 1px solid gray;
+    }
+
+    .now {
+        opacity: 1.0;
+        background-color: black;
+        color: white;
+    }
+
+    .block:hover {
+        @include enlarge-100;
+        opacity: 1.0;
+        background-color: black;
+        color: white;
+        z-index: 99;
+    }
+
 }

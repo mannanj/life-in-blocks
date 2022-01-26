@@ -1,0 +1,33 @@
+// Animations
+@mixin enlarge-10 {
+    -webkit-transform: scale(1.1); 
+    -ms-transform: scale(1.1); 
+    transform: scale(1.1);
+}
+
+@mixin enlarge-50 {
+    -webkit-transform: scale(1.5); 
+    -ms-transform: scale(1.5); 
+    transform: scale(1.5);
+}
+
+
+@mixin enlarge-60 {
+    -webkit-transform: scale(1.6); 
+    -ms-transform: scale(1.6); 
+    transform: scale(1.6);
+}
+
+
+@mixin enlarge-75 {
+    -webkit-transform: scale(1.75); 
+    -ms-transform: scale(1.75); 
+    transform: scale(1.75);
+}
+
+
+@mixin enlarge-100 {
+    -webkit-transform: scale(2); 
+    -ms-transform: scale(2); 
+    transform: scale(2);
+}
