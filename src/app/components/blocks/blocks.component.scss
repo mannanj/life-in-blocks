@@ -86,6 +86,9 @@
         display: flex;
         padding: 2px;
     }
+    .row:hover {
+        background-color: #F5F7FA;
+    }
     .row > * {
         margin-right: 10px;
     }
