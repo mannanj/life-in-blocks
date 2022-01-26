@@ -47,7 +47,7 @@ export class BlocksComponent implements OnInit {
     const year = parseInt(format(thisWeek, 'y'));
     this.weeksByYear[year].forEach(week => {
       if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
-        this.activeBlockId = `${year}_block_${week.blockNo}`;
+        this.activeBlockId = `${year}_block_${week.num}`;
       }
     })
   }

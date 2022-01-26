@@ -73,7 +73,7 @@
     max-height: calc(100vh - 115px);
     height: auto;
     width: auto;
-    
+
     .label {
         margin-right: 10px;
         font-size: 10px;
@@ -88,6 +88,7 @@
     }
     .row:hover {
         background-color: #F5F7FA;
+        z-index: 99;
     }
     .row > * {
         margin-right: 10px;

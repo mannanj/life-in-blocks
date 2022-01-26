@@ -11,5 +11,5 @@ export interface base {
     id: string;
     type: eType;
     headerText: string;
-    block: blocks.week | blocks.day;
+    block: blocks.week;
 }

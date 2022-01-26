@@ -25,9 +25,9 @@
         <span class="label">{{ year }}</span>
         <div 
             *ngFor="let week of weeksByYear[strToNum(year)]"
-            id="{{ year+'_block_'+week.blockNo }}"
+            id="{{ year+'_block_'+week.num }}"
             class="block">
-            {{ week.blockNo }}
+            {{ week.num }}
         </div>
     </div>
 </div>

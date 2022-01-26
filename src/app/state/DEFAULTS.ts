@@ -13,15 +13,15 @@ export function WEEKS(year: number): blocks.week[] {
     weeks.push({
           id: cry.genUid(),
           date: add(firstWeek, { weeks: i}),
-          blockNo: i + 1,
-          journalEntry: '',
-          contextText: ''
+          num: i + 1,
+          journal: '',
+          summary: ''
       });
   }
   // @TODO: Temp first data.
   if (year === 2022) {
-    weeks[0].journalEntry = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
-    weeks[0].contextText = 'side-project,cousins,league';
+    weeks[0].journal = 'This week I worked on my apps for Counter Culture and this. I got back into meditation. I started working harder. I hung out with Moneeb and Mamu\'s family. I felt better from sickness. Played lots of league.';
+    weeks[0].summary = 'side-project,cousins,league';
 
   }
   return weeks;
@@ -35,32 +35,6 @@ export function WEEKS_BY_YEAR(): blocks.weeksByYear {
   });
   return weeksMap;
 }
-  
-// Day
-// There are 6 * 24hours = 144 blocks/day max.
-// & each block is 10 minutes-long.
-function generateDayBlockArray(): blocks.day[] {
-  let dayBlocks = [] as blocks.day[];
-  const startTime = set(new Date(Date.now()), {hours: 0, minutes: 0, seconds: 0} );
-  dayBlocks.push({
-    id: cry.genUid(),
-    date: startTime,
-    blockNo: 1,
-    journalEntry: null,
-    contextText: null
-  });
-  for (let i = 1; i < 144; i++) {
-      dayBlocks.push({
-        id: cry.genUid(),
-        date: add(startTime, { minutes: i * 10}),
-        blockNo: i + 1,
-        journalEntry: null,
-        contextText: null
-      });
-  }
-  return dayBlocks;
-}
-export const DAYS = generateDayBlockArray();
 
 // Config
 export const SETTINGS: settings.base = {

@@ -1,9 +1,9 @@
 export interface base {
     id: string;
     date: any;
-    blockNo: number;
-    journalEntry: any;
-    contextText: any;
+    num: number;
+    journal: any;
+    summary: any;
 }
 
 export interface week extends base {
@@ -12,15 +12,6 @@ export interface week extends base {
     isNow?: boolean;
     isHovered?: boolean;
     isInPast?: boolean;
-}
-
-export interface day extends base {
-    // Status flags
-    isInFs?: boolean;
-    isNow?: boolean;
-    isHovered?: boolean;
-    isInPast?: boolean;
-    activeBlockNo?: number;
 }
 
 export interface weeksByYear {
