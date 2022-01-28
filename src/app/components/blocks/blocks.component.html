@@ -18,16 +18,41 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks">
+<div id="blocks" *ngIf="getObjectKeys(weeksByYear)" (keydown)="processKeyPresses($event)">
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
         <span class="label">{{ year }}</span>
         <div 
             *ngFor="let week of weeksByYear[strToNum(year)]"
+            (mouseenter)="setIsHovered(week, true)"
+            (mouseleave)="setIsHovered(week, false)"
             id="{{ year+'_block_'+week.num }}"
             class="block"
-            [ngClass]="{'past': week?.isInPast,'now': week?.isNow}">
+            [ngClass]="{'past': !(week?.isHovered) && week?.isInPast,'now': week?.isNow}">
         </div>
     </div>
 </div>
+<div id="loading" *ngIf="!getObjectKeys(weeksByYear)">
+    {{ 'Data loading...' }}
+</div>
+<!-- <div id="chart-controls">
+    <div class="control"
+        (click)="zoomOut()">
+        <svg width="30" height="30">
+            <image attr.xlink:href="{{ 'assets/icons/zoom-out' }}" width="30" height="30"/>
+        </svg>
+    </div>
+    <div class="control"
+        (click)="zoomReset()">
+        <svg width="30" height="30">
+            <image attr.xlink:href="{{ 'assets/icons/zoom-reset' }}" width="30" height="30"/>
+        </svg>
+    </div>
+    <div class="control"
+        (click)="zoomIn()">
+        <svg width="30" height="30">
+            <image attr.xlink:href="{{ 'assets/icons/zoom-in' }}" width="30" height="30"/>
+        </svg>
+    </div>
+</div> -->

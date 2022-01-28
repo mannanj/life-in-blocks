@@ -31,3 +31,15 @@
     -ms-transform: scale(2); 
     transform: scale(2);
 }
+
+@mixin enlarge-125 {
+    -webkit-transform: scale(2.25); 
+    -ms-transform: scale(2.25); 
+    transform: scale(2.25);
+}
+
+@mixin enlarge-150 {
+    -webkit-transform: scale(2.5); 
+    -ms-transform: scale(2.5); 
+    transform: scale(2.5);
+}

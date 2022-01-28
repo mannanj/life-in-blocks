@@ -7,6 +7,7 @@ import { compareAsc, format } from 'date-fns';
 
 export interface blocksState {
   weeksByYear: blocks.weeksByYear;
+  zoom: blocks.zoom;
 }
 
 export const initialState: blocksState = getDefault();
@@ -26,6 +27,15 @@ export const blocksReducer = createReducer(
       weeksByYear
     };
   }),
+  on(blockActions.setZoomLevel, (state, { zoomLevel }) => {
+    return {
+      ...state,
+      zoom: {
+        ...state.zoom,
+        zoomLevel
+      }
+    }
+  })
 );
 
 function getDefault() {
@@ -43,5 +53,8 @@ function getDefault() {
       return {...week};
     });
   });
-  return  {'weeksByYear': weeksByYear };
+  return  {
+    weeksByYear,
+    zoom: { zoomLevel: 1 }
+  };
 }
