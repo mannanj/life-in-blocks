@@ -23,11 +23,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { blocksReducer } from './state/blocks.reducer';
 import { BlocksEffects } from './state/blocks.effects';
+import { BlockComponent } from './components/blocks/block/block.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BlocksComponent
+    BlocksComponent,
+    BlockComponent
   ],
   imports: [
     BrowserModule,

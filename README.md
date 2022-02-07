@@ -30,3 +30,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ### Resources
 - icons come from https://css.gg/
 - svg-icon library setup https://netbasal.com/elegantly-manage-svg-icons-in-angular-applications-5adde68a5c46
+- font animations https://www.sliderrevolution.com/resources/css-text-animation/

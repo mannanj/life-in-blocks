@@ -8,6 +8,7 @@
     #header {
         font-size: 36px;
         font-family: 'BrokenWings', Helvetica, Arial, sans-serif;
+        animation: an 3s ease-out 1 both;
     }
 
     #main {
@@ -15,6 +16,18 @@
         margin-left: 5px;
         margin-top: 5px; // not sure if I want but leaning on yes to separate content.
         font-family: 'Areminiscentsmile', Helvetica, Arial, sans-serif;
+    }
+}
+
+// Animations
+@keyframes an{
+    from{
+        opacity: 0;
+        transform: perspective(500px) translate3d(-35px, -40px, -150px) rotate3d(1, -1, 0, 35deg);
+    }
+    to{
+        opacity: 1;
+        transform: perspective(500px) translate3d(0, 0, 0);
     }
 }
 

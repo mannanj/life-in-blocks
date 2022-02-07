@@ -70,18 +70,16 @@ export class BlocksComponent implements OnInit {
   }
 
   getObjectKeys(obj: any): string[] {
-    return !!obj && Object.keys(obj) ? Object.keys(obj) : [];
+    return !!obj && Object.keys(obj).length > 0 ? Object.keys(obj) : [];
   }
 
   strToNum(str: string) {
     return parseInt(str) ? parseInt(str) : 0;
   }
 
-  setIsHovered(week: blocks.week, isHovered: boolean) {
-    week.isHovered = isHovered;
-  }
 
   // We handle zoom manually in this app.
+  // @TODO: Add support for touchscreens.
   @HostListener('window:keydown', ['$event'])
   keyDown(event: KeyboardEvent) {
     const { keysHeld, zoomLevel } = pah.keyDown(event, this.keysHeld, this.zoomLevel, true);

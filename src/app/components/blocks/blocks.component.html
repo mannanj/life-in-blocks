@@ -23,14 +23,12 @@
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
         <span class="label">{{ year }}</span>
-        <div 
+        <app-block
             *ngFor="let week of weeksByYear[strToNum(year)]"
-            (mouseenter)="setIsHovered(week, true)"
-            (mouseleave)="setIsHovered(week, false)"
-            id="{{ year+'_block_'+week.num }}"
-            class="block"
-            [ngClass]="{'past': !(week?.isHovered) && week?.isInPast,'now': week?.isNow}">
-        </div>
+            [zoomLevel]="zoomLevel"
+            [year]="strToNum(year)"
+            [week]="week">
+        </app-block>
     </div>
 </div>
 <div id="loading" *ngIf="!getObjectKeys(weeksByYear)">
