@@ -1,3 +1,4 @@
+// @TODO: Handle zooming events here.
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Store } from '@ngrx/store';

@@ -10,6 +10,8 @@ $base_height: 25px;
     width: $base_width; min-width: $base_width; max-width: $base_width !important;
     height: $base_height; min-height: $base_height; max-height: $base_height !important;
     background-color: white;
+    -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.75);
 
     .title {
         display: flex;
@@ -31,20 +33,26 @@ $base_height: 25px;
 .past {
     opacity: 0.5;
     border: 1px solid gray;
+    -webkit-box-shadow: none;
+    -moz-box-shadow:    none;
 }
 
 .now {
     opacity: 1.0;
+    -webkit-box-shadow: 0px 0px 5px 0px yellow;
+    -moz-box-shadow:    0px 0px 5px 0px yellow;
 }
 
 .block:hover {
-    @include enlarge-150;
-    opacity: 1.0;
-    background-color: white;
-    color: black;
-    z-index: 99;
-    transition-delay:0.35s;
+    // @include enlarge-150;
+    // opacity: 1.0;
+    // background-color: white;
+    // color: black;
+    // z-index: 99;
+    // transition-delay:0.35s;
     cursor: pointer;
+    -webkit-box-shadow: 0px 0px 5px 0px yellow;
+    -moz-box-shadow:    0px 0px 5px 0px yellow;
 }
 
 // Zoom levels
