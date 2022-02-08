@@ -86,6 +86,13 @@
         white-space: nowrap;
         font-size: 10px;
     }
+    .row:hover {
+        .label {
+            color: black;
+            text-decoration: underline;
+            text-decoration-color: gold;
+        }
+    }
     
     .row {
         display: flex;

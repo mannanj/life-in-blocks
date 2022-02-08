@@ -23,6 +23,9 @@ export class BlocksComponent implements OnInit {
   zoomLevel!:number;
   private _unsubscribe$ = new Subject<void>();
 
+  // flags
+  thisYear!: number;
+
   constructor(
     private store: Store
   ) { }
@@ -42,6 +45,7 @@ export class BlocksComponent implements OnInit {
   setActiveBlock() {
     const thisWeek = dth.getStartOfWeek();
     const year = parseInt(format(thisWeek, 'y'));
+    this.thisYear = year;
     this.weeksByYear[year].forEach(week => {
       if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
         this.activeBlockId = `${year}_block_${week.num}`;

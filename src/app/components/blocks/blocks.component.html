@@ -22,7 +22,7 @@
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
-        <span class="label" [ngClass]="{'gold-underlined' : year === '2022'}">{{ year }}</span>
+        <span class="label" [ngClass]="{'gold-underlined' : thisYear && thisYear === strToNum(year)}">{{ year }}</span>
         <app-block
             *ngFor="let week of weeksByYear[strToNum(year)]"
             [zoomLevel]="zoomLevel"
