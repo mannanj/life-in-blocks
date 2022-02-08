@@ -18,11 +18,11 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks" *ngIf="getObjectKeys(weeksByYear)" (keydown)="processKeyPresses($event)">
+<div id="blocks" *ngIf="getObjectKeys(weeksByYear)">
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
-        <span class="label">{{ year }}</span>
+        <span class="label" [ngClass]="{'gold-underlined' : year === '2022'}">{{ year }}</span>
         <app-block
             *ngFor="let week of weeksByYear[strToNum(year)]"
             [zoomLevel]="zoomLevel"

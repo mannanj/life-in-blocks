@@ -1,11 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import * as blocks from 'src/app/models/blocks.model';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as pah from 'src/app/helpers/page.helpers';
 import * as dth from 'src/app/helpers/datetime.helpers';
 import { format } from 'date-fns';
-import { cloneDeep, debounce, remove } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 // State
 import { Store } from '@ngrx/store';
@@ -22,9 +22,6 @@ export class BlocksComponent implements OnInit {
   viewHasInit!:boolean;
   zoomLevel!:number;
   private _unsubscribe$ = new Subject<void>();
-
-  // flags
-  keysHeld = [] as string[];
 
   constructor(
     private store: Store
@@ -75,25 +72,6 @@ export class BlocksComponent implements OnInit {
 
   strToNum(str: string) {
     return parseInt(str) ? parseInt(str) : 0;
-  }
-
-
-  // We handle zoom manually in this app.
-  // @TODO: Add support for touchscreens.
-  @HostListener('window:keydown', ['$event'])
-  keyDown(event: KeyboardEvent) {
-    const { keysHeld, zoomLevel } = pah.keyDown(event, this.keysHeld, this.zoomLevel, true);
-    this.keysHeld = keysHeld;
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel }));
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyUp(event: KeyboardEvent) {
-    this.keysHeld = pah.keyUp(event, this.keysHeld);
-  }
-
-  processKeyPresses(key: any) {
-    console.log('key pressed', key);
   }
 
   zoomIn() {

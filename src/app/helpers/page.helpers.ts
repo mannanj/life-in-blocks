@@ -27,7 +27,7 @@ export function keyDown(event: KeyboardEvent, keysHeld: string[], zoomLevel: num
   }
   if (event.code === KEYS['equal']) {
      if (zoomLevel < 5) {
-      zoomLevel = zoomLevel += 0.25;
+      zoomLevel = zoomLevel += 0.5;
       _debug? console.log('zooming in', zoomLevel) : null;
      }
      if (!keysHeld.find(key => key === event.code)) {
@@ -37,8 +37,8 @@ export function keyDown(event: KeyboardEvent, keysHeld: string[], zoomLevel: num
      stopBrowserZoom(event, keysHeld);
     }
   if (event.code === KEYS['minus']) {
-    if (zoomLevel > 0.25) {
-      zoomLevel = zoomLevel -= 0.25;
+    if (zoomLevel > 0.75) {
+      zoomLevel = zoomLevel -= 0.5;
       _debug? console.log('zooming out', zoomLevel) : null;
      }
     if (!keysHeld.find(key => key === event.code)) {
@@ -70,6 +70,6 @@ export function keyUp(event: KeyboardEvent, keysHeld: string[]): string[] {
   return keysHeld;
 }
 
-export function getZoomLevel() {
+export function getPageZoomLevel() {
   return (( window.outerWidth - 10 ) / window.innerWidth) * 100;
 }

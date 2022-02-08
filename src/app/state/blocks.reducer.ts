@@ -55,6 +55,6 @@ function getDefault() {
   });
   return  {
     weeksByYear,
-    zoom: { zoomLevel: 1.75 }
+    zoom: { zoomLevel: 2.00 }
   };
 }
