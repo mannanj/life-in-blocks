@@ -48,7 +48,7 @@ $base_height: 25px;
     }
 
     .title-z3 {
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .bottom-border {
@@ -70,12 +70,6 @@ $base_height: 25px;
 }
 
 .block:hover {
-    // @include enlarge-150;
-    // opacity: 1.0;
-    // background-color: white;
-    // color: black;
-    // z-index: 99;
-    // transition-delay:0.35s;
     cursor: pointer;
     -webkit-box-shadow: 0px 0px 5px 0px #ffd700;
     -moz-box-shadow:    0px 0px 5px 0px #ffd700;
