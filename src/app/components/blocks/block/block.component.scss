@@ -13,19 +13,45 @@ $base_height: 25px;
     -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.75);
 
+    .progress {
+        background-color: rgba(183, 193, 172, 0.35);
+        width: 100%;
+        height: 15px;
+        border-bottom: 1px solid black;
+
+        .progress-bar {
+            background-color: rgba(3, 201, 169, 0.35);
+            width: 0%;
+            height: 100%;
+            float: right;
+        }
+    }
+        
+    .no-bg {
+        background-color: transparent !important;
+    }
+
+    .no-border {
+        border-bottom: none;
+    }
+
+    // We manually fix the title and move it-up overlaying the progress-bar.
     .title {
         display: flex;
         justify-content: space-between;
         font-size: 8px;
+        margin-top: -15px;
     }
 
     .title-z2 {
         font-size: 10px;
-        border-bottom: 1px solid black;
     }
 
     .title-z3 {
         font-size: 12px;
+    }
+
+    .bottom-border {
         border-bottom: 1px solid black;
     }
 }

@@ -28,6 +28,10 @@
         'z475': zoomLevel === 4.75,
         'z500': zoomLevel === 5.00
     }">
+    <div class="progress" [ngClass]="{'no-bg': weekProgress === 0, 'no-border': week?.isInPast}">
+        <div class="progress-bar" [ngStyle]="{width: (weekProgress ? (1 - weekProgress) : 0) | percent}"></div>
+    </div>
+    <!-- Manually hacked/moved above into the progress-bar's space. -->
     <div class="title"
         [ngClass]="{'title-z2' : zoomLevel >= 1.50, 'title-z3' : zoomLevel >= 3.00}">
         <div></div>
