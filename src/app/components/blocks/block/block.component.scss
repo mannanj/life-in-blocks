@@ -12,18 +12,20 @@ $base_height: 25px;
     background-color: white;
     -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.75);
+    overflow: hidden;
 
     .progress {
-        background-color: rgba(183, 193, 172, 0.35);
+        background-color: black;
         width: 100%;
         height: 3px;
         border-bottom: 1px solid black;
 
         .progress-bar {
-            background-color: rgba(3, 201, 169, 0.35);
+            background-color: rgba(3, 201, 169, 1);
             width: 0%;
             height: 100%;
             float: right;
+            border-left: 1px solid black;
         }
     }
 
@@ -50,13 +52,32 @@ $base_height: 25px;
     .bottom-border {
         border-bottom: 1px solid black;
     }
+
+    .body {
+        margin: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 100;
+        overflow-y: scroll;
+    }
+
+    .body-z2 {
+        font-size: 8px;
+    }
+
+    .body-z3 {
+        font-size: 10px;
+    }
 }
     
 .past {
-    opacity: 0.55;
+    background-color: rgb(248,248,255,0.5);
     border: 1px solid gray;
     -webkit-box-shadow: none;
     -moz-box-shadow:    none;
+}
+
+.past-opacity {
+    opacity: 0.55;
 }
 
 .now {
@@ -66,6 +87,7 @@ $base_height: 25px;
 }
 
 .block:hover {
+    background-color: white;
     cursor: pointer;
     -webkit-box-shadow: 0px 0px 5px 0px #ffd700;
     -moz-box-shadow:    0px 0px 5px 0px #ffd700;

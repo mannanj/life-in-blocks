@@ -7,7 +7,6 @@
     class="block"
     [ngClass]="{
         'past': !(week?.isHovered) && week?.isInPast,
-        'now': week?.isNow, 
         'z025': zoomLevel === 0.25,
         'z050': zoomLevel === 0.50,
         'z075': zoomLevel === 0.75,
@@ -34,7 +33,7 @@
     <div *ngIf="!week?.isNow" class="spacer"></div>
     <!-- Manually hacked/moved above into the progress-bar's space. -->
     <div class="title"
-        [ngClass]="{'title-z2' : zoomLevel >= 1.50, 'title-z3' : zoomLevel >= 3.00}">
+        [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'title-z2' : zoomLevel >= 1.50, 'title-z3' : zoomLevel >= 3.00}">
         <div></div>
         <div>
             {{ (zoomLevel >= 1.50 && week?.date) ? (week.date | date:'MMM  d') : '' }}
@@ -47,6 +46,11 @@
                     c0.146,0.077,0.307,0.115,0.466,0.115c0.207,0,0.413-0.064,0.588-0.191c0.308-0.224,0.462-0.603,0.397-0.978l-3.09-18.017
                     l13.091-12.761C55.838,22.336,55.936,21.939,55.818,21.578z"/>
             </svg>
+        </div>
+    </div>
+    <div class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
+        <div *ngFor="let entry of week.entries" class="input">
+            {{ entry.text }}
         </div>
     </div>
 </div>
