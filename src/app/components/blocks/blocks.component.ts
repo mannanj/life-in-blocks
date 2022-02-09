@@ -10,7 +10,6 @@ import { cloneDeep } from 'lodash';
 // State
 import { Store } from '@ngrx/store';
 import * as blockActions from 'src/app/state/blocks.actions';
-
 @Component({
   selector: 'app-blocks',
   templateUrl: './blocks.component.html',
@@ -19,12 +18,12 @@ import * as blockActions from 'src/app/state/blocks.actions';
 export class BlocksComponent implements OnInit {
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
-  viewHasInit!:boolean;
   zoomLevel!:number;
   private _unsubscribe$ = new Subject<void>();
 
   // flags
   thisYear!: number;
+  viewHasInit!:boolean;
 
   constructor(
     private store: Store
