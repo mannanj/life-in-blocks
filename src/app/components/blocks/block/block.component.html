@@ -29,7 +29,7 @@
         'z500': zoomLevel === 5.00
     }">
     <div *ngIf="week?.isNow" class="progress">
-        <div class="progress-bar" [ngStyle]="{width: (weekProgress ? (1 - weekProgress) : 0) | percent}"></div>
+        <div class="progress-bar" [ngStyle]="{width: (1 - weekProgress)  | percent}"></div>
     </div>
     <div *ngIf="!week?.isNow" class="spacer"></div>
     <!-- Manually hacked/moved above into the progress-bar's space. -->

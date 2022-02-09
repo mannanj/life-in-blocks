@@ -15,13 +15,7 @@ export class BlockComponent implements OnInit {
   @Input() set _week(week: blocks.week) {
     if (!!week && Object.keys(week).length > 0) {
       this.week = week;
-      if (week?.isInPast) {
-        this.weekProgress = 1;
-      } else if (week?.isNow) {
-        this.weekProgress = dth.getWeekProgress(week, this.today);
-      } else {
-        this.weekProgress = 0;
-      }
+      this.weekProgress = week?.isNow ? dth.getWeekProgress(week, this.today) : 0;
     }
   }
 
