@@ -50,4 +50,8 @@ export class BlockComponent implements OnInit {
   // Doesn't do anything atm.
   setScrollBar():void {
   }
+
+  hasValues(arr: any[]): boolean {
+    return !!arr && arr.length > 0;
+  }
 }

@@ -31,3 +31,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 - icons come from https://css.gg/
 - svg-icon library setup https://netbasal.com/elegantly-manage-svg-icons-in-angular-applications-5adde68a5c46
 - font animations https://www.sliderrevolution.com/resources/css-text-animation/
+
+
+### Ideas
+
+- Can I use a diamond clipart shape for each block, to represent the analogy of each block being precious as in the original article (https://waitbutwhy.com/2014/05/life-weeks.html)

@@ -15,7 +15,7 @@ $base_height: 25px;
     overflow: hidden;
 
     .progress {
-        background-color: black;
+        background-color: rgba(248,248,255,0.5);
         width: 100%;
         height: 3px;
         border-bottom: 1px solid black;
@@ -54,15 +54,28 @@ $base_height: 25px;
     }
 
     .body {
+        height: 100%;
+        width: calc(100% - 10px);
         margin: 5px;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 100;
-        overflow-y: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+        cursor: pointer;
+
+        .entry {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; // This is where the magic happens
+        }
     }
 
     .body:hover {
         overflow-y: auto;
     }
+
+    .body > * { margin-bottom: 3px; }
 
     .body-z2 {
         font-size: 8px;
@@ -71,10 +84,24 @@ $base_height: 25px;
     .body-z3 {
         font-size: 10px;
     }
+
+    .show-on-hover {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+    }
+
+    .show-on-hover:hover {
+        color: black;
+        transition: all 0.2s linear;
+    }
+    
 }
     
 .past {
-    background-color: rgb(248,248,255,0.5);
+    background-color: rgba(248,248,255,0.5);
     border: 1px solid gray;
     -webkit-box-shadow: none;
     -moz-box-shadow:    none;
@@ -92,7 +119,6 @@ $base_height: 25px;
 
 .block:hover {
     background-color: white;
-    cursor: pointer;
     -webkit-box-shadow: 0px 0px 5px 0px #ffd700;
     -moz-box-shadow:    0px 0px 5px 0px #ffd700;
 }

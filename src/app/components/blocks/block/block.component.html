@@ -48,9 +48,15 @@
             </svg>
         </div>
     </div>
-    <div class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
-        <div *ngFor="let entry of week.entries" class="input">
+    <!-- @TODO: replace with ng-content/ng-template style thing. -->
+    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
+        <div *ngFor="let entry of week.entries" class="entry">
             {{ entry.text }}
+        </div>
+    </div>
+    <div *ngIf="!hasValues(week.entries)" class="body show-on-hover" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
+        <div class="entry">
+            Record a moment
         </div>
     </div>
 </div>
