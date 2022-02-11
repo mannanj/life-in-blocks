@@ -59,8 +59,11 @@
             <span *ngIf="zoomLevel >= 4.50" class="date trim">{{ entry.edited | date:'M/d h:mm a'}}</span>
         </div>
     </div>
-    <div *ngIf="!hasValues(week.entries)" class="body show-on-hover" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel >= 2.50}">
+    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel >= 2.50}">
         <div class="entry">
+            <svg width="17" height="17" [ngStyle]="{'display': week?.isHovered ? 'inline': 'none'}">
+                <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>
+            </svg>
             Record a moment
         </div>
     </div>

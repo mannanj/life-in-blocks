@@ -94,17 +94,30 @@ $base_height: 30px;
         font-size: 8px;
     }
 
-    .show-on-hover {
+    .hidden {
+        display: none;
+    }
+
+    .show {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
         color: white;
-    }
-
-    .show-on-hover:hover {
         color: black;
         transition: all 0.2s linear;
+
+        .entry {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .entry > * {
+            display: inline;
+        }
     }
     
 }
