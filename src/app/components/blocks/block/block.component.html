@@ -25,7 +25,10 @@
         'z425': zoomLevel === 4.25,
         'z450': zoomLevel === 4.50,
         'z475': zoomLevel === 4.75,
-        'z500': zoomLevel === 5.00
+        'z500': zoomLevel === 5.00,
+        'z550': zoomLevel === 5.50,
+        'z600': zoomLevel === 6.00,
+        'z650': zoomLevel === 6.50
     }">
     <div *ngIf="week?.isNow" class="progress">
         <div class="progress-bar" [ngStyle]="{width: (1 - weekProgress)  | percent}"></div>
@@ -49,12 +52,14 @@
         </div>
     </div>
     <!-- @TODO: replace with ng-content/ng-template style thing. -->
-    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
-        <div *ngFor="let entry of week.entries" class="entry">
-            {{ entry.text }}
+    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel >= 2.50}">
+        <!-- @TODO: Scrolling right-to-left effect, couldn't quite crack it 2/10/22. -->
+        <div *ngFor="let entry of week.entries" class="entry trim">
+            <span class="value trim" [ngClass]="{'w70': zoomLevel >= 4.50}">{{ entry.text }}</span>
+            <span *ngIf="zoomLevel >= 4.50" class="date trim">{{ entry.edited | date:'M/d h:mm a'}}</span>
         </div>
     </div>
-    <div *ngIf="!hasValues(week.entries)" class="body show-on-hover" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z2' : zoomLevel >= 1.50, 'body-z3' : zoomLevel >= 3.00}">
+    <div *ngIf="!hasValues(week.entries)" class="body show-on-hover" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel >= 2.50}">
         <div class="entry">
             Record a moment
         </div>

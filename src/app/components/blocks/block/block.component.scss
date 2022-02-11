@@ -1,7 +1,7 @@
 @import 'src/app/styles/_styles';
 
-$base_width: 25px;
-$base_height: 25px;
+$base_width: 30px;
+$base_height: 30px;
 
 .block {
     display: flex;
@@ -56,7 +56,7 @@ $base_height: 25px;
     .body {
         height: 100%;
         width: calc(100% - 10px);
-        margin: 5px;
+        margin: 10px 5px;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 100;
         overflow-x: hidden;
@@ -65,9 +65,16 @@ $base_height: 25px;
 
         .entry {
             width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis; // This is where the magic happens
+
+            .value {
+                float: left;
+                width: 95%;
+            }
+            .date {
+                float: right;
+                width: 30%;
+                font-style: italic;
+            }
         }
     }
 
@@ -77,12 +84,14 @@ $base_height: 25px;
 
     .body > * { margin-bottom: 3px; }
 
-    .body-z2 {
+    .body-z1 {
         font-size: 8px;
+        margin: 2px !important;
+        width: calc(100%) !important;
     }
 
-    .body-z3 {
-        font-size: 10px;
+    .body-z2 {
+        font-size: 8px;
     }
 
     .show-on-hover {
@@ -120,6 +129,16 @@ $base_height: 25px;
     -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.75);
 }
+
+// Helpers
+.trim {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // This is where the magic happens
+}
+.w70 { 
+    width: 70%; max-width: 70%;
+ }
 
 // Zoom levels
 .z025 {
@@ -197,4 +216,16 @@ $base_height: 25px;
 .z500 {
     width: $base_width * 5.00; min-width: $base_width * 5.00; max-width: $base_width * 5.00 !important;
     height: $base_height * 5.00; min-height: $base_height * 5.00; max-height: $base_height * 5.00 !important;
+}
+.z550 {
+    width: $base_width * 5.50; min-width: $base_width * 5.50; max-width: $base_width * 5.50 !important;
+    height: $base_height * 5.50; min-height: $base_height * 5.50; max-height: $base_height * 5.50 !important;
+}
+.z600 {
+    width: $base_width * 6.00; min-width: $base_width * 6.00; max-width: $base_width * 6.00 !important;
+    height: $base_height * 6.00; min-height: $base_height * 6.00; max-height: $base_height * 6.00 !important;
+}
+.z650 {
+    width: $base_width * 6.50; min-width: $base_width * 6.50; max-width: $base_width * 6.50 !important;
+    height: $base_height * 6.50; min-height: $base_height * 6.50; max-height: $base_height * 6.50 !important;
 }

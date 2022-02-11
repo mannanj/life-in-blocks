@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import * as blocks from 'src/app/models/blocks.model';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
@@ -6,6 +6,7 @@ import * as pah from 'src/app/helpers/page.helpers';
 import * as dth from 'src/app/helpers/datetime.helpers';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
+import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
 import { Store } from '@ngrx/store';
@@ -15,7 +16,7 @@ import * as blockActions from 'src/app/state/blocks.actions';
   templateUrl: './blocks.component.html',
   styleUrls: ['./blocks.component.scss']
 })
-export class BlocksComponent implements OnInit {
+export class BlocksComponent implements OnInit, AfterViewInit{
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
   zoomLevel!:number;
@@ -24,6 +25,7 @@ export class BlocksComponent implements OnInit {
   // flags
   thisYear!: number;
   viewHasInit!:boolean;
+  isLoading = false;
 
   constructor(
     private store: Store
@@ -57,6 +59,7 @@ export class BlocksComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoomLevel => {
         this.zoomLevel = zoomLevel;
+        setTimeout(() => this.isLoading = false, 500);
     });
     this.store.select(blocksSelectors.getWeeksByYear$)
       .pipe(takeUntil(this._unsubscribe$),tap(blocks => console.log()))
@@ -78,14 +81,20 @@ export class BlocksComponent implements OnInit {
   }
 
   zoomIn() {
-    console.log('zoom in clicked');
+    this.isLoading = true;
+    this.zoomLevel += 1.0;
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 
   zoomOut() {
-    console.log('zoom out clicked');
+    this.isLoading = true;
+    this.zoomLevel -= 1.0;
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 
   zoomReset() {
-    console.log('zoom Reset');
+    this.isLoading = true;
+    this.zoomLevel = DEFAULTS.zoomLevel;
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 }

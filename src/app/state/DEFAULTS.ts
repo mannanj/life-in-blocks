@@ -20,12 +20,12 @@ export function WEEKS(year: number): blocks.week[] {
   // @TODO: Temp first data.
   if (year === 2022) {
     weeks[0].entries = [
-      { text: 'CounterCulture App development', created: new Date(2022, 0, 5, 15, 0, 0, 0)},
-      { text: 'Meditation 20-60min', created: new Date(2022, 0, 5, 15, 0, 0, 0)},
-      { text: 'Working Harder', created: new Date(2022, 0, 7, 15, 0, 0, 0)},
-      { text: 'Moneeb and Mamu Family Hangout', created: new Date(2022, 0, 7, 15, 0, 0, 0)},
-      { text: 'Sick Recovery (COVID)', created: new Date(2022, 0, 8, 15, 0, 0, 0)},
-      { text: 'League of Legends', created: new Date(2022, 0, 8, 15, 0, 0, 0)},
+      { text: 'CounterCulture App development', created: new Date(2022, 0, 5, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
+      { text: 'Meditation 20-60min', created: new Date(2022, 0, 5, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
+      { text: 'Working Harder', created: new Date(2022, 0, 7, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
+      { text: 'Moneeb and Mamu Family Hangout', created: new Date(2022, 0, 7, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
+      { text: 'Sick Recovery (COVID)', created: new Date(2022, 0, 8, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
+      { text: 'League of Legends', created: new Date(2022, 0, 8, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
     ];
   }
   return weeks;
@@ -47,3 +47,5 @@ export const SETTINGS: settings.base = {
     startMinutes: 0
   }
 };
+
+export const zoomLevel = 4.50;

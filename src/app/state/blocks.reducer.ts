@@ -55,6 +55,6 @@ function getDefault() {
   });
   return  {
     weeksByYear,
-    zoom: { zoomLevel: 4.50 }
+    zoom: { zoomLevel: DEFAULTS.zoomLevel }
   };
 }

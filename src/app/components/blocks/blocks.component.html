@@ -34,23 +34,26 @@
 <div id="loading" *ngIf="!getObjectKeys(weeksByYear)">
     {{ 'Data loading...' }}
 </div>
-<!-- <div id="chart-controls">
+<div id="chart-controls">
     <div class="control"
-        (click)="zoomOut()">
-        <svg width="30" height="30">
-            <image attr.xlink:href="{{ 'assets/icons/zoom-out' }}" width="30" height="30"/>
+        (click)="zoomOut()"
+        [ngClass]="{'disabled': zoomLevel <= 0.5 || isLoading}">
+        <svg width="17" height="17">
+            <image attr.xlink:href="{{ 'assets/icons/zoom-out.svg' }}" width="17" height="17"/>
+        </svg>
+    </div>
+    <div class="control center"
+        (click)="zoomIn()"
+        [ngClass]="{'disabled': zoomLevel >= 6.5 || isLoading}">
+        <svg width="17" height="17">
+            <image attr.xlink:href="{{ 'assets/icons/zoom-in.svg' }}" width="17" height="17"/>
         </svg>
     </div>
     <div class="control"
-        (click)="zoomReset()">
-        <svg width="30" height="30">
-            <image attr.xlink:href="{{ 'assets/icons/zoom-reset' }}" width="30" height="30"/>
+        (click)="zoomReset()"
+        [ngClass]="{'disabled': isLoading}">
+        <svg width="17" height="17">
+            <image attr.xlink:href="{{ 'assets/icons/undo.svg' }}" width="17" height="17"/>
         </svg>
     </div>
-    <div class="control"
-        (click)="zoomIn()">
-        <svg width="30" height="30">
-            <image attr.xlink:href="{{ 'assets/icons/zoom-in' }}" width="30" height="30"/>
-        </svg>
-    </div>
-</div> -->
+</div>

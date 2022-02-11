@@ -1,13 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import * as blocks from 'src/app/models/blocks.model';
 import * as dth from 'src/app/helpers/datetime.helpers';
-
 @Component({
   selector: 'app-block',
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
-export class BlockComponent implements OnInit {
+export class BlockComponent implements OnInit, AfterViewInit {
   @Input() zoomLevel = 1.0;
   @Input() year!: number;
   week!: blocks.week;
@@ -17,9 +16,6 @@ export class BlockComponent implements OnInit {
     if (!!week && Object.keys(week).length > 0) {
       this.week = week;
       this.weekProgress = week?.isNow ? dth.getWeekProgress(week, this.today) : 0;
-      if (this.viewHasInit && this.year) {
-
-      }
     }
   }
 
