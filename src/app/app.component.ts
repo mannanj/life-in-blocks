@@ -20,6 +20,6 @@ export class AppComponent {
   constructor(
     private store: Store,
     private firestore: AngularFirestore) {
-      setTimeout(() => this.store.dispatch(blockActions.setIsLoading({ isLoading: false })), 3000);
+      setTimeout(() => this.store.dispatch(blockActions.setIsLoading({ isLoading: false })), 1000);
     }
 }

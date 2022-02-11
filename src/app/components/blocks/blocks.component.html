@@ -1,6 +1,6 @@
 <!-- @TODO: Button to show dates on top of blocks or not. By default, none.
     Active block does have the selected style though. -->
-<div id="x-container" [ngClass]="{'disabled': isLoading}">
+<div id="x-container" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
     <div class="x-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -9,7 +9,7 @@
         <div class="label">Week</div>
     </div>
 </div>
-<div id="y-container" [ngClass]="{'disabled': isLoading}">
+<div id="y-container" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
     <div class="y-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -18,7 +18,7 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks" *ngIf="getObjectKeys(weeksByYear)" [ngClass]="{'disabled': isLoading}">
+<div id="blocks" *ngIf="getObjectKeys(weeksByYear)" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
@@ -44,21 +44,21 @@
 <div id="chart-controls">
     <div class="control"
         (click)="zoomOut()"
-        [ngClass]="{'disabled': zoomLevel <= 0.5 || isLoading}">
+        [ngClass]="{'enabled': !(zoomLevel <= 0.5 || isLoading), 'disabled': zoomLevel <= 0.5 || isLoading}">
         <svg width="17" height="17">
             <image attr.xlink:href="{{ 'assets/icons/zoom-out.svg' }}" width="17" height="17"/>
         </svg>
     </div>
     <div class="control center"
         (click)="zoomIn()"
-        [ngClass]="{'disabled': zoomLevel >= 6.5 || isLoading}">
+        [ngClass]="{'enabled': !(zoomLevel >= 6.5 || isLoading), 'disabled': zoomLevel >= 6.5 || isLoading}">
         <svg width="17" height="17">
             <image attr.xlink:href="{{ 'assets/icons/zoom-in.svg' }}" width="17" height="17"/>
         </svg>
     </div>
     <div class="control"
         (click)="zoomReset()"
-        [ngClass]="{'disabled': isLoading}">
+        [ngClass]="{'enabled': !(isLoading), 'disabled': isLoading}">
         <svg width="17" height="17">
             <image attr.xlink:href="{{ 'assets/icons/undo.svg' }}" width="17" height="17"/>
         </svg>

@@ -138,6 +138,9 @@
     text-decoration-color: gold;
 }
 
+.enabled {
+    @include fade-in;
+}
 .disabled {
     @include disabled;
 }

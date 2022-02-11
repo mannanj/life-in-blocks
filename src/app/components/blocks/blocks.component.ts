@@ -62,7 +62,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
         if (this.zoomLevel) {
           setTimeout(() =>{
             this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
-          }, 2500);
+          }, 1000);
         }
         this.zoomLevel = zoomLevel;
     });
@@ -92,20 +92,17 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   }
 
   zoomIn() {
-    this.zoomLevel += 1.0;
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel += 1.0 }));
   }
 
   zoomOut() {
-    this.zoomLevel -= 1.0;
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel -= 1.0 }));
   }
 
   zoomReset() {
-    this.zoomLevel = DEFAULTS.zoomLevel;
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: DEFAULTS.zoomLevel }));
   }
 }

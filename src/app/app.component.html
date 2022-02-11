@@ -1,5 +1,5 @@
 <div id="page">
-  <span id="header" [ngClass]="{'disabled': isLoading$ | async}">Life In Blocks</span>
+  <span id="header" [ngClass]="{'enabled': !(isLoading$ | async),'disabled': isLoading$ | async}">Life In Blocks</span>
   <div id="main">
     <router-outlet></router-outlet>
   </div>
