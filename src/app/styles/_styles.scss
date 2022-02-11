@@ -43,3 +43,9 @@
     -ms-transform: scale(2.5); 
     transform: scale(2.5);
 }
+
+@mixin disabled {
+    pointer-events: none;
+    cursor: default !important;
+    opacity: 0.35 !important;
+}

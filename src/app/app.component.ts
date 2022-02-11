@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as blocks from 'src/app/models/blocks.model';
 import * as fsh from 'src/app/helpers/firestore.helpers';
-
+import * as blockActions from 'src/app/state/blocks.actions';
+import * as blocksSelectors from 'src/app/state/blocks.selectors';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,10 +14,12 @@ import * as fsh from 'src/app/helpers/firestore.helpers';
 })
 export class AppComponent {
   title = 'life-in-blocks';
-  isLoading = true;
+  isLoading$: Observable<boolean> = this.store.select(blocksSelectors.getIsLoading$);
   weeks$: Observable<blocks.week[]> = fsh.getWeeks$(new Date().getFullYear(), this.firestore);
 
   constructor(
     private store: Store,
-    private firestore: AngularFirestore) {}
+    private firestore: AngularFirestore) {
+      setTimeout(() => this.store.dispatch(blockActions.setIsLoading({ isLoading: false })), 3000);
+    }
 }

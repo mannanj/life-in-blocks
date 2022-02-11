@@ -105,9 +105,6 @@
         margin-right: 10px;
     }
 }
-#loading {
-    font-size: 26px;
-}
 #chart-controls {
     display: flex;
     justify-content: center;
@@ -133,12 +130,6 @@
     .center {
         margin: 0 5px;
     }
-
-    .disabled {
-        pointer-events: none;
-        cursor: default !important;
-        opacity: 0.5;
-    }
 }
 
 .gold-underlined {
@@ -146,3 +137,64 @@
     text-decoration: underline;
     text-decoration-color: gold;
 }
+
+.disabled {
+    @include disabled;
+}
+
+// Loading
+$orange: #fc7753;
+$green: #4ecdc4;
+$blue: #312d45;
+$red: #e84855;
+$white: #f3f5f8;
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 99;
+
+    .row { display: flex;} 
+    .block {
+        width: 40px;
+        height: 40px;
+        box-sizing: border-box;
+        border: solid 1px white;
+    }
+
+      $animation-speed: 0.8s;
+      $interval: 0.2;
+    
+      .b1 {
+        background-color: $orange;
+        transform-origin: 100% 100%;
+        animation: enlarge $animation-speed $interval * 0 + s ease infinite;
+        border: 1px solid black;
+    }
+      .b2 {
+        background-color: $green;
+        transform-origin: 0% 100%;
+        animation: enlarge $animation-speed $interval * 1 + s ease infinite;
+        border: 1px solid black;
+      }
+      .b3 {
+        background-color: gold;
+        transform-origin: 100% 0%;
+        animation: enlarge $animation-speed $interval * 3 + s ease infinite;
+        border: 1px solid black;
+      }
+      .b4 {
+        transform-origin: 0% 0%;
+        background-color: $blue;
+        animation: enlarge $animation-speed $interval * 2 + s ease infinite;
+        border: 1px solid black;
+      }
+    }
+    
+    
+    @keyframes enlarge {
+      from {transform: scale(1);}
+      20% {transform: scale(1.2);}
+      30% {transform: scale(1);}
+      to {transform: scale(1);}
+    }

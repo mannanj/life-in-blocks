@@ -1,3 +1,5 @@
+@import 'src/app/styles/_styles';
+
 #page {
     margin: 24px 24px 24px 15px;
     color: #000000;
@@ -17,6 +19,10 @@
         margin-top: 5px; // not sure if I want but leaning on yes to separate content.
         font-family: 'Areminiscentsmile', Helvetica, Arial, sans-serif;
     }
+}
+
+.disabled {
+    @include disabled;
 }
 
 // Animations

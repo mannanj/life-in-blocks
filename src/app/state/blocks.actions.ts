@@ -16,3 +16,9 @@ export const setZoomLevel = createAction(
   '[Blocks] Set Zoom Level',
   props<{ zoomLevel: number }>()
 )
+
+// Others
+export const setIsLoading = createAction(
+  '[Blocks] Blocks Are Loading',
+  props<{ isLoading: boolean }>()
+)

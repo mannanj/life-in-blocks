@@ -1,6 +1,6 @@
 <!-- @TODO: Button to show dates on top of blocks or not. By default, none.
     Active block does have the selected style though. -->
-<div id="x-container">
+<div id="x-container" [ngClass]="{'disabled': isLoading}">
     <div class="x-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -9,7 +9,7 @@
         <div class="label">Week</div>
     </div>
 </div>
-<div id="y-container">
+<div id="y-container" [ngClass]="{'disabled': isLoading}">
     <div class="y-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -18,7 +18,7 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks" *ngIf="getObjectKeys(weeksByYear)">
+<div id="blocks" *ngIf="getObjectKeys(weeksByYear)" [ngClass]="{'disabled': isLoading}">
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
@@ -31,8 +31,15 @@
         </app-block>
     </div>
 </div>
-<div id="loading" *ngIf="!getObjectKeys(weeksByYear)">
-    {{ 'Data loading...' }}
+<div id="loading" *ngIf="isLoading || !getObjectKeys(weeksByYear)">
+    <div class="row">
+        <div class='block b1'></div>
+        <div class='block b2'></div>
+    </div>
+    <div class="row">
+        <div class='block b3'></div>
+        <div class='block b4'></div>
+    </div>
 </div>
 <div id="chart-controls">
     <div class="control"

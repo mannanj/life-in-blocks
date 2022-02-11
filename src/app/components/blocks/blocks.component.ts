@@ -25,7 +25,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   // flags
   thisYear!: number;
   viewHasInit!:boolean;
-  isLoading = false;
+  isLoading = true;
 
   constructor(
     private store: Store
@@ -58,8 +58,13 @@ export class BlocksComponent implements OnInit, AfterViewInit{
     this.store.select(blocksSelectors.getZoomLevel$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoomLevel => {
+        // @TODO: need a better way to detect this.
+        if (this.zoomLevel) {
+          setTimeout(() =>{
+            this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
+          }, 2500);
+        }
         this.zoomLevel = zoomLevel;
-        setTimeout(() => this.isLoading = false, 500);
     });
     this.store.select(blocksSelectors.getWeeksByYear$)
       .pipe(takeUntil(this._unsubscribe$),tap(blocks => console.log()))
@@ -70,6 +75,12 @@ export class BlocksComponent implements OnInit, AfterViewInit{
           pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}, true);
         }
     });
+    this.store.select(blocksSelectors.getIsLoading$)
+      .pipe(takeUntil(this._unsubscribe$), tap((val)=> console.log('isLoading', val)))
+      .subscribe(isLoading => {
+        this.isLoading = isLoading;
+        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}, true);
+      });
   }
 
   getObjectKeys(obj: any): string[] {
@@ -81,20 +92,20 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   }
 
   zoomIn() {
-    this.isLoading = true;
     this.zoomLevel += 1.0;
+    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
     this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 
   zoomOut() {
-    this.isLoading = true;
     this.zoomLevel -= 1.0;
+    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
     this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 
   zoomReset() {
-    this.isLoading = true;
     this.zoomLevel = DEFAULTS.zoomLevel;
+    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
     this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel }));
   }
 }

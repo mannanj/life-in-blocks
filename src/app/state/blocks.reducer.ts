@@ -8,6 +8,7 @@ import { compareAsc, format } from 'date-fns';
 export interface blocksState {
   weeksByYear: blocks.weeksByYear;
   zoom: blocks.zoom;
+  isLoading: boolean;
 }
 
 export const initialState: blocksState = getDefault();
@@ -35,6 +36,12 @@ export const blocksReducer = createReducer(
         zoomLevel
       }
     }
+  }),
+  on(blockActions.setIsLoading, (state, { isLoading }) => {
+    return {
+      ...state,
+      isLoading
+    }
   })
 );
 
@@ -55,6 +62,7 @@ function getDefault() {
   });
   return  {
     weeksByYear,
-    zoom: { zoomLevel: DEFAULTS.zoomLevel }
+    zoom: { zoomLevel: DEFAULTS.zoomLevel },
+    isLoading: DEFAULTS.isLoading
   };
 }
