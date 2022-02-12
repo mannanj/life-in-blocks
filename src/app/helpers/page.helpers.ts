@@ -9,7 +9,7 @@ export function scrollToBlock(id: string, scrollId: string, offset: {x: number, 
     debug ? console.log(`scrollDiv ${scrollDiv}`) : null;
     if (scrollDiv && activeBlock) {
       scrollDiv.scrollTop = topPos - offset.y;
-      // scrollDiv.scrollLeft = leftPos - offset.x; // @TODO: Temp disabled.
+      scrollDiv.scrollLeft = leftPos - offset.x;
       debug ? console.log(`scrolled to block ${id}`) : null;
     }
   }

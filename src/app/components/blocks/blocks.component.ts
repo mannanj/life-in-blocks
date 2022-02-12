@@ -38,7 +38,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit() {
     if (this.activeBlockId) {
-      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 50, y: 250});
     } else {
       this.viewHasInit = true;
     }
