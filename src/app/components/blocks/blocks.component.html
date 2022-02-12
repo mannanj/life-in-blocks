@@ -25,9 +25,10 @@
         <span class="label" [ngClass]="{'gold-underlined' : thisYear && thisYear === strToNum(year)}">{{ year }}</span>
         <app-block
             *ngFor="let week of weeksByYear[strToNum(year)]"
+            [size]="size"
             [zoomLevel]="zoomLevel"
             [year]="strToNum(year)"
-            [_week]="week">
+            [week]="week">
         </app-block>
     </div>
 </div>

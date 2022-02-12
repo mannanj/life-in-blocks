@@ -20,6 +20,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
   zoomLevel!:number;
+  size!:string;
   private _unsubscribe$ = new Subject<void>();
 
   // flags
@@ -37,7 +38,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit() {
     if (this.activeBlockId) {
-      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}, true);
+      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
     } else {
       this.viewHasInit = true;
     }
@@ -55,6 +56,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   }
 
   _getData() {
+    //zoom
     this.store.select(blocksSelectors.getZoomLevel$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoomLevel => {
@@ -65,21 +67,24 @@ export class BlocksComponent implements OnInit, AfterViewInit{
           }, 1000);
         }
         this.zoomLevel = zoomLevel;
+        this.size = pah.getBlocksize(zoomLevel) + 'px';
     });
+    // week data
     this.store.select(blocksSelectors.getWeeksByYear$)
-      .pipe(takeUntil(this._unsubscribe$),tap(blocks => console.log()))
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe(blocks => {
         this.weeksByYear = cloneDeep(blocks);
         this.setActiveBlock();
         if (this.viewHasInit) {
-          pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}, true);
+          pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
         }
     });
+    // loading flag
     this.store.select(blocksSelectors.getIsLoading$)
-      .pipe(takeUntil(this._unsubscribe$), tap((val)=> console.log('isLoading', val)))
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe(isLoading => {
         this.isLoading = isLoading;
-        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}, true);
+        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
       });
   }
 

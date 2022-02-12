@@ -7,17 +7,10 @@ import * as dth from 'src/app/helpers/datetime.helpers';
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements OnInit, AfterViewInit {
+  @Input() size!: string; // in px
   @Input() zoomLevel = 1.0;
   @Input() year!: number;
-  week!: blocks.week;
-  today = new Date(Date.now()); // @TODO: Make this come from store.
-  weekProgress = 0;
-  @Input() set _week(week: blocks.week) {
-    if (!!week && Object.keys(week).length > 0) {
-      this.week = week;
-      this.weekProgress = week?.isNow ? dth.getWeekProgress(week, this.today) : 0;
-    }
-  }
+  @Input() week!: blocks.week;
 
   // flags
   viewHasInit!:boolean;

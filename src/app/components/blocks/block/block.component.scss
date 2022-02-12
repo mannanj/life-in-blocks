@@ -1,14 +1,9 @@
 @import 'src/app/styles/_styles';
 
-$base_width: 30px;
-$base_height: 30px;
-
 .block {
     display: flex;
     flex-direction: column;
     border: 1px solid #23155F;
-    width: $base_width; min-width: $base_width; max-width: $base_width !important;
-    height: $base_height; min-height: $base_height; max-height: $base_height !important;
     background-color: white;
     -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 0px 1px 0px rgba(50, 50, 50, 0.75);
@@ -98,6 +93,10 @@ $base_height: 30px;
         display: none;
     }
 
+    .inline {
+        display: inline;
+    }
+
     .show {
         display: flex;
         flex-direction: column;
@@ -152,93 +151,3 @@ $base_height: 30px;
 .w70 { 
     width: 70%; max-width: 70%;
  }
-
-// Zoom levels
-.z025 {
-    width: $base_width * 0.25; min-width: $base_width * 0.25; max-width: $base_width * 0.25 !important;
-    height: $base_height * 0.25; min-height: $base_height * 0.25; max-height: $base_height * 0.25 !important;
-}
-.z050 {
-    width: $base_width * 0.50; min-width: $base_width * 0.50; max-width: $base_width * 0.50 !important;
-    height: $base_height * 0.50; min-height: $base_height * 0.50; max-height: $base_height * 0.50 !important;
-}
-.z075 {
-    width: $base_width * 0.75; min-width: $base_width * 0.75; max-width: $base_width * 0.75 !important;
-    height: $base_height * 0.75; min-height: $base_height * 0.75; max-height: $base_height * 0.75 !important;
-}
-.z125 {
-    width: $base_width * 1.25; min-width: $base_width * 1.25; max-width: $base_width * 1.25 !important;
-    height: $base_height * 1.25; min-height: $base_height * 1.25; max-height: $base_height * 1.25 !important;
-}
-.z150 {
-    width: $base_width * 1.50; min-width: $base_width * 1.50; max-width: $base_width * 1.50 !important;
-    height: $base_height * 1.50; min-height: $base_height * 1.50; max-height: $base_height * 1.50 !important;
-}
-.z175 {
-    width: $base_width * 1.75; min-width: $base_width * 1.75; max-width: $base_width * 1.75 !important;
-    height: $base_height * 1.75; min-height: $base_height * 1.75; max-height: $base_height * 1.75 !important;
-}
-.z200 {
-    width: $base_width * 2.00; min-width: $base_width * 2.00; max-width: $base_width * 2.00 !important;
-    height: $base_height * 2.00; min-height: $base_height * 2.00; max-height: $base_height * 2.00 !important;
-}
-.z225 {
-    width: $base_width * 2.25; min-width: $base_width * 2.25; max-width: $base_width * 2.25 !important;
-    height: $base_height * 2.25; min-height: $base_height * 2.25; max-height: $base_height * 2.25 !important;
-}
-.z250 {
-    width: $base_width * 2.50; min-width: $base_width * 2.50; max-width: $base_width * 2.50 !important;
-    height: $base_height * 2.50; min-height: $base_height * 2.50; max-height: $base_height * 2.50 !important;
-}
-.z275 {
-    width: $base_width * 2.75; min-width: $base_width * 2.75; max-width: $base_width * 2.75 !important;
-    height: $base_height * 2.75; min-height: $base_height * 2.75; max-height: $base_height * 2.75 !important;
-}
-.z300 {
-    width: $base_width * 3.00; min-width: $base_width * 3.00; max-width: $base_width * 3.00 !important;
-    height: $base_height * 3.00; min-height: $base_height * 3.00; max-height: $base_height * 3.00 !important;
-}
-.z325 {
-    width: $base_width * 3.25; min-width: $base_width * 3.25; max-width: $base_width * 3.25 !important;
-    height: $base_height * 3.25; min-height: $base_height * 3.25; max-height: $base_height * 3.25 !important;
-}
-.z350 {
-    width: $base_width * 3.50; min-width: $base_width * 3.50; max-width: $base_width * 3.50 !important;
-    height: $base_height * 3.50; min-height: $base_height * 3.50; max-height: $base_height * 3.50 !important;
-}
-.z375 {
-    width: $base_width * 3.75; min-width: $base_width * 3.75; max-width: $base_width * 3.75 !important;
-    height: $base_height * 3.75; min-height: $base_height * 3.75; max-height: $base_height * 3.75 !important;
-}
-.z400 {
-    width: $base_width * 4.00; min-width: $base_width * 4.00; max-width: $base_width * 4.00 !important;
-    height: $base_height * 4.00; min-height: $base_height * 4.00; max-height: $base_height * 4.00 !important;
-}
-.z425 {
-    width: $base_width * 4.25; min-width: $base_width * 4.25; max-width: $base_width * 4.25 !important;
-    height: $base_height * 4.25; min-height: $base_height * 4.25; max-height: $base_height * 4.25 !important;
-}
-.z450 {
-    width: $base_width * 4.50; min-width: $base_width * 4.50; max-width: $base_width * 4.50 !important;
-    height: $base_height * 4.50; min-height: $base_height * 4.50; max-height: $base_height * 4.50 !important;
-}
-.z475 {
-    width: $base_width * 4.75; min-width: $base_width * 4.75; max-width: $base_width * 4.75 !important;
-    height: $base_height * 4.75; min-height: $base_height * 4.75; max-height: $base_height * 4.75 !important;
-}
-.z500 {
-    width: $base_width * 5.00; min-width: $base_width * 5.00; max-width: $base_width * 5.00 !important;
-    height: $base_height * 5.00; min-height: $base_height * 5.00; max-height: $base_height * 5.00 !important;
-}
-.z550 {
-    width: $base_width * 5.50; min-width: $base_width * 5.50; max-width: $base_width * 5.50 !important;
-    height: $base_height * 5.50; min-height: $base_height * 5.50; max-height: $base_height * 5.50 !important;
-}
-.z600 {
-    width: $base_width * 6.00; min-width: $base_width * 6.00; max-width: $base_width * 6.00 !important;
-    height: $base_height * 6.00; min-height: $base_height * 6.00; max-height: $base_height * 6.00 !important;
-}
-.z650 {
-    width: $base_width * 6.50; min-width: $base_width * 6.50; max-width: $base_width * 6.50 !important;
-    height: $base_height * 6.50; min-height: $base_height * 6.50; max-height: $base_height * 6.50 !important;
-}

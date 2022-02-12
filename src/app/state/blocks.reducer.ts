@@ -56,7 +56,10 @@ function getDefault() {
         week.isNow = true;
       } else if (compareAsc(thisWeek, week.date) === 1) {
         week.isInPast = true;
-      }      
+      }
+      // set flags used by our app
+      const today = new Date(Date.now()); 
+      week?.isNow ? week.progress = (1 - dth.getWeekProgress(week, today)) : null;
       return {...week};
     });
   });

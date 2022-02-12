@@ -16,6 +16,7 @@ export interface week extends base {
     isNow?: boolean;
     isHovered?: boolean;
     isInPast?: boolean;
+    progress?: number;
 }
 
 export interface weeksByYear {

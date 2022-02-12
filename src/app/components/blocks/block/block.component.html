@@ -5,33 +5,10 @@
     (mouseleave)="setIsHovered(week, false)"
     id="{{ year+'_block_'+week?.num }}"
     class="block"
-    [ngClass]="{
-        'past': !(week?.isHovered) && week?.isInPast,
-        'z025': zoomLevel === 0.25,
-        'z050': zoomLevel === 0.50,
-        'z075': zoomLevel === 0.75,
-        'z125': zoomLevel === 1.25,
-        'z150': zoomLevel === 1.50,
-        'z175': zoomLevel === 1.75,
-        'z200': zoomLevel === 2.00,
-        'z225': zoomLevel === 2.25,
-        'z250': zoomLevel === 2.50,
-        'z275': zoomLevel === 2.75,
-        'z300': zoomLevel === 3.00,
-        'z325': zoomLevel === 3.25,
-        'z350': zoomLevel === 3.50,
-        'z375': zoomLevel === 3.75,
-        'z400': zoomLevel === 4.00,
-        'z425': zoomLevel === 4.25,
-        'z450': zoomLevel === 4.50,
-        'z475': zoomLevel === 4.75,
-        'z500': zoomLevel === 5.00,
-        'z550': zoomLevel === 5.50,
-        'z600': zoomLevel === 6.00,
-        'z650': zoomLevel === 6.50
-    }">
+    [ngStyle]="{'width':size, 'maxWidth':size, 'height': size, 'maxHeight': size }"
+    [ngClass]="{'past': !(week?.isHovered) && week?.isInPast}">
     <div *ngIf="week?.isNow" class="progress">
-        <div class="progress-bar" [ngStyle]="{width: (1 - weekProgress)  | percent}"></div>
+        <div class="progress-bar" [ngStyle]="{width: week.progress| percent}"></div>
     </div>
     <div *ngIf="!week?.isNow" class="spacer"></div>
     <!-- Manually hacked/moved above into the progress-bar's space. -->
@@ -61,7 +38,7 @@
     </div>
     <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel >= 2.50}">
         <div class="entry">
-            <svg width="17" height="17" [ngStyle]="{'display': week?.isHovered ? 'inline': 'none'}">
+            <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.isHovered}">
                 <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>
             </svg>
             Record a moment
