@@ -28,7 +28,8 @@
             [size]="size"
             [zoomLevel]="zoomLevel"
             [year]="strToNum(year)"
-            [week]="week">
+            [week]="week"
+            [isEditing]="isEditing">
         </app-block>
     </div>
 </div>
@@ -62,6 +63,15 @@
         [ngClass]="{'enabled': !(isLoading), 'disabled': isLoading}">
         <svg width="17" height="17">
             <image attr.xlink:href="{{ 'assets/icons/undo.svg' }}" width="17" height="17"/>
+        </svg>
+    </div>
+</div>
+<div *ngIf="isEditing" id="chart-action-bar">
+    <div class="control"
+        (click)="cancelEdits()"
+        [ngClass]="{'enabled': !(zoomLevel <= 0.5 || isLoading), 'disabled': zoomLevel <= 0.5 || isLoading}">
+        <svg width="17" height="17" style="color: red;">
+            <image attr.xlink:href="{{ 'assets/icons/danger-red.svg' }}" width="17" height="17"/>
         </svg>
     </div>
 </div>

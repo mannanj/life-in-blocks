@@ -48,6 +48,6 @@ export const SETTINGS: settings.base = {
   }
 };
 
-export const zoomLevel = 4.50;
-
+export const zoomLevel = 6.50;
 export const isLoading = true;
+export const isEditing = false;

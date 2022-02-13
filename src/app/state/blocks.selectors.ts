@@ -22,3 +22,8 @@ export const getIsLoading$ = createSelector(
     selectBlocksState,
     (state: blocksState) => state.isLoading
 );
+
+export const getIsEditing$ = createSelector(
+    selectBlocksState,
+    (state: blocksState) => state.isEditing
+);

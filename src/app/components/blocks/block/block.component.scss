@@ -56,7 +56,6 @@
         font-weight: 100;
         overflow-x: hidden;
         overflow-y: auto;
-        cursor: pointer;
 
         .entry {
             width: 100%;
@@ -64,10 +63,32 @@
             .value {
                 float: left;
                 width: 95%;
+                cursor: pointer;
             }
+
+            .value:hover {
+                text-decoration: underline;
+                text-decoration-color: gold;
+            }
+
+            input {
+                font-size: 10px;
+            }
+
+            .button {
+                float: right;
+                margin-right: 2px;
+                cursor: pointer;
+            }
+            
+            .button:hover {
+                transform: scale(1.1);
+                background-color: gold;
+            }
+
             .date {
                 float: right;
-                width: 30%;
+                width: 10%;
                 font-style: italic;
             }
         }
@@ -87,6 +108,10 @@
 
     .body-z2 {
         font-size: 8px;
+    }
+
+    .body-z3 {
+        font-size: 10px;
     }
 
     .hidden {
@@ -148,6 +173,9 @@
     overflow: hidden;
     text-overflow: ellipsis; // This is where the magic happens
 }
-.w70 { 
-    width: 70%; max-width: 70%;
+.w80 { 
+    width: 80%; max-width: 80%;
  }
+.w90 { 
+    width: 90%; max-width: 90%;
+}

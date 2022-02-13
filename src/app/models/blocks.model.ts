@@ -9,6 +9,9 @@ export interface entry {
     text: string;
     created: Date;
     edited?: Date;
+    isHovered?: boolean;
+    isEditing?: boolean;
+    backupText?: string;
 }
 export interface week extends base {
     // Status flags

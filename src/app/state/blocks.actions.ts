@@ -22,3 +22,7 @@ export const setIsLoading = createAction(
   '[Blocks] Blocks Are Loading',
   props<{ isLoading: boolean }>()
 )
+export const setIsEditing = createAction(
+  '[Blocks] Toggle Is Editing',
+  props<{ isEditing: boolean }>()
+)

@@ -9,6 +9,7 @@ export interface blocksState {
   weeksByYear: blocks.weeksByYear;
   zoom: blocks.zoom;
   isLoading: boolean;
+  isEditing: boolean;
 }
 
 export const initialState: blocksState = getDefault();
@@ -42,6 +43,12 @@ export const blocksReducer = createReducer(
       ...state,
       isLoading
     }
+  }),
+  on(blockActions.setIsEditing, (state, { isEditing }) => {
+    return {
+      ...state,
+      isEditing
+    }
   })
 );
 
@@ -66,6 +73,7 @@ function getDefault() {
   return  {
     weeksByYear,
     zoom: { zoomLevel: DEFAULTS.zoomLevel },
-    isLoading: DEFAULTS.isLoading
+    isLoading: DEFAULTS.isLoading,
+    isEditing: DEFAULTS.isEditing,
   };
 }

@@ -47,5 +47,18 @@ export function getBlocksize(zoom: number): number {
     default: { 
       return 30 * 0.5; 
     }
+  }
 }
+
+export function confirmChanges(): boolean {
+  return confirm('You will lose all unsaved changes, continue?');
+}
+  
+
+// Zooming, key presses, etc
+export const KEYS: {[key: string]: string} = {
+  ctrl: 'MetaRight',
+  equal: 'Equal',
+  minus: 'Minus',
+  escape: 'Escape'
 }

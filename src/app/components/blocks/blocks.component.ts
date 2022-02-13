@@ -27,6 +27,7 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   thisYear!: number;
   viewHasInit!:boolean;
   isLoading = true;
+  isEditing = false;
 
   constructor(
     private store: Store
@@ -86,6 +87,13 @@ export class BlocksComponent implements OnInit, AfterViewInit{
         this.isLoading = isLoading;
         pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
       });
+    // is editing flag
+    this.store.select(blocksSelectors.getIsEditing$)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(isEditing => {
+        this.isEditing = isEditing;
+      });
+
   }
 
   getObjectKeys(obj: any): string[] {
@@ -109,5 +117,9 @@ export class BlocksComponent implements OnInit, AfterViewInit{
   zoomReset() {
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
     this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: DEFAULTS.zoomLevel }));
+  }
+
+  cancelEdits() {
+    pah.confirmChanges() ? this.store.dispatch(blockActions.setIsEditing({ isEditing: false })): null;
   }
 }
