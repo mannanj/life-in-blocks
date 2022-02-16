@@ -104,14 +104,15 @@
 
 #chart-controls {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 95px;
-    right: 49px;
+    top: calc(50% - 117px);
+    right: 47px;
     z-index: 1;
     padding: 4px 7px;
-    background-color: #fdfff5;
+    background-color: white;
     border: 1px solid black;
     border-radius: 7px;
     -webkit-box-shadow: 0px 0px 1px 0px rgba(50, 50, 50, 0.75);
@@ -128,6 +129,22 @@
 
     .center {
         margin: 0 5px;
+    }
+
+    #size-picker {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .label-slider {
+            font-size: 10px;
+            margin-bottom: 5px;
+            width: 25px;
+            max-width: 25px;
+            display: flex;
+            justify-content: center;
+        }
     }
 }
 
@@ -228,3 +245,12 @@ $white: #f3f5f8;
     30% {transform: scale(1);}
     to {transform: scale(1);}
 }
+
+// slider
+.slider {
+    --summbit-discrete-slider-track-color: lightgray;
+    --summbit-discrete-slider-track-width: 3px;
+    --summbit-discrete-slider-thumb-color: #03c9a9;
+    --summbit-discrete-slider-thumb-diameter: 10px;
+    --summbit-discrete-slider-progress-color: #03c9a9;
+  }

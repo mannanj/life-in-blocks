@@ -2,6 +2,13 @@ import { format, add, sub } from 'date-fns';
 import * as settings from '../models/settings.model';
 import * as blocks from 'src/app/models/blocks.model';
 
+
+
+export function getUserYears(): number[] {
+    const years: number[] = getYearsInRange(1990, 90);
+    return years;
+}
+
 export function getFirstWeekByYear(year: number) {
     const firstDayOfYear = new Date(year, 0, 1);
     if (format(firstDayOfYear, 'E') === 'Mon') {

@@ -1,0 +1,17 @@
+<div id="year-row">
+    <span class="label" [ngClass]="{'gold-underlined' : thisYear && thisYear === year}">{{ year }}</span>
+    <ng-container *ngIf="!!weeks && weeks.length; else loading" >
+        <app-block
+            *ngFor="let week of weeks"
+            [size]="size"
+            [zoomLevel]="zoomLevel"
+            [year]="year"
+            [week]="week"
+            [isEditing]="isEditing">
+        </app-block>
+    </ng-container>
+    <ng-template #loading>
+        Loading...
+    </ng-template>
+
+</div>

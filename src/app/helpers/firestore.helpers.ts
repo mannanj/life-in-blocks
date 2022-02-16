@@ -1,7 +1,8 @@
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { map, Observable, tap } from "rxjs";
+import { delay, map, Observable, of, tap } from "rxjs";
 import * as blocks from "../models/blocks.model";
 import * as settings from "src/app/models/settings.model";
+import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // @TODO: Want to safely check if no collection exists, if so
 // get default value from our app and then create it in FS?
@@ -27,4 +28,26 @@ export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): 
           isInFs: true
         }
       })));
+}
+
+export function getData$(user: string, fs: AngularFirestore, debug?: boolean): Observable<blocks.weeksByYear> {
+  // For speed purposes, we always try to get data for current year first.
+  // To reduce future requests:
+  // Then we hit an index/config file, and check which years
+  // have data available, and hit those next.
+  // Any data not returned here defaults to new-user default.
+  // As user makes a save for that year for the first time,
+  // it gets written to firestore for first time and the index/config
+  // is updated.
+
+  const year = 2022;
+  const collection = `${user}_${year}_weeks`;
+  const logDescriptor = `Firestore pinged for ${collection}`;
+  (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>).subscribe(val => console.log('fs collectionr result: ', val));
+  return of(DEFAULTS.WEEKS_BY_YEAR());
+}
+
+export function getUser$(): Observable<string> {
+  const DEFAULT_USER$ = of('mannanj');
+  return DEFAULT_USER$;
 }

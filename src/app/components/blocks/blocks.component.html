@@ -1,5 +1,7 @@
 <!-- @TODO: Button to show dates on top of blocks or not. By default, none.
     Active block does have the selected style though. -->
+
+<script type="module" src="../custom/summbit-discrete-slider.js"></script>
 <div id="x-container" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
     <div class="x-axis">
         <div class="line"></div>
@@ -19,6 +21,14 @@
     </div>
 </div>
 <div id="blocks" *ngIf="getObjectKeys(weeksByYear)" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
+    <!-- <app-year-row
+        *ngFor="let year of years"
+        [zoomLevel]="zoomLevel"
+        [size]="size"
+        [_year]="year"
+        [thisYear]="thisYear"
+    >
+    </app-year-row> -->
     <div 
         *ngFor="let year of getObjectKeys(weeksByYear)"
         class="row">
@@ -44,26 +54,18 @@
     </div>
 </div>
 <div id="chart-controls">
-    <div class="control"
-        (click)="zoomOut()"
-        [ngClass]="{'enabled': !(zoomLevel <= 0.5 || isLoading), 'disabled': zoomLevel <= 0.5 || isLoading}">
-        <svg width="17" height="17">
-            <image attr.xlink:href="{{ 'assets/icons/zoom-out.svg' }}" width="17" height="17"/>
-        </svg>
-    </div>
-    <div class="control center"
-        (click)="zoomIn()"
-        [ngClass]="{'enabled': !(zoomLevel >= 6.5 || isLoading), 'disabled': zoomLevel >= 6.5 || isLoading}">
-        <svg width="17" height="17">
-            <image attr.xlink:href="{{ 'assets/icons/zoom-in.svg' }}" width="17" height="17"/>
-        </svg>
-    </div>
-    <div class="control"
-        (click)="zoomReset()"
-        [ngClass]="{'enabled': !(isLoading), 'disabled': isLoading}">
-        <svg width="17" height="17">
-            <image attr.xlink:href="{{ 'assets/icons/undo.svg' }}" width="17" height="17"/>
-        </svg>
+    <div id="size-picker" *ngIf="zoomLevel">
+        <div class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
+        <summbit-discrete-slider
+            id="summbit-discrete-slider-7"
+            class="slider"
+            (change)="changeZoom($event)"
+            (input)="setSizeText($event)"
+            [value]="floorVal(zoomLevel)"
+            min="0"
+            max="7"
+            orientation="top-to-bottom">
+        </summbit-discrete-slider>
     </div>
 </div>
 <div *ngIf="isEditing" id="chart-action-bar">

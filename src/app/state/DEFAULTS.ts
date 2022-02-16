@@ -1,5 +1,5 @@
 
-import { add, set } from 'date-fns';
+import { add, compareAsc, format, set } from 'date-fns';
 import * as blocks from 'src/app/models/blocks.model';
 import * as cry from '../helpers/cryptography.helpers';
 import * as dth from '../helpers/datetime.helpers';
@@ -30,24 +30,38 @@ export function WEEKS(year: number): blocks.week[] {
   }
   return weeks;
 }
-
 export function WEEKS_BY_YEAR(): blocks.weeksByYear {
-  const years: number[] = dth.getYearsInRange(1990, 90);
+  const years = dth.getUserYears();
   let weeksMap = {} as blocks.weeksByYear;
   years.forEach(year => {
     weeksMap[year] = WEEKS(year);
+  });
+  // massage it a little bit.
+  const thisWeek = dth.getStartOfWeek();
+  years.forEach(year => {
+    weeksMap[year] = weeksMap[year].map(week => {
+      if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
+        week.isNow = true;
+      } else if (compareAsc(thisWeek, week.date) === 1) {
+        week.isInPast = true;
+      }
+      // set flags used by our app
+      const today = new Date(Date.now()); 
+      week?.isNow ? week.progress = (1 - dth.getWeekProgress(week, today)) : null;
+      return {...week};
+    });
   });
   return weeksMap;
 }
 
 // Config
 export const SETTINGS: settings.base = {
-  day: {
+  day: { 
     startHours: 8,
     startMinutes: 0
   }
 };
 
-export const zoomLevel = 6.50;
+export const zoomLevel = 3.50;
 export const isLoading = true;
 export const isEditing = false;

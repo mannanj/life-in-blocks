@@ -1,5 +1,5 @@
 // Angular
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
@@ -24,12 +24,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { blocksReducer } from './state/blocks.reducer';
 import { BlocksEffects } from './state/blocks.effects';
 import { BlockComponent } from './components/blocks/block/block.component';
+import { appReducer } from './state/app.reducer';
+import { YearRowComponent } from './components/blocks/year-row/year-row.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BlocksComponent,
-    BlockComponent
+    BlockComponent,
+    YearRowComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { BlockComponent } from './components/blocks/block/block.component';
     provideFirestore(() => getFirestore()),
     AngularFireModule.initializeApp(environment.firebase), // legacy firestore,
     StoreModule.forRoot({
+      app: appReducer,
       blocks: blocksReducer,
     }),
     StoreDevtoolsModule.instrument({
@@ -51,6 +55,7 @@ import { BlockComponent } from './components/blocks/block/block.component';
     EffectsModule.forRoot([BlocksEffects]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

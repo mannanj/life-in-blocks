@@ -1,0 +1,26 @@
+#year-row {
+    display: flex;
+    padding: 2px;
+
+    .label {
+        margin-top: auto; margin-bottom: auto; // center text.
+        margin-right: 10px;
+        width: 25px;
+        min-width: 25px;
+        max-width: 25px;
+        white-space: nowrap;
+        font-size: 10px;
+    }
+}
+
+#year-row:hover {
+    .label {
+        color: black;
+        text-decoration: underline;
+        text-decoration-color: gold;
+    }
+}
+
+#year-row > * {
+    margin-right: 10px;
+}

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { filter, Subject, takeUntil, tap } from 'rxjs';
 import * as blocks from 'src/app/models/blocks.model';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as pah from 'src/app/helpers/page.helpers';
@@ -11,16 +11,25 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 // State
 import { Store } from '@ngrx/store';
 import * as blockActions from 'src/app/state/blocks.actions';
+
+// 3rd Party Libs
+import 'src/app/components/custom/discrete-slider';
+
 @Component({
   selector: 'app-blocks',
   templateUrl: './blocks.component.html',
   styleUrls: ['./blocks.component.scss']
 })
-export class BlocksComponent implements OnInit, AfterViewInit{
+export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
+  years = dth.getUserYears();
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
   zoomLevel!:number;
+  // @TODO: refactor below into one variable.
   size!:string;
+  sizeHr!:string;
+  sizeHrTemp!:string;
+  // @TODO: Refactor top into one variable.
   private _unsubscribe$ = new Subject<void>();
 
   // flags
@@ -37,12 +46,22 @@ export class BlocksComponent implements OnInit, AfterViewInit{
     this._getData();
   }
 
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();      
+  }
+
   ngAfterViewInit() {
     if (this.activeBlockId) {
-      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 50, y: 250});
+      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 250, y: 250});
     } else {
       this.viewHasInit = true;
     }
+  }
+
+  initSlider() {
+    console.log('initializing slider');
+
   }
 
   setActiveBlock() {
@@ -65,14 +84,16 @@ export class BlocksComponent implements OnInit, AfterViewInit{
         if (this.zoomLevel) {
           setTimeout(() =>{
             this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
+            console.log('blocks zoomlevel loading delay');
           }, 1000);
         }
         this.zoomLevel = zoomLevel;
         this.size = pah.getBlocksize(zoomLevel) + 'px';
+        this.sizeHr = this.getSizeHr(this.zoomLevel);
     });
     // week data
     this.store.select(blocksSelectors.getWeeksByYear$)
-      .pipe(takeUntil(this._unsubscribe$))
+      .pipe(takeUntil(this._unsubscribe$), filter(blocks => !!blocks && Object.keys(blocks).length > 0))
       .subscribe(blocks => {
         this.weeksByYear = cloneDeep(blocks);
         this.setActiveBlock();
@@ -104,22 +125,56 @@ export class BlocksComponent implements OnInit, AfterViewInit{
     return parseInt(str) ? parseInt(str) : 0;
   }
 
-  zoomIn() {
-    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel += 1.0 }));
-  }
-
-  zoomOut() {
-    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: this.zoomLevel -= 1.0 }));
-  }
-
-  zoomReset() {
-    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel: DEFAULTS.zoomLevel }));
-  }
-
   cancelEdits() {
     pah.confirmChanges() ? this.store.dispatch(blockActions.setIsEditing({ isEditing: false })): null;
+  }
+
+  changeZoom(event: any) {
+    const zoomLevel = event.detail.value += 0.5;
+    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
+    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel }));
+    this.sizeHrTemp = '';
+  }
+
+  setSizeText(event: any) {
+    const zoomLevel = event.detail.value += 0.5;
+    this.sizeHrTemp = this.getSizeHr(zoomLevel);
+  }
+
+  floorVal(zoom: number) {
+    return Math.floor(zoom);
+  }
+
+  getSizeHr(zoom: number): string {
+    switch(zoom) { 
+      case 0.5: {
+        return 'Tiny';
+      }
+      case 1.5: {
+        return 'Smaller';
+      }
+      case 2.5: {
+        return 'Small';
+      }
+      case 3.5: {
+        return 'Normal';
+      }
+      case 4.5: {
+        return 'Medium';
+      }
+      case 5.5: {
+        return 'Large';
+      }
+      case 6.5: {
+        return 'Larger';
+      }
+      // @TODO: implement this.
+      case 7.5: {
+        return 'Gigantic';
+      }
+      default: { 
+        return 'Normal';
+      }
+    }
   }
 }
