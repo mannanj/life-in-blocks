@@ -89,7 +89,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         }
         this.zoomLevel = zoomLevel;
         this.size = pah.getBlocksize(zoomLevel) + 'px';
-        this.sizeHr = this.getSizeHr(this.zoomLevel);
+        this.sizeHr = pah.getSizeHr(this.zoomLevel);
     });
     // week data
     this.store.select(blocksSelectors.getWeeksByYear$)
@@ -138,43 +138,10 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   setSizeText(event: any) {
     const zoomLevel = event.detail.value += 0.5;
-    this.sizeHrTemp = this.getSizeHr(zoomLevel);
+    this.sizeHrTemp = pah.getSizeHr(zoomLevel);
   }
 
   floorVal(zoom: number) {
     return Math.floor(zoom);
-  }
-
-  getSizeHr(zoom: number): string {
-    switch(zoom) { 
-      case 0.5: {
-        return 'Tiny';
-      }
-      case 1.5: {
-        return 'Smaller';
-      }
-      case 2.5: {
-        return 'Small';
-      }
-      case 3.5: {
-        return 'Normal';
-      }
-      case 4.5: {
-        return 'Medium';
-      }
-      case 5.5: {
-        return 'Large';
-      }
-      case 6.5: {
-        return 'Larger';
-      }
-      // @TODO: implement this.
-      case 7.5: {
-        return 'Gigantic';
-      }
-      default: { 
-        return 'Normal';
-      }
-    }
   }
 }

@@ -1,5 +1,6 @@
 export interface base {
     id: string;
+    user: string;
     date: any;
     num: number;
     entries: entry[];

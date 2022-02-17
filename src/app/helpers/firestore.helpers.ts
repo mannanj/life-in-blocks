@@ -1,7 +1,7 @@
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { delay, map, Observable, of, tap } from "rxjs";
+import { delay, map, Observable, of, take, tap } from "rxjs";
+import * as app from 'src/app/models/app.model';
 import * as blocks from "../models/blocks.model";
-import * as settings from "src/app/models/settings.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // @TODO: Want to safely check if no collection exists, if so
@@ -43,11 +43,29 @@ export function getData$(user: string, fs: AngularFirestore, debug?: boolean): O
   const year = 2022;
   const collection = `${user}_${year}_weeks`;
   const logDescriptor = `Firestore pinged for ${collection}`;
-  (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>).subscribe(val => console.log('fs collectionr result: ', val));
-  return of(DEFAULTS.WEEKS_BY_YEAR());
+  const obs$ = fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>;
+  (obs$).subscribe(val => console.log(logDescriptor, val));
+  return of(DEFAULTS.WEEKS_BY_YEAR);
 }
 
 export function getUser$(): Observable<string> {
   const DEFAULT_USER$ = of('mannanj');
   return DEFAULT_USER$;
+}
+
+export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
+  const collection = `${user}_settings`;
+  const logDescriptor = `Firestore pinged for ${collection}`;
+  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>).pipe(take(1));
+  obs$.subscribe(val => {
+    console.log(logDescriptor, val);
+    if (!!val || !(Object.keys(val).length > 0)) {
+      const newSettings = {
+        ...DEFAULTS.SETTINGS,
+        user
+      }
+      fs.collection(collection).add(newSettings);
+    }
+  });
+  return of(DEFAULTS.SETTINGS);
 }

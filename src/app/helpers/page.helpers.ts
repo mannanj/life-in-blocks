@@ -44,8 +44,44 @@ export function getBlocksize(zoom: number): number {
     case 6.5: {
       return 30 * 6.5; 
     }
+    case 7.5: {
+      return 30 * 10.5; 
+    }
     default: { 
       return 30 * 0.5; 
+    }
+  }
+}
+
+
+export function getSizeHr(zoom: number): string {
+  switch(zoom) { 
+    case 0.5: {
+      return 'Tiny';
+    }
+    case 1.5: {
+      return 'XS';
+    }
+    case 2.5: {
+      return 'Small';
+    }
+    case 3.5: {
+      return 'Regular';
+    }
+    case 4.5: {
+      return 'Medium';
+    }
+    case 5.5: {
+      return 'Large';
+    }
+    case 6.5: {
+      return 'XL';
+    }
+    case 7.5: {
+      return 'Gigantic';
+    }
+    default: { 
+      return 'Regular';
     }
   }
 }

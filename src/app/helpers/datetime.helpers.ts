@@ -1,5 +1,4 @@
 import { format, add, sub } from 'date-fns';
-import * as settings from '../models/settings.model';
 import * as blocks from 'src/app/models/blocks.model';
 
 

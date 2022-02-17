@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel <= 5.50, 'body-z3' : zoomLevel === 6.50}">
+    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel <= 5.50, 'body-z3' : zoomLevel >= 6.50}">
         <div class="entry">
             <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.isHovered}">
                 <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>

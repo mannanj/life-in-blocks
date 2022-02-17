@@ -1,17 +1,25 @@
 
 import { add, compareAsc, format, set } from 'date-fns';
+import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
 import * as cry from '../helpers/cryptography.helpers';
 import * as dth from '../helpers/datetime.helpers';
-import * as settings from '../models/settings.model';
+
+// App data
+export const NEW_USER = 'NEW_USER';
+export function YEAR_HAS_DATA(): {[key: number]: boolean} {
+  return {2022: true};
+}
 
 
+// Blocks data
 export function WEEKS(year: number): blocks.week[] {
   let weeks = [] as blocks.week[];
   const firstWeek = dth.getFirstWeekByYear(year);
   for (let i = 0; i < 52; i++) {
     weeks.push({
           id: cry.genUid(),
+          user: NEW_USER,
           date: add(firstWeek, { weeks: i}),
           num: i + 1,
           entries: [] as blocks.entry[],
@@ -30,7 +38,7 @@ export function WEEKS(year: number): blocks.week[] {
   }
   return weeks;
 }
-export function WEEKS_BY_YEAR(): blocks.weeksByYear {
+export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
   const years = dth.getUserYears();
   let weeksMap = {} as blocks.weeksByYear;
   years.forEach(year => {
@@ -54,12 +62,13 @@ export function WEEKS_BY_YEAR(): blocks.weeksByYear {
   return weeksMap;
 }
 
+export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
+
 // Config
-export const SETTINGS: settings.base = {
-  day: { 
-    startHours: 8,
-    startMinutes: 0
-  }
+export const SETTINGS: app.settings  = {
+  user: NEW_USER,
+  yearHasData: YEAR_HAS_DATA(),
+  currentYearOfData: WEEKS_BY_YEAR[2022]
 };
 
 export const zoomLevel = 3.50;

@@ -6,3 +6,7 @@ export const getUser$ = createSelector(
     selectAppState,
     (state: appState) => state.user
 );
+export const getSettings$ = createSelector(
+    selectAppState,
+    (state: appState) => state.settings
+);
