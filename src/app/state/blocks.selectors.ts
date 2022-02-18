@@ -1,11 +1,10 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { blocksState } from './blocks.reducer';
 import * as blocks from 'src/app/models/blocks.model';
  
-export const selectBlocksState = createFeatureSelector<blocksState>('blocks');
+export const selectBlocksState = createFeatureSelector<blocks.blocksState>('blocks');
 export const getWeeksByYear$ = createSelector(
     selectBlocksState,
-    (state: blocksState) => state.weeksByYear
+    (state: blocks.blocksState) => state.weeksByYear
 );
 
 export const getWeeksForYear$ = (year: number) =>
@@ -15,10 +14,10 @@ export const getWeeksForYear$ = (year: number) =>
 
 export const getIsLoading$ = createSelector(
     selectBlocksState,
-    (state: blocksState) => state.isLoading
+    (state: blocks.blocksState) => state.isLoading
 );
 
 export const getIsEditing$ = createSelector(
     selectBlocksState,
-    (state: blocksState) => state.isEditing
+    (state: blocks.blocksState) => state.isEditing
 );

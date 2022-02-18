@@ -5,44 +5,6 @@ import * as app from 'src/app/models/app.model';
 import * as blocks from "../models/blocks.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
-export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
-  const collection = `${year}_weeks`;
-  const logDescriptor = `Firestore pinged for ${collection}`;
-  return (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<blocks.week[]>)
-  .pipe(
-      tap((val) => debug ? console.log(`${logDescriptor} val: `, val) : null),
-      map(blocks => blocks.map(block => {
-        return {
-          ...block,
-          date: block.date.toDate(),
-          isInFs: true
-        }
-      })));
-}
-
-export function getData$(user: string, fs: AngularFirestore, debug?: boolean): Observable<blocks.weeksByYear> {
-  const year = 2022;
-  const collection = `${user}_${year}_weeks`;
-  const logDescriptor = `Firestore pinged for ${collection}`;
-  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>);
-    // .pipe(
-    //   take(1),
-    //   map(val => {
-    //     if (!val || val.length <= 0) {
-    //       const newSettings = {
-    //         ...DEFAULTS.SETTINGS,
-    //         user
-    //       }
-    //       fs.collection(collection).add(newSettings);
-    //       debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
-    //       return newSettings;
-    //     } else {
-    //       return val[0]; // first entry is our settings.
-    //     }
-    //   }));
-  (obs$).subscribe(val => console.log(logDescriptor, val));
-  return of(DEFAULTS.WEEKS_BY_YEAR);
-}
 
 export function getUser$(): Observable<string> {
   const DEFAULT_USER$ = of('mannanj');
@@ -71,6 +33,45 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
         }
       }));
   return obs$;
+}
+
+export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
+  const collection = `${year}_weeks`;
+  const logDescriptor = `Firestore pinged for ${collection}`;
+  return (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<blocks.week[]>)
+  .pipe(
+      tap((val) => debug ? console.log(`${logDescriptor} val: `, val) : null),
+      map(blocks => blocks.map(block => {
+        return {
+          ...block,
+          date: block.date.toDate(),
+          isInFs: true
+        }
+      })));
+}
+
+export function getYearWeekData$(user: string, settings: app.settings, fs: AngularFirestore, debug?: boolean): Observable<blocks.weeksByYear> {
+  const year = 2022;
+  const collection = `${user}_${year}_weeks`;
+  const logDescriptor = `Firestore pinged for ${collection}`;
+  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>);
+    // .pipe(
+    //   take(1),
+    //   map(val => {
+    //     if (!val || val.length <= 0) {
+    //       const newSettings = {
+    //         ...DEFAULTS.SETTINGS,
+    //         user
+    //       }
+    //       fs.collection(collection).add(newSettings);
+    //       debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
+    //       return newSettings;
+    //     } else {
+    //       return val[0]; // first entry is our settings.
+    //     }
+    //   }));
+  (obs$).subscribe(val => console.log(logDescriptor, val));
+  return of(DEFAULTS.WEEKS_BY_YEAR);
 }
 
 export function setZoom(user: string, zoom: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {

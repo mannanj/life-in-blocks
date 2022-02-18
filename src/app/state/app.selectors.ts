@@ -1,19 +1,18 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { appState } from './app.reducer';
 import * as app from 'src/app/models/app.model';
  
-export const selectAppState = createFeatureSelector<appState>('app');
+export const selectAppState = createFeatureSelector<app.appState>('app');
 export const getIsStarting$ = createSelector(
     selectAppState,
-    (state: appState) => state.isStarting
+    (state: app.appState) => state.isStarting
 );
 export const getUser$ = createSelector(
     selectAppState,
-    (state: appState) => state.user
+    (state: app.appState) => state.user
 );
 export const getSettings$ = createSelector(
     selectAppState,
-    (state: appState) => state.settings
+    (state: app.appState) => state.settings
 );
 
 export const getZoom$ = createSelector(

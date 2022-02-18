@@ -1,17 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as blocks from '../models/blocks.model';
 import * as blockActions from './blocks.actions';
-import * as dth from 'src/app/helpers/datetime.helpers';
 import * as DEFAULTS from './DEFAULTS';
-import { compareAsc, format } from 'date-fns';
 
-export interface blocksState {
-  weeksByYear: blocks.weeksByYear;
-  isLoading: boolean;
-  isEditing: boolean;
-}
-
-export const initialState: blocksState = getDefault();
+export const initialState: blocks.blocksState = getDefault();
  
 export const blocksReducer = createReducer(
   initialState,

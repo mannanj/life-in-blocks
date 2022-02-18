@@ -11,7 +11,7 @@ export const NO_SETTINGS: app.settings  = {
   zoom: 3.50,
   yearHasData: [] as number[],
 };
-export const APP_IS_STARTING = true;
+export const APP_IS_STARTING = false;
 export const BLOCKS_LOADING = false;
 export const BLOCKS_EDITING = false;
 

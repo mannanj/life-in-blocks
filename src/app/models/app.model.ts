@@ -1,4 +1,9 @@
-import * as blocks from 'src/app/models/blocks.model';
+export interface appState {
+    isStarting: boolean;
+    user: string;
+    settings: settings;
+}
+
 export interface settings {
     id: string;
     user: string;

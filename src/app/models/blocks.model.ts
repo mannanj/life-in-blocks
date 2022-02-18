@@ -1,3 +1,8 @@
+export interface blocksState {
+    weeksByYear: weeksByYear;
+    isLoading: boolean;
+    isEditing: boolean;
+}
 export interface base {
     id: string;
     user: string;

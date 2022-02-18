@@ -2,13 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import * as appActions from './app.actions';
 import * as app from 'src/app/models/app.model';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
-export interface appState {
-  isStarting: boolean;
-  user: string;
-  settings: app.settings;
-}
 
-export const initialState: appState = getDefault();
+export const initialState: app.appState = getDefault();
  
 export const appReducer = createReducer(
   initialState,
