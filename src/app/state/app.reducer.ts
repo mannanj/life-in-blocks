@@ -30,15 +30,12 @@ export const appReducer = createReducer(
         settings
       }
   }),
-  on(appActions.setZoomLevel, (state, { zoomLevel }) => {
+  on(appActions.setZoom, (state, { zoom }) => {
     return {
       ...state,
       settings: {
         ...state.settings,
-        zoom: {
-          ...state.settings.zoom,
-          zoomLevel
-        }
+        zoom
       }
     }
   }),

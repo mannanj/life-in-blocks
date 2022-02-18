@@ -8,17 +8,12 @@ export const NO_USER = 'NO_USER';
 export const NO_SETTINGS: app.settings  = {
   id: '',
   user: NO_USER,
-  yearHasData: {} as {[key: number]: boolean},
-  currentYearOfData: [] as blocks.week[],
-  zoom: { zoomLevel: 3.50 },
+  zoom: 3.50,
+  yearHasData: [] as number[],
 };
 export const APP_IS_STARTING = true;
 export const BLOCKS_LOADING = false;
 export const BLOCKS_EDITING = false;
-
-export function YEAR_HAS_DATA(): {[key: number]: boolean} {
-  return {2022: true};
-}
 
 // Blocks data
 export function WEEKS(year: number): blocks.week[] {
@@ -71,11 +66,3 @@ export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
 }
 
 export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
-
-export const SETTINGS: app.settings  = {
-  id: '',
-  user: NO_USER,
-  yearHasData: YEAR_HAS_DATA(),
-  currentYearOfData: WEEKS_BY_YEAR[2022],
-  zoom: { zoomLevel: 3.50 },
-};

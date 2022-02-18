@@ -23,7 +23,7 @@
 <div id="blocks" *ngIf="getObjectKeys(weeksByYear)" [ngClass]="{'enabled': !isLoading,'disabled': isLoading}">
     <!-- <app-year-row
         *ngFor="let year of years"
-        [zoomLevel]="zoomLevel"
+        [zoom]="zoom"
         [size]="size"
         [_year]="year"
         [thisYear]="thisYear"
@@ -36,7 +36,7 @@
         <app-block
             *ngFor="let week of weeksByYear[strToNum(year)]"
             [size]="size"
-            [zoomLevel]="zoomLevel"
+            [zoom]="zoom"
             [year]="strToNum(year)"
             [week]="week"
             [isEditing]="isEditing">
@@ -54,7 +54,7 @@
     </div>
 </div>
 <div id="chart-controls">
-    <div id="size-picker" *ngIf="zoomLevel" [ngClass]="{'disabled': isLoading}">
+    <div id="size-picker" *ngIf="zoom" [ngClass]="{'disabled': isLoading}">
         <div *ngIf="!isLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
         <div *ngIf="isLoading" class="label-slider">Size</div>
         <summbit-discrete-slider
@@ -62,7 +62,7 @@
             class="slider"
             (change)="changeZoom($event)"
             (input)="setSizeText($event)"
-            [value]="floorVal(zoomLevel)"
+            [value]="floorVal(zoom)"
             min="0"
             max="7"
             orientation="top-to-bottom">
@@ -72,7 +72,7 @@
 <div *ngIf="isEditing" id="chart-action-bar">
     <div class="control"
         (click)="cancelEdits()"
-        [ngClass]="{'enabled': !(zoomLevel <= 0.5 || isLoading), 'disabled': zoomLevel <= 0.5 || isLoading}">
+        [ngClass]="{'enabled': !(zoom <= 0.5 || isLoading), 'disabled': zoom <= 0.5 || isLoading}">
         <svg width="17" height="17" style="color: red;">
             <image attr.xlink:href="{{ 'assets/icons/danger-red.svg' }}" width="17" height="17"/>
         </svg>

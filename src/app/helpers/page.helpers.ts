@@ -14,7 +14,7 @@ export function scrollToBlock(id: string, scrollId: string, offset: {x: number, 
     }
   }
 
-// compute block size based on zoomLevel
+// compute block size based on zoom
 const base = 30;
 export function getBlocksize(zoom: number): number {
   switch(zoom) { 

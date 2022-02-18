@@ -18,7 +18,7 @@ export const setSettings = createAction(
 
 
 // Zoom
-export const setZoomLevel = createAction(
-  '[App] Set Zoom Level',
-  props<{ zoomLevel: number }>()
+export const setZoom = createAction(
+  '[App] Set Zoom',
+  props<{ zoom: number }>()
 )

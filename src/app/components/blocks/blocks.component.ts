@@ -30,7 +30,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   years = dth.getUserYears();
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
-  zoomLevel!:number;
+  zoom!:number;
   settings!:app.settings;
   // @TODO: refactor below into one variable.
   size!:string;
@@ -93,19 +93,19 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(settings => this.settings = settings);
     //zoom
-    this.store.select(appSelectors.getZoomLevel$)
+    this.store.select(appSelectors.getZoom$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(zoomLevel => {
+      .subscribe(zoom => {
         // @TODO: need a better way to detect this.
-        if (this.zoomLevel) {
+        if (this.zoom) {
           setTimeout(() =>{
             this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
-            console.log('blocks zoomlevel loading delay');
+            console.log('@TODO: blocks zoom 1s loading delay');
           }, 1000);
         }
-        this.zoomLevel = zoomLevel;
-        this.size = pah.getBlocksize(zoomLevel) + 'px';
-        this.sizeHr = pah.getSizeHr(this.zoomLevel);
+        this.zoom = zoom;
+        this.size = pah.getBlocksize(zoom) + 'px';
+        this.sizeHr = pah.getSizeHr(this.zoom);
     });
     // week data
     this.store.select(blocksSelectors.getWeeksByYear$)
@@ -146,18 +146,18 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   changeZoom(event: any) {
-    const zoomLevel = event.detail.value += 0.5;
+    const zoom = event.detail.value += 0.5;
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(appActions.setZoomLevel({ zoomLevel }));
+    this.store.dispatch(appActions.setZoom({ zoom }));
     // Update zoom in firestore setting too.
     // @TODO: Move to effect.
-    fsh.setZoom(this.user, zoomLevel, this.settings, this.firestore, true);
+    fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
     this.sizeHrTemp = '';
   }
 
   setSizeText(event: any) {
-    const zoomLevel = event.detail.value += 0.5;
-    this.sizeHrTemp = pah.getSizeHr(zoomLevel);
+    const zoom = event.detail.value += 0.5;
+    this.sizeHrTemp = pah.getSizeHr(zoom);
   }
 
   floorVal(zoom: number) {

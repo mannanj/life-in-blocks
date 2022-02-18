@@ -13,10 +13,10 @@
     <div *ngIf="!week?.isNow" class="spacer"></div>
     <!-- Manually hacked/moved above into the progress-bar's space. -->
     <div class="title"
-        [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'title-z2' : zoomLevel >= 1.50, 'title-z3' : zoomLevel >= 3.00}">
+        [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'title-z2' : zoom >= 1.50, 'title-z3' : zoom >= 3.00}">
         <div></div>
         <div>
-            {{ (zoomLevel >= 1.50 && week?.date) ? (week.date | date:'MMM  d') : '' }}
+            {{ (zoom >= 1.50 && week?.date) ? (week.date | date:'MMM  d') : '' }}
         </div>
         <div>
             <svg *ngIf="week?.isNow" height="10px" width="10px" version="1.1" viewBox="0 0 55.867 55.867">
@@ -29,15 +29,15 @@
         </div>
     </div>
     <!-- @TODO: replace with ng-content/ng-template style thing. -->
-    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel <= 5.50, 'body-z3' : zoomLevel === 6.50}">
+    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom === 6.50}">
         <!-- @TODO: Scrolling right-to-left effect, couldn't quite crack it 2/10/22. -->
         <div *ngFor="let entry of week.entries" class="entry trim">
             <!-- If Not Hovered or Editing -->
-            <span *ngIf="!entry?.isEditing" (click)="setIsEditing(entry)" class="value trim" [ngClass]="{'w90': zoomLevel >= 4.50}">{{ entry.text }}</span>
-            <span *ngIf="!entry?.isEditing && zoomLevel >= 4.50" class="date trim">{{ entry.edited | date:'M/d'}}</span>
+            <span *ngIf="!entry?.isEditing" (click)="setIsEditing(entry)" class="value trim" [ngClass]="{'w90': zoom >= 4.50}">{{ entry.text }}</span>
+            <span *ngIf="!entry?.isEditing && zoom >= 4.50" class="date trim">{{ entry.edited | date:'M/d'}}</span>
             <!-- If Editing -->
             <div *ngIf="entry?.isEditing" class="editing">
-                <input type="text" [(ngModel)]="entry.text" (keydown)="keyDown(entry, $event)" [ngClass]="{'w80': zoomLevel >= 4.50}">
+                <input type="text" [(ngModel)]="entry.text" (keydown)="keyDown(entry, $event)" [ngClass]="{'w80': zoom >= 4.50}">
                 <span class="button" (click)="saveChanges(week, entry)">
                     <svg width="17" height="17">
                         <image attr.xlink:href="{{ 'assets/icons/check.svg' }}" width="17" height="17"/>
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoomLevel < 2.50, 'body-z2' : zoomLevel <= 5.50, 'body-z3' : zoomLevel >= 6.50}">
+    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom >= 6.50}">
         <div class="entry">
             <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.isHovered}">
                 <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>

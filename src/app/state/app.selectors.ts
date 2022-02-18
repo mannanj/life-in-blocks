@@ -16,7 +16,7 @@ export const getSettings$ = createSelector(
     (state: appState) => state.settings
 );
 
-export const getZoomLevel$ = createSelector(
+export const getZoom$ = createSelector(
     getSettings$,
-    (settings: app.settings) => settings.zoom.zoomLevel
+    (settings: app.settings) => settings.zoom
 );

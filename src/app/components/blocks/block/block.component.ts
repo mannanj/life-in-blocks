@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 })
 export class BlockComponent implements OnInit, AfterViewInit {
   @Input() size!: string; // in px
-  @Input() zoomLevel = 1.0;
+  @Input() zoom = 1.0;
   @Input() year!: number;
   @Input() week!: blocks.week;
   hasChanges = false;

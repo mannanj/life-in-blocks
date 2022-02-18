@@ -49,6 +49,9 @@ export class AppComponent {
           this.store.dispatch(blockActions.setAllWeeksByYear({ weeksByYear }));
           this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
           this.store.dispatch(appActions.setIsStarting({ isStarting: false }));
+          // test FS
+          // const weeks = weeksByYear[2022];
+          // fsh.createYearWeeks$(2022, weeks, userResp, this.firestore, true).subscribe();
         })
       })
     }
