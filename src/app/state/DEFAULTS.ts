@@ -5,12 +5,14 @@ import * as blocks from 'src/app/models/blocks.model';
 import * as cry from '../helpers/cryptography.helpers';
 import * as dth from '../helpers/datetime.helpers';
 
-// App data
+export const ZOOM_LEVEL = 3.50;
+export const isLoading = true;
+export const isEditing = false;
 export const NEW_USER = 'NEW_USER';
+
 export function YEAR_HAS_DATA(): {[key: number]: boolean} {
   return {2022: true};
 }
-
 
 // Blocks data
 export function WEEKS(year: number): blocks.week[] {
@@ -64,13 +66,11 @@ export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
 
 export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
 
-// Config
+// Settings
 export const SETTINGS: app.settings  = {
+  id: '',
   user: NEW_USER,
   yearHasData: YEAR_HAS_DATA(),
-  currentYearOfData: WEEKS_BY_YEAR[2022]
+  currentYearOfData: WEEKS_BY_YEAR[2022],
+  zoom: { zoomLevel: ZOOM_LEVEL },
 };
-
-export const zoomLevel = 3.50;
-export const isLoading = true;
-export const isEditing = false;

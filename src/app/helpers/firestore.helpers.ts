@@ -56,16 +56,27 @@ export function getUser$(): Observable<string> {
 export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
   const collection = `${user}_settings`;
   const logDescriptor = `Firestore pinged for ${collection}`;
-  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>).pipe(take(1));
-  obs$.subscribe(val => {
-    console.log(logDescriptor, val);
-    if (!!val || !(Object.keys(val).length > 0)) {
-      const newSettings = {
-        ...DEFAULTS.SETTINGS,
-        user
-      }
-      fs.collection(collection).add(newSettings);
-    }
-  });
-  return of(DEFAULTS.SETTINGS);
+  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>)
+    .pipe(
+      take(1),
+      map(val => {
+        if (!val || val.length <= 0) {
+          const newSettings = {
+            ...DEFAULTS.SETTINGS,
+            user
+          }
+          fs.collection(collection).add(newSettings);
+          debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
+          return newSettings;
+        } else {
+          return val[0]; // first entry is our settings.
+        }
+      }));
+  return obs$;
+}
+
+export function setZoom(user: string, zoomLevel: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
+  const collection = `${user}_settings`;
+  const logDescriptor = `Updating zoom setting for: ${collection}`;
+  fs.collection(collection).doc(settings.id).update({...settings});
 }

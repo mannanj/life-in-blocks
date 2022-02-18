@@ -13,11 +13,6 @@ export const getWeeksForYear$ = (year: number) =>
         return weeksByYear[year];
 });
 
-export const getZoomLevel$ = createSelector(
-    selectBlocksState,
-    (state: blocksState) => state.zoom.zoomLevel
-);
-
 export const getIsLoading$ = createSelector(
     selectBlocksState,
     (state: blocksState) => state.isLoading

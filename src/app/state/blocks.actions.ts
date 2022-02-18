@@ -11,11 +11,6 @@ export const setWeeksForYear = createAction(
   props<{ blocks: blocks.week[], year: number }>()
 );
 
-// Zoom
-export const setZoomLevel = createAction(
-  '[Blocks] Set Zoom Level',
-  props<{ zoomLevel: number }>()
-)
 
 // Others
 export const setIsLoading = createAction(

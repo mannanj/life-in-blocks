@@ -23,6 +23,18 @@ export const appReducer = createReducer(
         settings
       }
   }),
+  on(appActions.setZoomLevel, (state, { zoomLevel }) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        zoom: {
+          ...state.settings.zoom,
+          zoomLevel
+        }
+      }
+    }
+  }),
 );
 
 function getDefault() {

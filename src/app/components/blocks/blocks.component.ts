@@ -1,19 +1,24 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { filter, Subject, takeUntil, tap } from 'rxjs';
+import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
-import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as pah from 'src/app/helpers/page.helpers';
 import * as dth from 'src/app/helpers/datetime.helpers';
+import * as fsh from 'src/app/helpers/firestore.helpers';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
 import { Store } from '@ngrx/store';
+import * as appSelectors from 'src/app/state/app.selectors';
+import * as blocksSelectors from 'src/app/state/blocks.selectors';
+import * as appActions from 'src/app/state/app.actions';
 import * as blockActions from 'src/app/state/blocks.actions';
 
 // 3rd Party Libs
 import 'src/app/components/custom/discrete-slider';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-blocks',
@@ -21,10 +26,12 @@ import 'src/app/components/custom/discrete-slider';
   styleUrls: ['./blocks.component.scss']
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
+  user = '';
   years = dth.getUserYears();
   weeksByYear = [] as blocks.weeksByYear;
   activeBlockId!:string;
   zoomLevel!:number;
+  settings!:app.settings;
   // @TODO: refactor below into one variable.
   size!:string;
   sizeHr!:string;
@@ -39,7 +46,8 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   isEditing = false;
 
   constructor(
-    private store: Store
+    private store: Store,
+    private firestore: AngularFirestore
   ) { }
 
   ngOnInit(): void {
@@ -76,8 +84,16 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   _getData() {
+    // user
+    this.store.select(appSelectors.getUser$)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(user => this.user = user);
+    // settings
+    this.store.select(appSelectors.getSettings$)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(settings => this.settings = settings);
     //zoom
-    this.store.select(blocksSelectors.getZoomLevel$)
+    this.store.select(appSelectors.getZoomLevel$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoomLevel => {
         // @TODO: need a better way to detect this.
@@ -132,7 +148,10 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   changeZoom(event: any) {
     const zoomLevel = event.detail.value += 0.5;
     this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
-    this.store.dispatch(blockActions.setZoomLevel({ zoomLevel }));
+    this.store.dispatch(appActions.setZoomLevel({ zoomLevel }));
+    // Update zoom in firestore setting too.
+    // @TODO: Move to effect.
+    fsh.setZoom(this.user, zoomLevel, this.settings, this.firestore, true);
     this.sizeHrTemp = '';
   }
 

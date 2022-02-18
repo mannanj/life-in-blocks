@@ -1,7 +1,7 @@
 // @TODO: Handle zooming events here.
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { combineLatest, concat, concatMap, delay, Observable, of } from 'rxjs';
+import { combineLatest, concat, concatMap, delay, filter, Observable, of, take, tap } from 'rxjs';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
@@ -34,17 +34,17 @@ export class AppComponent {
     initializeApp() {
       // First get user, then their settings.
       // Note: In settings, we store first year of data.
-      let userResp: string;
-      fsh.getUser$().subscribe(user => this.store.dispatch(appActions.setUser({user})));
-      this.store.select(appSelectors.getUser$).subscribe(user => {
+      let userResp = '';
+      fsh.getUser$().pipe(take(1)).subscribe(user => this.store.dispatch(appActions.setUser({user})));
+      this.store.select(appSelectors.getUser$).pipe(take(1), tap(user => console.log('selector user', user))).subscribe(user => {
         userResp = user;
-        fsh.getSettings$(user, this.firestore, true).subscribe(settings => {
+        fsh.getSettings$(user, this.firestore, true).pipe(take(1)).subscribe(settings => {
           this.store.dispatch(appActions.setSettings({settings}));
         });
       });
       // After we have a user and settings, load their data.
-      this.store.select(appSelectors.getSettings$).subscribe(settings => {
-        fsh.getData$(userResp, this.firestore, true).subscribe(weeksByYear => {
+      this.store.select(appSelectors.getSettings$).pipe(filter(settings => settings.user === userResp), take(1)).subscribe(settings => {
+        fsh.getData$(userResp, this.firestore, true).pipe(take(1)).subscribe(weeksByYear => {
           this.store.dispatch(blockActions.setAllWeeksByYear({ weeksByYear }));
           this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
         })

@@ -26,7 +26,3 @@ export interface week extends base {
 export interface weeksByYear {
     [key: number]: week[];
 }
-
-export interface zoom {
-    zoomLevel: number;
-}
