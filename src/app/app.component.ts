@@ -38,6 +38,7 @@ export class AppComponent {
       fsh.getUser$().pipe(take(1)).subscribe(user => this.store.dispatch(appActions.setUser({user})));
       this.store.select(appSelectors.getUser$).pipe(take(1), tap(user => console.log('selector user', user))).subscribe(user => {
         userResp = user;
+        this.store.dispatch(blockActions.setIsLoading({ isLoading: true}));
         fsh.getSettings$(user, this.firestore, true).pipe(take(1)).subscribe(settings => {
           this.store.dispatch(appActions.setSettings({settings}));
         });
@@ -47,6 +48,7 @@ export class AppComponent {
         fsh.getData$(userResp, this.firestore, true).pipe(take(1)).subscribe(weeksByYear => {
           this.store.dispatch(blockActions.setAllWeeksByYear({ weeksByYear }));
           this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
+          this.store.dispatch(appActions.setIsStarting({ isStarting: false }));
         })
       })
     }

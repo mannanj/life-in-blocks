@@ -45,7 +45,7 @@ export const blocksReducer = createReducer(
 function getDefault() {
   return  {
     weeksByYear: {} as blocks.weeksByYear,
-    isLoading: DEFAULTS.isLoading,
-    isEditing: DEFAULTS.isEditing,
+    isLoading: DEFAULTS.BLOCKS_LOADING,
+    isEditing: DEFAULTS.BLOCKS_EDITING,
   };
 }

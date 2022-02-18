@@ -56,7 +56,7 @@
 <div id="chart-controls">
     <div id="size-picker" *ngIf="zoomLevel" [ngClass]="{'disabled': isLoading}">
         <div *ngIf="!isLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
-        <div *ngIf="isLoading" class="label-slider">---</div>
+        <div *ngIf="isLoading" class="label-slider">Size</div>
         <summbit-discrete-slider
             id="summbit-discrete-slider-7"
             class="slider"

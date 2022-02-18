@@ -3,6 +3,7 @@ import * as appActions from './app.actions';
 import * as app from 'src/app/models/app.model';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 export interface appState {
+  isStarting: boolean;
   user: string;
   settings: app.settings;
 }
@@ -11,6 +12,12 @@ export const initialState: appState = getDefault();
  
 export const appReducer = createReducer(
   initialState,
+  on(appActions.setIsStarting, (state, { isStarting }) => {
+      return {
+        ...state,
+        isStarting
+      }
+  }),
   on(appActions.setUser, (state, { user }) => {
       return {
         ...state,
@@ -39,7 +46,8 @@ export const appReducer = createReducer(
 
 function getDefault() {
   return  {
-    user: DEFAULTS.NEW_USER,
-    settings: DEFAULTS.SETTINGS
+    isStarting: DEFAULTS.APP_IS_STARTING,
+    user: DEFAULTS.NO_USER,
+    settings: DEFAULTS.NO_SETTINGS
   };
 }
