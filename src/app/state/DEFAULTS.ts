@@ -67,3 +67,13 @@ export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
 }
 
 export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
+
+export function NEW_SETTINGS(user: string): app.settings {
+  return {
+    id: cry.genUid(),
+    user,
+    dob: new Date(),
+    zoom: 3.5,
+    yearHasData: [2022]
+  };
+}
