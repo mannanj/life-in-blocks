@@ -1,5 +1,6 @@
 <div id="page">
   <span id="header" [ngClass]="{'enabled': !(isLoading$ | async),'disabled': isLoading$ | async}">Life In Blocks</span>
+  <app-header-dropdown *ngIf="!(isLoading$ | async)" [user]="user"></app-header-dropdown>
   <div id="main">
     <router-outlet></router-outlet>
   </div>

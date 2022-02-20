@@ -1,0 +1,25 @@
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"
+/>
+<div id="dropdown">
+    <span (click)="setKeepOpen()" (mouseenter)="setHovered(true)" (mouseleave)="setHovered(false)">
+        <svg width="22" height="22" class="icon" [ngClass]="{'selected': hovered || keepOpen}">
+            <image attr.xlink:href="{{ 'assets/icons/boy.svg' }}" width="22" height="22"/>
+        </svg>
+    </span>
+    <div id="content" (mouseenter)="setHovered(true)" (mouseleave)="setHovered(false)" [ngStyle]="{display: !hovered && !keepOpen ? 'none' : 'inline' }">
+        <div class="option" (click)="openCalendar()" [ngClass]="{'disabled': !dob}">
+            DOB
+            <svg width="17" height="17">
+                <image attr.xlink:href="{{ 'assets/icons/calendar-dates.svg' }}" width="17" height="17"/>
+            </svg>
+        </div>
+    </div>
+</div>
+<div id="calendar-container" [ngStyle]="{left: getCalendarLeft(), top: getCalendarTop()}" [ngClass]="{'hidden': !calendarOpen}">
+    <div id="calendar"></div>
+    <!-- <div id="controls">
+        <span class="control" (click)="closeCalendar()" [ngClass]="{'disabled': !dob}">x</span>
+    </div> -->
+</div>

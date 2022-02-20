@@ -25,6 +25,15 @@ export const appReducer = createReducer(
         settings
       }
   }),
+  on(appActions.setDob, (state, { dob }) => {
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          dob
+        }
+      }
+  }),
   on(appActions.setZoom, (state, { zoom }) => {
     return {
       ...state,
@@ -38,8 +47,8 @@ export const appReducer = createReducer(
 
 function getDefault() {
   return  {
-    isStarting: DEFAULTS.APP_IS_STARTING,
     user: DEFAULTS.NO_USER,
-    settings: DEFAULTS.NO_SETTINGS
+    settings: DEFAULTS.NO_SETTINGS,
+    isStarting: DEFAULTS.APP_IS_STARTING,
   };
 }

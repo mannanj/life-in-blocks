@@ -53,10 +53,12 @@
         <div class='block b4'></div>
     </div>
 </div>
-<div id="chart-controls">
+<div id="chart-controls" [ngClass]="{'border-grayed': isLoading}">
     <div id="size-picker" *ngIf="zoom" [ngClass]="{'disabled': isLoading}">
         <div *ngIf="!isLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
-        <div *ngIf="isLoading" class="label-slider">Size</div>
+        <div *ngIf="isLoading" class="label-slider">
+            <div class="spin"></div>
+        </div>
         <summbit-discrete-slider
             id="summbit-discrete-slider-7"
             class="slider"
@@ -74,7 +76,7 @@
         (click)="cancelEdits()"
         [ngClass]="{'enabled': !(zoom <= 0.5 || isLoading), 'disabled': zoom <= 0.5 || isLoading}">
         <svg width="17" height="17" style="color: red;">
-            <image attr.xlink:href="{{ 'assets/icons/danger-red.svg' }}" width="17" height="17"/>
+            <image attr.xlink:href="{{ 'assets/icons/close-o.svg' }}" width="17" height="17"/>
         </svg>
     </div>
 </div>

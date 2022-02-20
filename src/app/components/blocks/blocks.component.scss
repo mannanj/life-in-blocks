@@ -148,6 +148,9 @@
     }
 }
 
+.loading {
+    opacity: 0.4 !important;
+}
 
 #chart-action-bar {
     display: flex;
@@ -188,6 +191,7 @@
 .disabled {
     @include disabled;
 }
+.border-grayed { border: 1px solid lightgray !important };
 
 // Loading
 $orange: #fc7753;
@@ -253,5 +257,34 @@ $white: #f3f5f8;
     --summbit-discrete-slider-thumb-color: #03c9a9;
     --summbit-discrete-slider-thumb-diameter: 10px;
     --summbit-discrete-slider-progress-color: #03c9a9;
-  }
+}
   
+// spinner
+.spin {
+    border: 2px solid #0042A4;
+    border-radius: 50%;
+    border-top: 2px solid #3775CF;
+    border-right: 2px solid #619BEE;
+    border-bottom: 2px solid #96BFF9;
+    border-left: 2px solid #C9E0FF;
+    width: 10px;
+    height: 10px;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+  }
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

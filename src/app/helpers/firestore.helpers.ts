@@ -22,6 +22,7 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
           const newSettings: app.settings = {
             id: cry.genUid(),
             user,
+            dob: new Date(),
             zoom: 3.5,
             yearHasData: [2022]
           }
@@ -77,7 +78,19 @@ export function getYearWeekData$(user: string, settings: app.settings, fs: Angul
 export function setZoom(user: string, zoom: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
   const collection = `${user}_settings`;
   const logDescriptor = `Updating zoom setting for: ${collection}`;
-  fs.collection(collection).doc(settings.id).update({...settings});
+  fs.collection(collection).doc(settings.id).update({
+    ...settings,
+    zoom
+  });
+}
+
+export function setDob(user: string, dob: Date, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
+  const collection = `${user}_settings`;
+  const logDescriptor = `Updating date setting for: ${collection}`;
+  fs.collection(collection).doc(settings.id).update({
+    ...settings,
+    dob
+  });
 }
 
 // We write out weeks for a year as a batch of documents to a collection.

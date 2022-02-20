@@ -11,6 +11,11 @@ export const setUser = createAction(
   props<{ user: string }>()
 );
 
+export const setDob = createAction(
+  '[App] Set Dob',
+  props<{ dob: Date }>()
+);
+
 export const setSettings = createAction(
   '[App] Set Settings',
   props<{ settings: app.settings }>()

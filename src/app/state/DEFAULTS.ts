@@ -8,6 +8,7 @@ export const NO_USER = 'NO_USER';
 export const NO_SETTINGS: app.settings  = {
   id: '',
   user: NO_USER,
+  dob: new Date(),
   zoom: 3.50,
   yearHasData: [] as number[],
 };

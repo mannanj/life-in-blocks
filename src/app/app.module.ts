@@ -26,13 +26,15 @@ import { BlocksEffects } from './state/blocks.effects';
 import { BlockComponent } from './components/blocks/block/block.component';
 import { appReducer } from './state/app.reducer';
 import { YearRowComponent } from './components/blocks/year-row/year-row.component';
+import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BlocksComponent,
     BlockComponent,
-    YearRowComponent
+    YearRowComponent,
+    HeaderDropdownComponent
   ],
   imports: [
     BrowserModule,

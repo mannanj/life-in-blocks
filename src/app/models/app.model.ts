@@ -1,12 +1,13 @@
 export interface appState {
-    isStarting: boolean;
     user: string;
     settings: settings;
+    isStarting: boolean;
 }
 
 export interface settings {
     id: string;
     user: string;
+    dob: Date;
     zoom: number;
     yearHasData: number[];
 }
