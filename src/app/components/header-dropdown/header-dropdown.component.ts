@@ -7,6 +7,7 @@ import * as appSelectors from 'src/app/state/app.selectors';
 import * as appActions from 'src/app/state/app.actions';
 import { Subject, take, takeUntil, tap } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { isEqual } from 'date-fns';
 
 @Component({
   selector: 'app-header-dropdown',
@@ -24,9 +25,11 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
     id: "#calendar",
     calendarSize: "small",
     dateChanged: (currentDate?: Date, filteredDateEvents?: any[]) => {
-      currentDate ? this.setDob(currentDate) : null;
+      currentDate && this.calendarSet ? this.setDob(currentDate) : null;
     }
   };
+  calendarSet!: boolean;
+  calendar: any;
   private _unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -36,7 +39,7 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
       this.store.select(appSelectors.getDob$)
-        .pipe(takeUntil(this._unsubscribe$), tap(dob => console.log('dob', dob)))
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe(dob => this.dob = dob);
   }
 
@@ -61,6 +64,7 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
   keyDown(event: any) {
     if (event.code === pah.KEYS['escape']) {
       this.closeMenu();
+      this.closeCalendar();
     }
   }
 
@@ -71,8 +75,9 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
 
   openCalendar(): void {
     this.calendarOpen = !this.calendarOpen;
-    console.log('opening calendar!', this.calendarOpen);
-    new Calendar(this.calendarOptions);
+    this.calendar = new Calendar(this.calendarOptions);
+    this.calendar.setDate(this.dob);
+    this.calendarSet = true;
     const calendarRef = document.getElementById('calendar');
     if (calendarRef && calendarRef.clientWidth && calendarRef.clientHeight) {
       this.calendarSize = {
@@ -80,7 +85,6 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
         height: calendarRef.clientHeight
       }
     }
-    console.log('size', this.calendarSize);
   }
 
   getCalendarLeft(): string {
@@ -93,14 +97,16 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
 
   closeCalendar(): void {
     this.calendarOpen = false;
+    this.calendarSet = false;
     this.closeMenu();
-    // @TODO: Save the changes.
   }
 
   setDob(dob: Date) {
-    this.store.dispatch(appActions.setDob({dob}));
-    this.store.select(appSelectors.getSettings$).pipe(take(1)).subscribe(settings => {
-      fsh.setDob(this.user, dob, settings, this.firestore, true);
-    })
+    if (!isEqual(dob, this.dob)) {
+      this.store.dispatch(appActions.setDob({dob}));
+      this.store.select(appSelectors.getSettings$).pipe(take(1)).subscribe(settings => {
+        fsh.setDob(this.user, dob, settings, this.firestore, true);
+      });
+    }
   }
 }

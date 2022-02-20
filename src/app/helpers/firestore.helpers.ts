@@ -19,21 +19,29 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
       take(1),
       map(val => {
         if (!val || val.length <= 0) {
-          const newSettings: app.settings = {
-            id: cry.genUid(),
-            user,
-            dob: new Date(),
-            zoom: 3.5,
-            yearHasData: [2022]
-          }
+          const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(user);
           fs.collection(collection).add(newSettings);
           debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
           return newSettings;
         } else {
-          return val[0]; // first entry is our settings.
+          return mapSettings(val, user);
         }
       }));
   return obs$;
+}
+
+function mapSettings(val: any, user: string): app.settings {
+  const settings = val[0];
+  const newSettings = DEFAULTS.NEW_SETTINGS(user);
+  // because we may have added new settings,
+  // we smartly use defaults here for ones not returned.
+  return {
+    id: settings?.id ? settings.id : newSettings.id,
+    user: settings?.user ? settings.user : newSettings.user,
+    dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
+    zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
+    yearHasData: settings?.yearHasData && settings.yearHasData.length > 0 ? settings.yearHasData : newSettings.yearHasData,
+  }
 }
 
 export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
@@ -91,6 +99,7 @@ export function setDob(user: string, dob: Date, settings: app.settings, fs: Angu
     ...settings,
     dob
   });
+  debug ? console.log(`${logDescriptor} to: ${dob}`) : null;
 }
 
 // We write out weeks for a year as a batch of documents to a collection.
