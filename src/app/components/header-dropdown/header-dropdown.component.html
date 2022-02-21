@@ -4,9 +4,7 @@
 />
 <div id="dropdown">
     <span (click)="setKeepOpen()" (mouseenter)="setHovered(true)" (mouseleave)="setHovered(false)">
-        <svg width="22" height="22" class="icon" [ngClass]="{'selected': hovered || keepOpen}">
-            <image attr.xlink:href="{{ 'assets/icons/boy.svg' }}" width="22" height="22"/>
-        </svg>
+        <img src="assets/icons/settings-icon.png" [ngClass]="{'selected': hovered || keepOpen, 'disabled': isLoading}">
     </span>
     <div id="content" (mouseenter)="setHovered(true)" (mouseleave)="setHovered(false)" [ngStyle]="{display: !hovered && !keepOpen ? 'none' : 'inline' }">
         <div class="option" (click)="openCalendar()" [ngClass]="{'disabled': !dob}">

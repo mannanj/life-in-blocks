@@ -1,18 +1,28 @@
 @import '~color-calendar/dist/css/theme-basic.css';
 
 #dropdown {
-    position: absolute;
-    display: inline;
-    right: 20px;
-    top: 28px;
+  position: absolute;
+  display: inline;
+  right: 20px;
+  top: 28px;
 
     .icon {
         cursor: pointer;
     }
 
+    img {
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+    }
+
     .selected {
         transform: scale(1.1) !important;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2) !important;
+    }
+
+    .disabled {
+      pointer-events: none;
+      opacity: 0.4;
     }
 
     #content {
@@ -24,7 +34,7 @@
         padding: 4px 5px;
         display: block;
         margin-left: -83px;
-        margin-top: 24px;
+        margin-top: 20px;
         cursor: pointer;
 
         .option {

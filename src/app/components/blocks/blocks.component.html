@@ -57,7 +57,9 @@
     <div id="size-picker" *ngIf="zoom" [ngClass]="{'disabled': isLoading}">
         <div *ngIf="!isLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
         <div *ngIf="isLoading" class="label-slider">
-            <div class="spin"></div>
+            <div class="dot1"> </div>
+            <div class="dot2"></div>
+            <div class="dot3"></div>
         </div>
         <summbit-discrete-slider
             id="summbit-discrete-slider-7"

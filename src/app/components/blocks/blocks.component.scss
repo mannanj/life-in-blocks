@@ -142,10 +142,17 @@
             margin-bottom: 5px;
             width: 25px;
             max-width: 25px;
+            height: 12px;
+            max-height: 12px;
             display: flex;
             justify-content: center;
+            align-items: center;
         }
     }
+}
+
+#chart-controls > * {
+    margin-bottom: 5px;
 }
 
 .loading {
@@ -213,8 +220,8 @@ $white: #f3f5f8;
         border: solid 1px white;
     }
 
-    $animation-speed: 0.4s;
-    $interval: 0.1;
+    $animation-speed: 0.6s;
+    $interval: 0.15;
     
     .b1 {
         background-color: $orange;
@@ -252,6 +259,7 @@ $white: #f3f5f8;
 
 // slider
 .slider {
+    cursor: pointer;
     --summbit-discrete-slider-track-color: lightgray;
     --summbit-discrete-slider-track-width: 3px;
     --summbit-discrete-slider-thumb-color: #03c9a9;
@@ -259,32 +267,36 @@ $white: #f3f5f8;
     --summbit-discrete-slider-progress-color: #03c9a9;
 }
   
-// spinner
-.spin {
-    border: 2px solid #0042A4;
+// loading
+.dot1, .dot2, .dot3 {
+    width: 1px;
+    height: 1px;
+    border:double;
+    border-color:black;
     border-radius: 50%;
-    border-top: 2px solid #3775CF;
-    border-right: 2px solid #619BEE;
-    border-bottom: 2px solid #96BFF9;
-    border-left: 2px solid #C9E0FF;
-    width: 10px;
-    height: 10px;
-    -webkit-animation: spin 1.5s linear infinite;
-    animation: spin 1.5s linear infinite;
   }
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+  
+  .dot1 {
+    animation: jump 1.6s -0.32s linear infinite;
+    background: #4B0082 !important;
+    margin-right: 2px;
   }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
+  .dot2 {
+      animation: jump 1.6s -0.16s linear infinite;
+      background: #B22222 !important;
+      margin-right: 2px;
+  }
+  .dot3 {
+      animation: jump 1.6s linear infinite;
+      background: #006400 !important;
+  }
+  
+  @keyframes jump {
+    0%, 80%, 100% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% { 
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
     }
   }
