@@ -6,7 +6,7 @@ import * as pah from 'src/app/helpers/page.helpers';
 import * as dth from 'src/app/helpers/datetime.helpers';
 import * as fsh from 'src/app/helpers/firestore.helpers';
 import { format } from 'date-fns';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, sortBy, values } from 'lodash';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
@@ -27,8 +27,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   user = '';
-  years = dth.getUserYears();
-  weeksByYear = [] as blocks.weeksByYear;
+  years = [] as blocks.years;
   activeBlockId!:string;
   zoom!:number;
   settings!:app.settings;
@@ -42,7 +41,8 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   // flags
   thisYear!: number;
   viewHasInit!:boolean;
-  isLoading = true;
+  appIsLoading!: boolean;
+  yearsLoading!: number[];
   isEditing = false;
 
   constructor(
@@ -67,20 +67,15 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     }
   }
 
-  initSlider() {
-    console.log('initializing slider');
-
-  }
-
   setActiveBlock() {
     const thisWeek = dth.getMondayForWeek(new Date());
     const year = parseInt(format(thisWeek, 'y'));
     this.thisYear = year;
-    this.weeksByYear[year].forEach(week => {
-      if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
-        this.activeBlockId = `${year}_block_${week.num}`;
-      }
-    })
+    // this.years[year].forEach(week => {
+    //   if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
+    //     this.activeBlockId = `${year}_block_${week.num}`;
+    //   }
+    // })
   }
 
   _getData() {
@@ -99,7 +94,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         // @TODO: need a better way to detect this.
         if (this.zoom) {
           setTimeout(() =>{
-            this.store.dispatch(blockActions.setIsLoading({ isLoading: false }));
+            this.store.dispatch(appActions.setIsLoading({ isLoading: false }));
             console.log('@TODO: blocks zoom 1s loading delay');
           }, 1000);
         }
@@ -108,21 +103,28 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         this.sizeHr = pah.getSizeHr(this.zoom);
     });
     // week data
-    this.store.select(blocksSelectors.getWeeksByYear$)
-      .pipe(takeUntil(this._unsubscribe$), filter(blocks => !!blocks && Object.keys(blocks).length > 0))
-      .subscribe(blocks => {
-        this.weeksByYear = cloneDeep(blocks);
-        this.setActiveBlock();
-        if (this.viewHasInit) {
-          pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
-        }
+    this.store.select(blocksSelectors.getYears)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(years => {
+        this.years = cloneDeep(years);
+        // this.setActiveBlock();
+        // if (this.viewHasInit) {
+        //   pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+        // }
     });
     // loading flag
-    this.store.select(blocksSelectors.getIsLoading$)
+    this.store.select(appSelectors.getIsLoading$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(isLoading => {
-        this.isLoading = isLoading;
+        this.appIsLoading = isLoading;
         pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+      });
+    // years loading flag
+    this.store.select(blocksSelectors.getYearsLoading$)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(yearsLoading => {
+        this.yearsLoading = yearsLoading;
+        // pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
       });
     // is editing flag
     this.store.select(blocksSelectors.getIsEditing$)
@@ -133,8 +135,17 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   }
 
-  getObjectKeys(obj: any): string[] {
+  hasValues(obj: any): string[] {
     return !!obj && Object.keys(obj).length > 0 ? Object.keys(obj) : [];
+  }
+
+  getWeeksForYear(yearNum: string) {
+    const weeksMap = this.years[parseInt(yearNum)] ? this.years[parseInt(yearNum)] : {};
+    let weeksArr = [] as blocks.week[];
+    if (Object.keys(weeksMap).length > 0) {
+      weeksArr = sortBy(values(weeksMap), ['num']);
+    }
+    return weeksArr;
   }
 
   strToNum(str: string) {
@@ -147,7 +158,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   changeZoom(event: any) {
     const zoom = event.detail.value += 0.5;
-    this.store.dispatch(blockActions.setIsLoading({ isLoading: true }));
+    this.store.dispatch(appActions.setIsLoading({ isLoading: true }));
     this.store.dispatch(appActions.setZoom({ zoom }));
     // Update zoom in firestore setting too.
     // @TODO: Move to effect.

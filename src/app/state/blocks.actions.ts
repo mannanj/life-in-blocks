@@ -2,22 +2,21 @@ import { createAction, props } from '@ngrx/store';
 import * as blocks from '../models/blocks.model';
 
 // Weeks
-export const setAllWeeksByYear = createAction(
-  '[Blocks] Set All Weeks By Year',
-  props<{ weeksByYear: blocks.weeksByYear }>()
+export const setYears = createAction(
+  '[Blocks] Set Years',
+  props<{ years: blocks.years }>()
 );
-export const setWeeksForYear = createAction(
-  '[Blocks] Set Weeks For Year',
-  props<{ blocks: blocks.week[], year: number }>()
+export const setYear = createAction(
+  '[Blocks] Set Year',
+  props<{ year: blocks.year, yearNum: number }>()
 );
-
+export const setYearLoading = createAction(
+  '[Blocks] Set Year Loading',
+  props<{ isLoading: boolean, yearNum: number }>()
+);
 
 // Others
-export const setIsLoading = createAction(
-  '[Blocks] Blocks Are Loading',
-  props<{ isLoading: boolean }>()
-)
 export const setIsEditing = createAction(
-  '[Blocks] Toggle Is Editing',
+  '[Blocks] Is Editing',
   props<{ isEditing: boolean }>()
 )

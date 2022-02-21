@@ -2,28 +2,33 @@ import { createAction, props } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
 
 export const setIsStarting = createAction(
-  '[App] Set Is Starting',
+  '[App] Is Starting',
   props<{ isStarting: boolean }>()
 );
 
+export const setIsLoading = createAction(
+  '[App] Is Loading',
+  props<{ isLoading: boolean }>()
+);
+
 export const setUser = createAction(
-  '[App] Set User',
+  '[App] User',
   props<{ user: string }>()
 );
 
 export const setDob = createAction(
-  '[App] Set Dob',
+  '[App] DOB',
   props<{ dob: Date }>()
 );
 
 export const setSettings = createAction(
-  '[App] Set Settings',
+  '[App] Settings',
   props<{ settings: app.settings }>()
 );
 
 
 // Zoom
 export const setZoom = createAction(
-  '[App] Set Zoom',
+  '[App] Zoom',
   props<{ zoom: number }>()
 )

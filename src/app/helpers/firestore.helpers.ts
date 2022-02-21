@@ -37,7 +37,8 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
 export function writeFirstBlock(user: string, year: number, fs: AngularFirestore, debug?: boolean) {
   const collection = `${user}_${year}_weeks`;
   const logDescriptor = `Writing first block for ${collection}`;
-  const firstBlock = DEFAULTS.getFirstBlock(user, year);
+  // const firstBlock = DEFAULTS.getFirstBlock(user, year);
+  const firstBlock = {};
   debug ? console.log(`${logDescriptor}: `, firstBlock) : null;
   fs.collection(collection).add(firstBlock);
 }
@@ -52,7 +53,7 @@ function mapSettings(val: any, user: string, year: number): app.settings {
     user: settings?.user ? settings.user : newSettings.user,
     dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
     zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
-    hasYearData: settings?.hasYearData && settings.hasYearData.length > 0 ? settings.hasYearData : newSettings.hasYearData,
+    hasEntriesForYears: settings?.hasEntriesForYears && settings.hasEntriesForYears.length > 0 ? settings.hasEntriesForYears : newSettings.hasEntriesForYears,
   }
 }
 
@@ -71,29 +72,29 @@ export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): 
       })));
 }
 
-export function getYearWeekData$(user: string, settings: app.settings, fs: AngularFirestore, debug?: boolean): Observable<blocks.weeksByYear> {
-  const year = 2022;
-  const collection = `${user}_${year}_weeks`;
-  const logDescriptor = `Firestore pinged for ${collection}`;
-  const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>);
-    // .pipe(
-    //   take(1),
-    //   map(val => {
-    //     if (!val || val.length <= 0) {
-    //       const newSettings = {
-    //         ...DEFAULTS.SETTINGS,
-    //         user
-    //       }
-    //       fs.collection(collection).add(newSettings);
-    //       debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
-    //       return newSettings;
-    //     } else {
-    //       return val[0]; // first entry is our settings.
-    //     }
-    //   }));
-  (obs$).subscribe(val => console.log(logDescriptor, val));
-  return of(DEFAULTS.WEEKS_BY_YEAR);
-}
+// export function getYearWeekData$(user: string, settings: app.settings, fs: AngularFirestore, debug?: boolean): Observable<blocks.years> {
+//   const year = 2022;
+//   const collection = `${user}_${year}_weeks`;
+//   const logDescriptor = `Firestore pinged for ${collection}`;
+//   const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>);
+//     // .pipe(
+//     //   take(1),
+//     //   map(val => {
+//     //     if (!val || val.length <= 0) {
+//     //       const newSettings = {
+//     //         ...DEFAULTS.SETTINGS,
+//     //         user
+//     //       }
+//     //       fs.collection(collection).add(newSettings);
+//     //       debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
+//     //       return newSettings;
+//     //     } else {
+//     //       return val[0]; // first entry is our settings.
+//     //     }
+//     //   }));
+//   (obs$).subscribe(val => console.log(logDescriptor, val));
+//   return of(DEFAULTS.WEEKS_BY_YEAR);
+// }
 
 export function setZoom(user: string, zoom: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
   const collection = `${user}_settings`;

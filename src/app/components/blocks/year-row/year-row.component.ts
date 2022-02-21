@@ -36,10 +36,10 @@ export class YearRowComponent implements OnInit, OnDestroy {
   }
 
   getWeekData() {
-    this.store.select(blocksSelectors.getWeeksForYear$(this.year))
+    this.store.select(blocksSelectors.getYear$(this.year))
       .pipe(takeUntil(this._unsubscribe$), filter(blocks => !!blocks && Object.keys(blocks).length > 0), delay(0))
       .subscribe(blocks => {
-        this.weeks = cloneDeep(blocks);
+        // this.weeks = cloneDeep(blocks);
     });
     
   }

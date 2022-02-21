@@ -6,6 +6,10 @@ export const getIsStarting$ = createSelector(
     selectAppState,
     (state: app.appState) => state.isStarting
 );
+export const getIsLoading$ = createSelector(
+    selectAppState,
+    (state: app.appState) => state.isLoading
+);
 export const getUser$ = createSelector(
     selectAppState,
     (state: app.appState) => state.user

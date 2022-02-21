@@ -1,7 +1,7 @@
 export interface blocksState {
-    weeksByYear: weeksByYear;
-    isLoading: boolean;
-    isEditing: boolean;
+    years: years;
+    yearsLoading: number[]; // track which years are still loading.
+    isEditing: boolean; // true when any block is being edited.
 }
 export interface base {
     id: string;
@@ -25,9 +25,15 @@ export interface week extends base {
     isNow?: boolean;
     isHovered?: boolean;
     isInPast?: boolean;
+    isLoading?: boolean; // true when the week is waiting on a db request.
+    isEditing?: boolean;
     progress?: number;
 }
 
-export interface weeksByYear {
-    [key: number]: week[];
+export interface year {
+    [num: number]: week; // the key is week num.
+}
+
+export interface years {
+    [key: number]: year;
 }

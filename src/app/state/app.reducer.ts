@@ -13,6 +13,12 @@ export const appReducer = createReducer(
         isStarting
       }
   }),
+  on(appActions.setIsLoading, (state, { isLoading }) => {
+      return {
+        ...state,
+        isLoading
+      }
+  }),
   on(appActions.setUser, (state, { user }) => {
       return {
         ...state,
@@ -50,5 +56,6 @@ function getDefault() {
     user: DEFAULTS.NO_USER,
     settings: DEFAULTS.NO_SETTINGS,
     isStarting: DEFAULTS.APP_IS_STARTING,
+    isLoading: DEFAULTS.APP_IS_LOADING,
   };
 }

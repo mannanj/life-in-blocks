@@ -1,7 +1,8 @@
 export interface appState {
     user: string;
     settings: settings;
-    isStarting: boolean;
+    isStarting: boolean; // true when user and settings are loading.
+    isLoading: boolean; // true when things are loading like the page, div drawing/view.
 }
 
 export interface settings {
@@ -9,5 +10,5 @@ export interface settings {
     user: string;
     dob: Date;
     zoom: number;
-    hasYearData: number[];
+    hasEntriesForYears: number[];
 }

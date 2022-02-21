@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { cloneDeep } from 'lodash';
 import * as blocks from '../models/blocks.model';
 import * as blockActions from './blocks.actions';
 import * as DEFAULTS from './DEFAULTS';
@@ -7,24 +8,34 @@ export const initialState: blocks.blocksState = getDefault();
  
 export const blocksReducer = createReducer(
   initialState,
-  on(blockActions.setAllWeeksByYear, (state, { weeksByYear }) => {
+  on(blockActions.setYears, (state, { years }) => {
       return {
         ...state,
-        weeksByYear
+        years
       }
   }),
-  on(blockActions.setWeeksForYear, (state, { blocks, year }) => {
-    let weeksByYear = {...state.weeksByYear};
+  on(blockActions.setYear, (state, { year, yearNum }) => {
+    let years = {...state.years};
+    years[yearNum] = cloneDeep(year);
     return {
       ...state,
-      weeksByYear
+      years
     };
   }),
-  on(blockActions.setIsLoading, (state, { isLoading }) => {
+  on(blockActions.setYearLoading, (state, { isLoading, yearNum }) => {
+    let yearsLoading = [...state.yearsLoading];
+    console.log('load a new year?', isLoading, 'years arr', yearsLoading);
+    if (isLoading && !yearsLoading.find(yearN => yearN === yearNum)) {
+      yearsLoading.push(yearNum);
+      console.log('adding year to load', yearsLoading);
+    } else if (!isLoading && yearsLoading.find(yearN => yearN ===yearNum)) {
+      yearsLoading = yearsLoading.filter(yearN => yearN !== yearNum);
+      console.log('removing year to load', yearsLoading);
+    }
     return {
       ...state,
-      isLoading
-    }
+      yearsLoading
+    };
   }),
   on(blockActions.setIsEditing, (state, { isEditing }) => {
     return {
@@ -36,8 +47,8 @@ export const blocksReducer = createReducer(
 
 function getDefault() {
   return  {
-    weeksByYear: {} as blocks.weeksByYear,
-    isLoading: DEFAULTS.BLOCKS_LOADING,
+    years: {} as blocks.years,
+    yearsLoading: [] as number[],
     isEditing: DEFAULTS.BLOCKS_EDITING,
   };
 }
