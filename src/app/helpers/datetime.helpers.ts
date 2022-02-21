@@ -1,7 +1,5 @@
-import { format, add, sub } from 'date-fns';
+import { format, add, sub, set } from 'date-fns';
 import * as blocks from 'src/app/models/blocks.model';
-
-
 
 export function getUserYears(): number[] {
     const years: number[] = getYearsInRange(1990, 90);
@@ -21,17 +19,16 @@ export function getFirstWeekByYear(year: number) {
 }
 
 // Get the active week
-export function getStartOfWeek() {
-    const dateNow = new Date(Date.now());
-    if (format(dateNow, 'E') === 'Mon') {
-        return dateNow;
+export function getMondayForWeek(targetDate = new Date()): Date {
+    if (format(targetDate, 'E') === 'Mon') {
+        return targetDate;
     }
     // get monday date for this week
-    let priorDay = sub(dateNow, { days: 1});
+    let priorDay = sub(targetDate, { days: 1});
     while (format(priorDay, 'E') !== 'Mon') {
         priorDay = sub(priorDay, {days: 1});
     }
-    return priorDay;
+    return set(priorDay, { hours: 0, minutes: 0, seconds:  0, milliseconds: 0});
 }
 
 export function matchDayMonthYear(date1: Date, date2: Date) {

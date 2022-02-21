@@ -73,7 +73,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   setActiveBlock() {
-    const thisWeek = dth.getStartOfWeek();
+    const thisWeek = dth.getMondayForWeek(new Date());
     const year = parseInt(format(thisWeek, 'y'));
     this.thisYear = year;
     this.weeksByYear[year].forEach(week => {

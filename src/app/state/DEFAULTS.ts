@@ -1,4 +1,5 @@
 import { add, compareAsc, format, set } from 'date-fns';
+import { isEqual } from 'lodash';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
 import * as cry from '../helpers/cryptography.helpers';
@@ -10,7 +11,7 @@ export const NO_SETTINGS: app.settings  = {
   user: NO_USER,
   dob: new Date(),
   zoom: 3.50,
-  yearHasData: [] as number[],
+  hasYearData: [] as number[],
 };
 export const APP_IS_STARTING = false;
 export const BLOCKS_LOADING = false;
@@ -22,14 +23,14 @@ export function WEEKS(year: number): blocks.week[] {
   const firstWeek = dth.getFirstWeekByYear(year);
   for (let i = 0; i < 52; i++) {
     weeks.push({
-          id: cry.genUid(),
+          id: '',
           user: NO_USER,
           date: add(firstWeek, { weeks: i}),
           num: i + 1,
           entries: [] as blocks.entry[],
       });
   }
-  // @TODO: Temp first data.
+  // @TODO: remove. Temp first data.
   if (year === 2022) {
     weeks[0].entries = [
       { text: 'CounterCulture App development', created: new Date(2022, 0, 5, 15, 0, 0, 0), edited: new Date(2022, 0, 5, 15, 0, 0, 0)},
@@ -49,7 +50,7 @@ export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
     weeksMap[year] = WEEKS(year);
   });
   // massage it a little bit.
-  const thisWeek = dth.getStartOfWeek();
+  const thisWeek = dth.getMondayForWeek(new Date());
   years.forEach(year => {
     weeksMap[year] = weeksMap[year].map(week => {
       if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
@@ -68,12 +69,24 @@ export function GET_WEEKS_BY_YEAR(): blocks.weeksByYear {
 
 export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
 
-export function NEW_SETTINGS(user: string): app.settings {
+export function NEW_SETTINGS(user: string, year: number): app.settings {
   return {
-    id: cry.genUid(),
+    id: '',
     user,
     dob: new Date(),
     zoom: 3.5,
-    yearHasData: [2022]
+    hasYearData: [year]
   };
+}
+
+export function getFirstBlock(user: string, year: number) {
+  const date = dth.getMondayForWeek(new Date());
+  const weeks = WEEKS(year);
+  console.log('date to find', date);
+  const firstBlock = weeks.find(week => isEqual(week.date, date));
+  console.log('first block!', firstBlock);
+  return {
+    ...firstBlock,
+    user,
+  }
 }

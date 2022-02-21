@@ -4,6 +4,7 @@ import * as cry from 'src/app/helpers/cryptography.helpers';
 import * as app from 'src/app/models/app.model';
 import * as blocks from "../models/blocks.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
+import { format } from "date-fns";
 
 
 export function getUser$(): Observable<string> {
@@ -12,6 +13,7 @@ export function getUser$(): Observable<string> {
 }
 
 export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
+  const year = parseInt(format(new Date(), 'yyyy'));
   const collection = `${user}_settings`;
   const logDescriptor = `Firestore pinged for ${collection}`;
   const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>)
@@ -19,20 +21,30 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
       take(1),
       map(val => {
         if (!val || val.length <= 0) {
-          const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(user);
+          const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(user, year);
           fs.collection(collection).add(newSettings);
           debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
+          // whenever we write new settings, we also write the first block
+          writeFirstBlock(user, year, fs, debug);
           return newSettings;
         } else {
-          return mapSettings(val, user);
+          return mapSettings(val, user, year);
         }
       }));
   return obs$;
 }
 
-function mapSettings(val: any, user: string): app.settings {
+export function writeFirstBlock(user: string, year: number, fs: AngularFirestore, debug?: boolean) {
+  const collection = `${user}_${year}_weeks`;
+  const logDescriptor = `Writing first block for ${collection}`;
+  const firstBlock = DEFAULTS.getFirstBlock(user, year);
+  debug ? console.log(`${logDescriptor}: `, firstBlock) : null;
+  fs.collection(collection).add(firstBlock);
+}
+
+function mapSettings(val: any, user: string, year: number): app.settings {
   const settings = val[0];
-  const newSettings = DEFAULTS.NEW_SETTINGS(user);
+  const newSettings = DEFAULTS.NEW_SETTINGS(user, year);
   // because we may have added new settings,
   // we smartly use defaults here for ones not returned.
   return {
@@ -40,7 +52,7 @@ function mapSettings(val: any, user: string): app.settings {
     user: settings?.user ? settings.user : newSettings.user,
     dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
     zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
-    yearHasData: settings?.yearHasData && settings.yearHasData.length > 0 ? settings.yearHasData : newSettings.yearHasData,
+    hasYearData: settings?.hasYearData && settings.hasYearData.length > 0 ? settings.hasYearData : newSettings.hasYearData,
   }
 }
 
@@ -102,7 +114,7 @@ export function setDob(user: string, dob: Date, settings: app.settings, fs: Angu
   debug ? console.log(`${logDescriptor} to: ${dob}`) : null;
 }
 
-// We write out weeks for a year as a batch of documents to a collection.
+// Back write year as a batch of documents to a collection.
 export function createYearWeeks$(year: number, weeks: blocks.week[], user: string, fs: AngularFirestore, debug?: boolean): Observable<any> {
   const collection = `${user}_${year}_weeks`;
   const logDescriptor = `Firestore written new value to ${collection}`;
