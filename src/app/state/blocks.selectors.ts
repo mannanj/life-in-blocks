@@ -17,7 +17,12 @@ export const getYearsLoading$ = createSelector(
     (state: blocks.blocksState) => state.yearsLoading
 );
 
-export const getIsEditing$ = createSelector(
+export const getEditing$ = createSelector(
     selectBlocksState,
-    (state: blocks.blocksState) => state.isEditing
+    (state: blocks.blocksState) => state.editing
+);
+
+export const getActiveBlockId$ = createSelector(
+    selectBlocksState,
+    (state: blocks.blocksState) => state.activeBlockId
 );

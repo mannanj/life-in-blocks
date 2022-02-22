@@ -1,10 +1,10 @@
 import * as blocks from "../models/blocks.model";
 
 const TEMP_PROPERTIES = [
-    'isHovered',
-    'isInFs',
-    'isNow',
-    'isInPast'
+    'hovered',
+    'fromFs',
+    'now',
+    'passed'
 ];
 
 function intersect(a: string[], b: string[]) {

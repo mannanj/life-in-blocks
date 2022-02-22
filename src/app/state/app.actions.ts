@@ -1,14 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
 
-export const setIsStarting = createAction(
-  '[App] Is Starting',
-  props<{ isStarting: boolean }>()
+export const setStarting = createAction(
+  '[App] Starting',
+  props<{ starting: boolean }>()
 );
 
-export const setIsLoading = createAction(
-  '[App] Is Loading',
-  props<{ isLoading: boolean }>()
+export const setLoading = createAction(
+  '[App] Loading',
+  props<{ loading: boolean }>()
 );
 
 export const setUser = createAction(

@@ -12,7 +12,7 @@ import * as blocksSelectors from 'src/app/state/blocks.selectors';
 })
 export class YearRowComponent implements OnInit, OnDestroy {
   @Input() size!: string; // in px
-  @Input() isEditing!: boolean;
+  @Input() editing!: boolean;
   @Input() zoom!: number;
   year!: number;
   @Input() set _year(year: number) {

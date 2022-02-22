@@ -2,7 +2,7 @@
     Active block does have the selected style though. -->
 
 <script type="module" src="../custom/summbit-discrete-slider.js"></script>
-<div id="x-container" [ngClass]="{'enabled': !appIsLoading,'disabled': appIsLoading}">
+<div id="x-container" [ngClass]="{'enabled': !appLoading,'disabled': appLoading}">
     <div class="x-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -11,7 +11,7 @@
         <div class="label">Week</div>
     </div>
 </div>
-<div id="y-container" [ngClass]="{'enabled': !appIsLoading,'disabled': appIsLoading}">
+<div id="y-container" [ngClass]="{'enabled': !appLoading,'disabled': appLoading}">
     <div class="y-axis">
         <div class="line"></div>
         <div class="arrow">
@@ -20,7 +20,7 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks" *ngIf="hasValues(years)" [ngClass]="{'enabled': !appIsLoading,'disabled': appIsLoading}">
+<div id="blocks" *ngIf="hasValues(years)" [ngClass]="{'enabled': !appLoading,'disabled': appLoading}">
     <!-- <app-year-row
         *ngFor="let year of years"
         [zoom]="zoom"
@@ -30,20 +30,21 @@
     >
     </app-year-row> -->
     <div 
-        *ngFor="let yearNum of hasValues(years)"
+        *ngFor="let yearNum of hasValues(years); let i = index"
         class="row">
         <span class="label" [ngClass]="{'gold-underlined' : thisYear && thisYear === strToNum(yearNum)}">{{ yearNum }}</span>
         <app-block
-            *ngFor="let week of getWeeksForYear(yearNum)"
+            *ngFor="let week of getWeeksForYear(yearNum); let j = index"
             [size]="size"
             [zoom]="zoom"
             [year]="strToNum(yearNum)"
             [week]="week"
-            [isEditing]="isEditing">
+            [editing]="editing">
         </app-block>
+        <span *ngIf="i === 89" style="display:none; width: 0; height: 0;">{{ triggerJumpToBlock() }}</span>
     </div>
 </div>
-<div id="loading" *ngIf="appIsLoading || !hasValues(years)">
+<div id="loading" *ngIf="appLoading || !hasValues(years)">
     <div class="row">
         <div class='block b1'></div>
         <div class='block b2'></div>
@@ -53,10 +54,10 @@
         <div class='block b4'></div>
     </div>
 </div>
-<div id="chart-controls" [ngClass]="{'border-grayed': appIsLoading}">
-    <div id="size-picker" *ngIf="zoom" [ngClass]="{'disabled': appIsLoading}">
-        <div *ngIf="!appIsLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
-        <div *ngIf="appIsLoading" class="label-slider">
+<div id="chart-controls" [ngClass]="{'border-grayed': appLoading}">
+    <div id="size-picker" *ngIf="zoom" [ngClass]="{'disabled': appLoading}">
+        <div *ngIf="!appLoading" class="label-slider">{{ !!sizeHrTemp? sizeHrTemp : sizeHr }} </div>
+        <div *ngIf="appLoading" class="label-slider">
             <div class="dot1"> </div>
             <div class="dot2"></div>
             <div class="dot3"></div>
@@ -73,10 +74,10 @@
         </summbit-discrete-slider>
     </div>
 </div>
-<div *ngIf="isEditing" id="chart-action-bar">
+<div *ngIf="editing" id="chart-action-bar">
     <div class="control"
         (click)="cancelEdits()"
-        [ngClass]="{'enabled': !(zoom <= 0.5 || appIsLoading), 'disabled': zoom <= 0.5 || appIsLoading}">
+        [ngClass]="{'enabled': !(zoom <= 0.5 || appLoading), 'disabled': zoom <= 0.5 || appLoading}">
         <svg width="17" height="17" style="color: red;">
             <image attr.xlink:href="{{ 'assets/icons/close-o.svg' }}" width="17" height="17"/>
         </svg>

@@ -15,11 +15,11 @@ export class BlockComponent implements OnInit, AfterViewInit {
   @Input() week!: blocks.week;
   hasChanges = false;
   // Needs improvments i.e. id-specific block state change tracking.
-  @Input() set isEditing(isEditing: boolean) {
-    // if we receive an isEditing = false event here, it means user cancelled edit
+  @Input() set editing(editing: boolean) {
+    // if we receive an editing = false event here, it means user cancelled edit
     // somewhere else i.e. a mouse click outside a block. It has already been confirmed.
-    // NOTE: This isEditing in state is only set in other components, NEVER here.
-    if (this.hasChanges && !isEditing) {
+    // NOTE: This editing in state is only set in other components, NEVER here.
+    if (this.hasChanges && !editing) {
       this.cancelAllEdits();
     }
   };
@@ -40,14 +40,14 @@ export class BlockComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setIsHovered(unit: blocks.week | blocks.entry, isHovered: boolean) {
-    unit.isHovered = isHovered;
+  setHovered(unit: blocks.week | blocks.entry, hovered: boolean) {
+    unit.hovered = hovered;
   }
 
-  setIsEditing(entry: blocks.entry) {
-    entry.isEditing = true;
+  setEditing(entry: blocks.entry) {
+    entry.editing = true;
     entry.backupText = entry.text;
-    this.store.dispatch(blockActions.setIsEditing({ isEditing: true }));
+    this.store.dispatch(blockActions.setEditing({ editing: true }));
     this.hasChanges = true;
   }
 
@@ -72,8 +72,8 @@ export class BlockComponent implements OnInit, AfterViewInit {
 
   cancelAllEdits() {
     this.week.entries.forEach(entry => {
-      if (entry.isEditing) {
-        delete entry.isEditing;
+      if (entry.editing) {
+        delete entry.editing;
       }
       if (entry.backupText) {
         entry.text = entry.backupText;
@@ -85,9 +85,9 @@ export class BlockComponent implements OnInit, AfterViewInit {
 
   saveChanges(week: blocks.week, entry: blocks.entry) {
     delete entry.backupText;
-    delete entry.isEditing;
+    delete entry.editing;
     // TODO: dispatch changes.
-    if (!week.entries.find(entry => entry.isEditing)) {
+    if (!week.entries.find(entry => entry.editing)) {
       this.hasChanges = false;
       // @TODO: need an NGRX state improvement that can check if unsaved changes exist and
       // and check now if this was the last of them, and update state as necessary.

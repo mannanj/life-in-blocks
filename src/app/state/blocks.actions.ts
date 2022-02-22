@@ -2,9 +2,9 @@ import { createAction, props } from '@ngrx/store';
 import * as blocks from '../models/blocks.model';
 
 // Weeks
-export const setYears = createAction(
-  '[Blocks] Set Years',
-  props<{ years: blocks.years }>()
+export const initYears = createAction(
+  '[Blocks] Initialize Years',
+  props<{ yearRange: number[] }>()
 );
 export const setYear = createAction(
   '[Blocks] Set Year',
@@ -12,11 +12,15 @@ export const setYear = createAction(
 );
 export const setYearLoading = createAction(
   '[Blocks] Set Year Loading',
-  props<{ isLoading: boolean, yearNum: number }>()
+  props<{ loading: boolean, yearNum: number }>()
 );
 
 // Others
-export const setIsEditing = createAction(
-  '[Blocks] Is Editing',
-  props<{ isEditing: boolean }>()
+export const setEditing = createAction(
+  '[Blocks] Editing',
+  props<{ editing: boolean }>()
+)
+export const setActiveBlockId = createAction(
+  '[Blocks] Active Block Id',
+  props<{ activeBlockId: string }>()
 )

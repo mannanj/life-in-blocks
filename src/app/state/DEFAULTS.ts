@@ -18,9 +18,10 @@ export const APP_IS_LOADING = false;
 export const BLOCKS_LOADING = false;
 export const BLOCKS_EDITING = false;
 
-export function WEEKS_FOR_YEAR(yearNum: number): blocks.year {
+export function GENERATE_YEAR(yearNum: number): blocks.year {
   let year = {} as blocks.year;
   const firstWeek = dth.getFirstWeekByYear(yearNum);
+  const thisWeek = dth.getMondayForWeek(new Date());
   for (let i = 0; i < 52; i++) {
     year[i+1] = {
       id: '',
@@ -29,6 +30,14 @@ export function WEEKS_FOR_YEAR(yearNum: number): blocks.year {
       num: i + 1,
       entries: [] as blocks.entry[],
     };
+    // Set flags used by our app.
+    if (format(thisWeek, 'MM/dd/yyyy') === format(year[i+1].date, 'MM/dd/yyyy')) {
+      year[i+1].now = true;
+      const today = new Date(Date.now()); 
+      year[i+1]?.now ? year[i+1].progress = (1 - dth.getWeekProgress(year[i+1], today)) : null;
+    } else if (compareAsc(thisWeek, year[i+1].date) === 1) {
+      year[i+1].passed = true;
+    }
   }
   // Set first week of data for our dummy data.
   if (yearNum === 2022) {
@@ -43,31 +52,6 @@ export function WEEKS_FOR_YEAR(yearNum: number): blocks.year {
   }
   return year;
 }
-// export function GET_WEEKS_BY_YEAR(): blocks.years {
-//   const years = dth.getUserYears();
-//   let weeksMap = {} as blocks.years;
-//   years.forEach(year => {
-//     weeksMap[year] = WEEKS_FOR_YEAR(year);
-//   });
-//   // massage it a little bit.
-//   const thisWeek = dth.getMondayForWeek(new Date());
-//   years.forEach(year => {
-//     weeksMap[year] = weeksMap[year].map(week => {
-//       if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
-//         week.isNow = true;
-//       } else if (compareAsc(thisWeek, week.date) === 1) {
-//         week.isInPast = true;
-//       }
-//       // set flags used by our app
-//       const today = new Date(Date.now()); 
-//       week?.isNow ? week.progress = (1 - dth.getWeekProgress(week, today)) : null;
-//       return {...week};
-//     });
-//   });
-//   return weeksMap;
-// }
-
-// export const WEEKS_BY_YEAR = GET_WEEKS_BY_YEAR();
 
 export function NEW_SETTINGS(user: string, year: number): app.settings {
   return {

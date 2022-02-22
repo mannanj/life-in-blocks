@@ -2,13 +2,13 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
  
 export const selectAppState = createFeatureSelector<app.appState>('app');
-export const getIsStarting$ = createSelector(
+export const getStarting$ = createSelector(
     selectAppState,
-    (state: app.appState) => state.isStarting
+    (state: app.appState) => state.starting
 );
-export const getIsLoading$ = createSelector(
+export const getLoading$ = createSelector(
     selectAppState,
-    (state: app.appState) => state.isLoading
+    (state: app.appState) => state.loading
 );
 export const getUser$ = createSelector(
     selectAppState,

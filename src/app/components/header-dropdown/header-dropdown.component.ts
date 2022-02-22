@@ -16,7 +16,7 @@ import { isEqual } from 'date-fns';
 })
 export class HeaderDropdownComponent implements OnInit, OnDestroy {
   @Input() user!: string;
-  @Input() isLoading!: boolean | null;
+  @Input() loading!: boolean | null;
   dob!: Date;
   hovered = false;
   keepOpen = false;

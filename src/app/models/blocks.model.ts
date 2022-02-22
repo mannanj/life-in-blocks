@@ -1,7 +1,8 @@
 export interface blocksState {
     years: years;
     yearsLoading: number[]; // track which years are still loading.
-    isEditing: boolean; // true when any block is being edited.
+    editing: boolean; // true when any block is being edited.
+    activeBlockId: string;
 }
 export interface base {
     id: string;
@@ -15,18 +16,18 @@ export interface entry {
     text: string;
     created: Date;
     edited?: Date;
-    isHovered?: boolean;
-    isEditing?: boolean;
+    hovered?: boolean;
+    editing?: boolean;
     backupText?: string;
 }
 export interface week extends base {
     // Status flags
-    isInFs?: boolean;
-    isNow?: boolean;
-    isHovered?: boolean;
-    isInPast?: boolean;
-    isLoading?: boolean; // true when the week is waiting on a db request.
-    isEditing?: boolean;
+    fromFs?: boolean;
+    now?: boolean;
+    hovered?: boolean;
+    passed?: boolean;
+    loading?: boolean; // true when the week is waiting on a db request.
+    editing?: boolean;
     progress?: number;
 }
 

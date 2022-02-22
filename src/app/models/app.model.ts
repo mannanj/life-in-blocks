@@ -1,8 +1,8 @@
 export interface appState {
     user: string;
     settings: settings;
-    isStarting: boolean; // true when user and settings are loading.
-    isLoading: boolean; // true when things are loading like the page, div drawing/view.
+    starting: boolean; // true when user and settings are loading.
+    loading: boolean; // true when things are loading like the page, div drawing/view.
 }
 
 export interface settings {

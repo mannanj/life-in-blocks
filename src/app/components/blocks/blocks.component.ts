@@ -7,7 +7,6 @@ import * as dth from 'src/app/helpers/datetime.helpers';
 import * as fsh from 'src/app/helpers/firestore.helpers';
 import { format } from 'date-fns';
 import { cloneDeep, sortBy, values } from 'lodash';
-import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
 import { Store } from '@ngrx/store';
@@ -27,7 +26,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   user = '';
-  years = [] as blocks.years;
+  years = {} as blocks.years;
   activeBlockId!:string;
   zoom!:number;
   settings!:app.settings;
@@ -41,9 +40,11 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   // flags
   thisYear!: number;
   viewHasInit!:boolean;
-  appIsLoading!: boolean;
+  appLoading!: boolean;
   yearsLoading!: number[];
-  isEditing = false;
+  lastYear!: number;
+  editing = false;
+  jumpedToBlock = false;
 
   constructor(
     private store: Store,
@@ -60,22 +61,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    if (this.activeBlockId) {
-      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 250, y: 250});
-    } else {
-      this.viewHasInit = true;
-    }
-  }
-
-  setActiveBlock() {
-    const thisWeek = dth.getMondayForWeek(new Date());
-    const year = parseInt(format(thisWeek, 'y'));
-    this.thisYear = year;
-    // this.years[year].forEach(week => {
-    //   if (format(thisWeek, 'MM/dd/yyyy') === format(week.date, 'MM/dd/yyyy')) {
-    //     this.activeBlockId = `${year}_block_${week.num}`;
-    //   }
-    // })
+    this.viewHasInit = true;
   }
 
   _getData() {
@@ -94,7 +80,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         // @TODO: need a better way to detect this.
         if (this.zoom) {
           setTimeout(() =>{
-            this.store.dispatch(appActions.setIsLoading({ isLoading: false }));
+            this.store.dispatch(appActions.setLoading({ loading: false }));
             console.log('@TODO: blocks zoom 1s loading delay');
           }, 1000);
         }
@@ -107,32 +93,43 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(years => {
         this.years = cloneDeep(years);
-        // this.setActiveBlock();
-        // if (this.viewHasInit) {
-        //   pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
-        // }
     });
     // loading flag
-    this.store.select(appSelectors.getIsLoading$)
+    this.store.select(appSelectors.getLoading$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(isLoading => {
-        this.appIsLoading = isLoading;
-        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+      .subscribe(loading => {
+        this.appLoading = loading;
+        this.viewAndAppReady() ? pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}) : null;
       });
     // years loading flag
     this.store.select(blocksSelectors.getYearsLoading$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(yearsLoading => {
         this.yearsLoading = yearsLoading;
-        // pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
       });
     // is editing flag
-    this.store.select(blocksSelectors.getIsEditing$)
+    this.store.select(blocksSelectors.getEditing$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(isEditing => {
-        this.isEditing = isEditing;
+      .subscribe(editing => {
+        this.editing = editing;
       });
+    // active block id
+    this.store.select(blocksSelectors.getActiveBlockId$)
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(activeBlockId => {
+        this.activeBlockId = activeBlockId;
+      });
+  }
 
+  triggerJumpToBlock(): void {
+    if (!this.jumpedToBlock) {
+      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+      this.jumpedToBlock = true;
+    }
+  }
+
+  viewAndAppReady(): boolean {
+    return this.viewHasInit && !this.appLoading && !!this.activeBlockId;
   }
 
   hasValues(obj: any): string[] {
@@ -153,12 +150,12 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   cancelEdits() {
-    pah.confirmChanges() ? this.store.dispatch(blockActions.setIsEditing({ isEditing: false })): null;
+    pah.confirmChanges() ? this.store.dispatch(blockActions.setEditing({ editing: false })): null;
   }
 
   changeZoom(event: any) {
     const zoom = event.detail.value += 0.5;
-    this.store.dispatch(appActions.setIsLoading({ isLoading: true }));
+    this.store.dispatch(appActions.setLoading({ loading: true }));
     this.store.dispatch(appActions.setZoom({ zoom }));
     // Update zoom in firestore setting too.
     // @TODO: Move to effect.

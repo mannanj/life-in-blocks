@@ -67,7 +67,7 @@ export function getWeeks$(year: number, fs: AngularFirestore, debug?: boolean): 
         return {
           ...block,
           date: block.date.toDate(),
-          isInFs: true
+          fromFs: true
         }
       })));
 }

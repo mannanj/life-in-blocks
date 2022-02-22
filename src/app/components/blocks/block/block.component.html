@@ -1,25 +1,25 @@
 <!-- @TODO: Show year if hovered and right size? -->
 <div 
     *ngIf="year && getObjectKeys(week)"
-    (mouseenter)="setIsHovered(week, true)"
-    (mouseleave)="setIsHovered(week, false)"
+    (mouseenter)="setHovered(week, true)"
+    (mouseleave)="setHovered(week, false)"
     id="{{ year+'_block_'+week?.num }}"
     class="block"
     [ngStyle]="{'width':size, 'maxWidth':size, 'height': size, 'maxHeight': size }"
-    [ngClass]="{'past': !(week?.isHovered) && week?.isInPast}">
-    <div *ngIf="week?.isNow" class="progress">
+    [ngClass]="{'past': !(week?.hovered) && week?.passed}">
+    <div *ngIf="week?.now" class="progress">
         <div class="progress-bar" [ngStyle]="{width: week.progress| percent}"></div>
     </div>
-    <div *ngIf="!week?.isNow" class="spacer"></div>
+    <div *ngIf="!week?.now" class="spacer"></div>
     <!-- Manually hacked/moved above into the progress-bar's space. -->
     <div class="title"
-        [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'title-z2' : zoom >= 1.50, 'title-z3' : zoom >= 3.00}">
+        [ngClass]="{'past-opacity': !(week?.hovered) && week?.passed, 'title-z2' : zoom >= 1.50, 'title-z3' : zoom >= 3.00}">
         <div></div>
         <div>
             {{ (zoom >= 1.50 && week?.date) ? (week.date | date:'MMM  d') : '' }}
         </div>
         <div>
-            <svg *ngIf="week?.isNow" height="10px" width="10px" version="1.1" viewBox="0 0 55.867 55.867">
+            <svg *ngIf="week?.now" height="10px" width="10px" version="1.1" viewBox="0 0 55.867 55.867">
                 <path stroke="black" stroke-width="5" fill="#ffd700" d="M55.818,21.578c-0.118-0.362-0.431-0.626-0.808-0.681L36.92,18.268L28.83,1.876c-0.168-0.342-0.516-0.558-0.896-0.558
                     s-0.729,0.216-0.896,0.558l-8.091,16.393l-18.09,2.629c-0.377,0.055-0.689,0.318-0.808,0.681c-0.117,0.361-0.02,0.759,0.253,1.024
                     l13.091,12.76l-3.091,18.018c-0.064,0.375,0.09,0.754,0.397,0.978c0.309,0.226,0.718,0.255,1.053,0.076l16.182-8.506l16.18,8.506
@@ -29,14 +29,14 @@
         </div>
     </div>
     <!-- @TODO: replace with ng-content/ng-template style thing. -->
-    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom === 6.50}">
+    <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.hovered) && week?.passed, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom === 6.50}">
         <!-- @TODO: Scrolling right-to-left effect, couldn't quite crack it 2/10/22. -->
         <div *ngFor="let entry of week.entries" class="entry trim">
             <!-- If Not Hovered or Editing -->
-            <span *ngIf="!entry?.isEditing" (click)="setIsEditing(entry)" class="value trim" [ngClass]="{'w90': zoom >= 4.50}">{{ entry.text }}</span>
-            <span *ngIf="!entry?.isEditing && zoom >= 4.50" class="date trim">{{ entry.edited | date:'M/d'}}</span>
+            <span *ngIf="!entry?.editing" (click)="setEditing(entry)" class="value trim" [ngClass]="{'w90': zoom >= 4.50}">{{ entry.text }}</span>
+            <span *ngIf="!entry?.editing && zoom >= 4.50" class="date trim">{{ entry.edited | date:'M/d'}}</span>
             <!-- If Editing -->
-            <div *ngIf="entry?.isEditing" class="editing">
+            <div *ngIf="entry?.editing" class="editing">
                 <input type="text" [(ngModel)]="entry.text" (keydown)="keyDown(entry, $event)" [ngClass]="{'w80': zoom >= 4.50}">
                 <span class="button" (click)="saveChanges(week, entry)">
                     <svg width="17" height="17">
@@ -46,9 +46,9 @@
             </div>
         </div>
     </div>
-    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.isHovered, 'past-opacity': !(week?.isHovered) && week?.isInPast, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom >= 6.50}">
+    <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.hovered, 'past-opacity': !(week?.hovered) && week?.passed, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom >= 6.50}">
         <div class="entry">
-            <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.isHovered}">
+            <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.hovered}">
                 <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>
             </svg>
             Record a moment

@@ -8,7 +8,9 @@ export const initialState: blocks.blocksState = getDefault();
  
 export const blocksReducer = createReducer(
   initialState,
-  on(blockActions.setYears, (state, { years }) => {
+  on(blockActions.initYears, (state, { yearRange }) => {
+    let years = {} as blocks.years;
+    yearRange.forEach(yearNum => years[yearNum] = {});
       return {
         ...state,
         years
@@ -22,25 +24,28 @@ export const blocksReducer = createReducer(
       years
     };
   }),
-  on(blockActions.setYearLoading, (state, { isLoading, yearNum }) => {
+  on(blockActions.setYearLoading, (state, { loading, yearNum }) => {
     let yearsLoading = [...state.yearsLoading];
-    console.log('load a new year?', isLoading, 'years arr', yearsLoading);
-    if (isLoading && !yearsLoading.find(yearN => yearN === yearNum)) {
+    if (loading && !yearsLoading.find(yearN => yearN === yearNum)) {
       yearsLoading.push(yearNum);
-      console.log('adding year to load', yearsLoading);
-    } else if (!isLoading && yearsLoading.find(yearN => yearN ===yearNum)) {
+    } else if (!loading && yearsLoading.find(yearN => yearN ===yearNum)) {
       yearsLoading = yearsLoading.filter(yearN => yearN !== yearNum);
-      console.log('removing year to load', yearsLoading);
     }
     return {
       ...state,
       yearsLoading
     };
   }),
-  on(blockActions.setIsEditing, (state, { isEditing }) => {
+  on(blockActions.setEditing, (state, { editing }) => {
     return {
       ...state,
-      isEditing
+      editing
+    }
+  }),
+  on(blockActions.setActiveBlockId, (state, { activeBlockId }) => {
+    return {
+      ...state,
+      activeBlockId
     }
   })
 );
@@ -49,6 +54,7 @@ function getDefault() {
   return  {
     years: {} as blocks.years,
     yearsLoading: [] as number[],
-    isEditing: DEFAULTS.BLOCKS_EDITING,
+    editing: DEFAULTS.BLOCKS_EDITING,
+    activeBlockId: ''
   };
 }

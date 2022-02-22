@@ -7,16 +7,16 @@ export const initialState: app.appState = getDefault();
  
 export const appReducer = createReducer(
   initialState,
-  on(appActions.setIsStarting, (state, { isStarting }) => {
+  on(appActions.setStarting, (state, { starting }) => {
       return {
         ...state,
-        isStarting
+        starting
       }
   }),
-  on(appActions.setIsLoading, (state, { isLoading }) => {
+  on(appActions.setLoading, (state, { loading }) => {
       return {
         ...state,
-        isLoading
+        loading
       }
   }),
   on(appActions.setUser, (state, { user }) => {
@@ -55,7 +55,7 @@ function getDefault() {
   return  {
     user: DEFAULTS.NO_USER,
     settings: DEFAULTS.NO_SETTINGS,
-    isStarting: DEFAULTS.APP_IS_STARTING,
-    isLoading: DEFAULTS.APP_IS_LOADING,
+    starting: DEFAULTS.APP_IS_STARTING,
+    loading: DEFAULTS.APP_IS_LOADING,
   };
 }
