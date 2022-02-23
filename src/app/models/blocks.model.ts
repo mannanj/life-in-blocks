@@ -22,7 +22,6 @@ export interface entry {
 }
 export interface week extends base {
     // Status flags
-    fromFs?: boolean;
     now?: boolean;
     hovered?: boolean;
     passed?: boolean;

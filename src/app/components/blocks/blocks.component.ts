@@ -1,11 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { filter, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
 import * as pah from 'src/app/helpers/page.helpers';
-import * as dth from 'src/app/helpers/datetime.helpers';
 import * as fsh from 'src/app/helpers/firestore.helpers';
-import { format } from 'date-fns';
 import { cloneDeep, sortBy, values } from 'lodash';
 
 // State
@@ -82,7 +80,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
           setTimeout(() =>{
             this.store.dispatch(appActions.setLoading({ loading: false }));
             console.log('@TODO: blocks zoom 1s loading delay');
-          }, 1000);
+          }, 500);
         }
         this.zoom = zoom;
         this.size = pah.getBlocksize(zoom) + 'px';
@@ -92,6 +90,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     this.store.select(blocksSelectors.getYears)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(years => {
+        // @TODO: Get each year separately, rather than conedeep each set each time (costly!).
         this.years = cloneDeep(years);
     });
     // loading flag
@@ -99,7 +98,6 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(loading => {
         this.appLoading = loading;
-        this.viewAndAppReady() ? pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250}) : null;
       });
     // years loading flag
     this.store.select(blocksSelectors.getYearsLoading$)
@@ -121,10 +119,13 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
       });
   }
 
+  // Used for first time app loading to jump to block.
   triggerJumpToBlock(): void {
     if (!this.jumpedToBlock) {
-      pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
-      this.jumpedToBlock = true;
+      setTimeout(()=> {
+        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+        this.jumpedToBlock = true;
+      }, 500);
     }
   }
 
@@ -170,5 +171,21 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   floorVal(zoom: number) {
     return Math.floor(zoom);
+  }
+
+  // Write a week change to db, get result, and write to store.
+  saveWeekChange(yearNum: number, week: blocks.week): void {
+    week.user = this.user;
+    const result$ = fsh.writeBlock$(this.user, yearNum, week, this.firestore, true);
+    result$.pipe(take(1)).subscribe(res => {
+      if (res && res.id) {
+        week.id = res.id;
+      }
+      if (week.id) {
+        fsh.getWeek$(this.user, yearNum, week, this.firestore, true).subscribe((weekRes: blocks.week) => {
+          this.store.dispatch(blockActions.updateWeek({ yearNum, week: weekRes }));
+        });
+      }
+    })
   }
 }

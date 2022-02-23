@@ -1,10 +1,13 @@
+import { compareAsc, format } from "date-fns";
 import * as blocks from "../models/blocks.model";
+import * as dth from 'src/app/helpers/datetime.helpers';
 
 const TEMP_PROPERTIES = [
     'hovered',
-    'fromFs',
     'now',
-    'passed'
+    'passed',
+    'backupText',
+    'editing'
 ];
 
 function intersect(a: string[], b: string[]) {
@@ -25,3 +28,18 @@ export function stripContextualData(block: blocks.week): blocks.week {
     }
     return block;
 }
+
+export function removeFlags(block: blocks.week): blocks.week {
+    return stripContextualData(block);
+}
+
+export function setFlags(block: blocks.week): void {
+    const thisWeek = dth.getMondayForWeek(new Date());
+    if (format(thisWeek, 'MM/dd/yyyy') === format(block.date, 'MM/dd/yyyy')) {
+      block.now = true;
+      const today = new Date(Date.now()); 
+      block?.now ? block.progress = (1 - dth.getWeekProgress(block, today)) : null;
+    } else if (compareAsc(thisWeek, block.date) === 1) {
+      block.passed = true;
+    }
+  }

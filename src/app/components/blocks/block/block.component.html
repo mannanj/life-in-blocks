@@ -45,13 +45,19 @@
                 </span>
             </div>
         </div>
+        <div (click)="addEntries()" class="entry cursor new">
+            Add moment
+            <svg width="17" height="17" class="inline">
+                <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>
+            </svg>
+        </div>
     </div>
     <div *ngIf="!hasValues(week.entries)" class="body hidden" [ngClass]="{'show': week?.hovered, 'past-opacity': !(week?.hovered) && week?.passed, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom >= 6.50}">
-        <div class="entry">
+        <div (click)="addEntries()" class="entry cursor">
             <svg width="17" height="17" class="hidden" [ngClass]="{'inline': week?.hovered}">
                 <image attr.xlink:href="{{ 'assets/icons/math-plus.svg' }}" width="17" height="17"/>
             </svg>
-            Record a moment
+            Add a moment
         </div>
     </div>
 </div>

@@ -36,6 +36,14 @@ export const blocksReducer = createReducer(
       yearsLoading
     };
   }),
+  on(blockActions.updateWeek, (state, { yearNum, week }) => {
+    let years = {...state.years};
+    years[yearNum][week.num] = {...week};
+    return {
+      ...state,
+      years
+    };
+  }),
   on(blockActions.setEditing, (state, { editing }) => {
     return {
       ...state,

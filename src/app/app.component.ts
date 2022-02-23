@@ -10,13 +10,12 @@ import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
 import * as dth from 'src/app/helpers/datetime.helpers';
 import * as fsh from 'src/app/helpers/firestore.helpers';
-import * as bh from 'src/app/helpers/blocks.helpers';
 import * as blockActions from 'src/app/state/blocks.actions';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as appSelectors from 'src/app/state/app.selectors';
 import * as appActions from 'src/app/state/app.actions';
 import { format } from 'date-fns';
-import { range } from 'lodash';
+import { cloneDeep, range } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,6 @@ export class AppComponent {
   user = '';
   loading$: Observable<boolean> = this.store.select(appSelectors.getLoading$);
   yearsLoading$: Observable<number[]> = this.store.select(blocksSelectors.getYearsLoading$);
-  weeks$: Observable<blocks.week[]> = fsh.getWeeks$(new Date().getFullYear(), this.firestore);
 
   constructor(
     private store: Store,
@@ -69,26 +67,27 @@ export class AppComponent {
       const thisWeek = dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
       const yearsInDb = settings.hasEntriesForYears;
-      yearsInDb.forEach(yearNum => {
-        this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
+      // now retrieve this data, and for other data, use app-defaults.
+      yearRange.forEach(yearNum => {
+        let year = cloneDeep(DEFAULTS.GENERATE_YEAR(yearNum));
+        this.store.dispatch(blockActions.setYear({ year, yearNum }));
+        yearNum === thisYear ? this.setActiveBlock(yearNum, year, thisWeek) : null;
+        // Retrieve non-default values from db.
+        if (!!yearsInDb.find(yearN => yearN === yearNum)) {
+          this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
+          fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
+            blocks.forEach(block => {
+              this.store.dispatch(blockActions.updateWeek({ yearNum, week: block }));
+            });
+            this.store.dispatch(blockActions.setYearLoading({ loading: false, yearNum}));
+          })
+        }
       });
       // Once all year blocks are done loading, mark the app as done loading too.
       // In reality, this should be marked as true when the PAGE itself is ready to be viewed.
       this.store.select(blocksSelectors.getYearsLoading$).subscribe(yearsLoading => {
         if (yearsLoading.length === 0) {
           this.store.dispatch(appActions.setLoading({ loading: false }));
-        }
-      });
-      // now retrieve this data, and for other data, use app-defaults.
-      yearRange.forEach(yearNum => {
-        const year = DEFAULTS.GENERATE_YEAR(yearNum);
-        if (!!yearsInDb.find(yearN => yearN === yearNum)) {
-          // retrieve from DB
-          this.store.dispatch(blockActions.setYear({ year, yearNum }));
-          this.store.dispatch(blockActions.setYearLoading({ loading: false, yearNum}));
-          yearNum === thisYear ? this.setActiveBlock(yearNum, year, thisWeek) : null;       
-        } else {
-          this.store.dispatch(blockActions.setYear({ year, yearNum }));
         }
       });
     }

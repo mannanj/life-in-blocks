@@ -14,6 +14,10 @@ export const setYearLoading = createAction(
   '[Blocks] Set Year Loading',
   props<{ loading: boolean, yearNum: number }>()
 );
+export const updateWeek = createAction(
+  '[Blocks] Update Week',
+  props<{ yearNum: number, week: blocks.week }>()
+);
 
 // Others
 export const setEditing = createAction(

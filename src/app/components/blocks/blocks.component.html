@@ -39,9 +39,10 @@
             [zoom]="zoom"
             [year]="strToNum(yearNum)"
             [week]="week"
-            [editing]="editing">
+            [editing]="editing"
+            (emitWeekSave)="saveWeekChange(strToNum(yearNum), $event)">
         </app-block>
-        <span *ngIf="i === 89" style="display:none; width: 0; height: 0;">{{ triggerJumpToBlock() }}</span>
+        <span *ngIf="i === 89" style="display:none; width: 0; height: 0;">{{ viewAndAppReady() ? triggerJumpToBlock() : null }}</span>
     </div>
 </div>
 <div id="loading" *ngIf="appLoading || !hasValues(years)">

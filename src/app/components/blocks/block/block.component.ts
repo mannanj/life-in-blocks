@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as blocks from 'src/app/models/blocks.model';
 import * as pah from 'src/app/helpers/page.helpers';
 import * as blockActions from 'src/app/state/blocks.actions';
@@ -8,11 +8,12 @@ import { Store } from '@ngrx/store';
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.scss']
 })
-export class BlockComponent implements OnInit, AfterViewInit {
+export class BlockComponent implements AfterViewInit {
   @Input() size!: string; // in px
   @Input() zoom = 1.0;
   @Input() year!: number;
   @Input() week!: blocks.week;
+  @Output() emitWeekSave = new EventEmitter<blocks.week>();
   hasChanges = false;
   // Needs improvments i.e. id-specific block state change tracking.
   @Input() set editing(editing: boolean) {
@@ -28,9 +29,6 @@ export class BlockComponent implements OnInit, AfterViewInit {
   viewHasInit!:boolean;
 
   constructor(private store: Store) { }
-
-  ngOnInit(): void {
-  }
 
   ngAfterViewInit(): void {
     if (this.getObjectKeys(this.week) && this.year) {
@@ -64,9 +62,9 @@ export class BlockComponent implements OnInit, AfterViewInit {
   }
 
   keyDown(entry: blocks.entry, event: any) {
-    console.log('entry', entry, 'key', event);
+    // console.log('entry', entry, 'key', event);
     if (event.code === pah.KEYS['escape']) {
-      pah.confirmChanges() ? this.cancelAllEdits() : null;
+      this.cancelAllEdits();
     }
   }
 
@@ -84,14 +82,20 @@ export class BlockComponent implements OnInit, AfterViewInit {
   }
 
   saveChanges(week: blocks.week, entry: blocks.entry) {
-    delete entry.backupText;
-    delete entry.editing;
-    // TODO: dispatch changes.
+    delete entry?.backupText;
+    delete entry?.editing;
+    delete week?.hovered;
+    delete week?.progress;
+    delete week?.now;
+    entry.edited = new Date();
+    this.emitWeekSave.emit({...week});
     if (!week.entries.find(entry => entry.editing)) {
       this.hasChanges = false;
-      // @TODO: need an NGRX state improvement that can check if unsaved changes exist and
-      // and check now if this was the last of them, and update state as necessary.
-      // this.store.dispatch(blockActions.savedAChange...({ ... }));
+      this.store.dispatch(blockActions.setEditing({ editing: false }));
     }
+  }
+
+  addEntries(): void {
+    this.week.entries.push({ text: 'This week I', created: new Date(), edited: new Date()});
   }
 }

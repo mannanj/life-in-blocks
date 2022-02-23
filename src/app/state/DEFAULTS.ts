@@ -1,9 +1,8 @@
-import { add, compareAsc, format, set } from 'date-fns';
-import { isEqual } from 'lodash';
+import { add } from 'date-fns';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
-import * as cry from '../helpers/cryptography.helpers';
-import * as dth from '../helpers/datetime.helpers';
+import * as dth from 'src/app/helpers/datetime.helpers';
+import * as bh from 'src/app/helpers/blocks.helpers';
 
 export const NO_USER = 'NO_USER';
 export const NO_SETTINGS: app.settings  = {
@@ -21,7 +20,6 @@ export const BLOCKS_EDITING = false;
 export function GENERATE_YEAR(yearNum: number): blocks.year {
   let year = {} as blocks.year;
   const firstWeek = dth.getFirstWeekByYear(yearNum);
-  const thisWeek = dth.getMondayForWeek(new Date());
   for (let i = 0; i < 52; i++) {
     year[i+1] = {
       id: '',
@@ -31,13 +29,7 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
       entries: [] as blocks.entry[],
     };
     // Set flags used by our app.
-    if (format(thisWeek, 'MM/dd/yyyy') === format(year[i+1].date, 'MM/dd/yyyy')) {
-      year[i+1].now = true;
-      const today = new Date(Date.now()); 
-      year[i+1]?.now ? year[i+1].progress = (1 - dth.getWeekProgress(year[i+1], today)) : null;
-    } else if (compareAsc(thisWeek, year[i+1].date) === 1) {
-      year[i+1].passed = true;
-    }
+    bh.setFlags(year[i+1]);
   }
   // Set first week of data for our dummy data.
   if (yearNum === 2022) {

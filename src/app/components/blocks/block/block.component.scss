@@ -150,7 +150,16 @@
     }
     
 }
-    
+.cursor {
+    cursor: pointer;
+}
+
+.new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .past {
     background-color: rgba(248,248,255,0.5);
     border: 1px solid gray;
