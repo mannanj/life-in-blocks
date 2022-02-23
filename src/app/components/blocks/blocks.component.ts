@@ -87,6 +87,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         this.sizeHr = pah.getSizeHr(this.zoom);
     });
     // week data
+    // @TODO: this should fetch once, then smartly only fetch each year on it's specfic changes.
     this.store.select(blocksSelectors.getYears)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(years => {
