@@ -38,7 +38,9 @@ export const blocksReducer = createReducer(
   }),
   on(blockActions.updateWeek, (state, { yearNum, week }) => {
     let years = {...state.years};
-    years[yearNum][week.num] = {...week};
+    const year = cloneDeep(years[yearNum]);
+    year[week.num] = {...week};
+    years[yearNum] = year;
     return {
       ...state,
       years
