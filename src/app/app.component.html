@@ -5,5 +5,15 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-
+<!-- Top-Level Loader -->
+<div id="loading" *ngIf="(loading$ | async)">
+  <div class="row">
+      <div class='block b1'></div>
+      <div class='block b2'></div>
+  </div>
+  <div class="row">
+      <div class='block b3'></div>
+      <div class='block b4'></div>
+  </div>
+</div>
 <!-- <app-modals></app-modals> -->
