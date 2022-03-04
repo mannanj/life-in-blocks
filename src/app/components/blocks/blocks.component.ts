@@ -16,7 +16,6 @@ import * as blockActions from 'src/app/state/blocks.actions';
 // 3rd Party Libs
 import 'src/app/components/custom/discrete-slider';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { format } from 'date-fns';
 
 @Component({
   selector: 'app-blocks',

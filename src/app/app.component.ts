@@ -8,14 +8,13 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 import { Store } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
-import * as dth from 'src/app/helpers/datetime.helpers';
-import * as fsh from 'src/app/helpers/firestore.helpers';
+import { help } from 'src/app/helpers/help';
 import * as blockActions from 'src/app/state/blocks.actions';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as appSelectors from 'src/app/state/app.selectors';
 import * as appActions from 'src/app/state/app.actions';
 import { format } from 'date-fns';
-import { cloneDeep, range } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +42,7 @@ export class AppComponent {
     initializeApp() {
       this.store.dispatch(appActions.setStarting({starting: true}));
       this.store.dispatch(appActions.setLoading({loading: true}));
-      fsh.getUser$().pipe(take(1)).subscribe(user => {
+      help.fsh.getUser$().pipe(take(1)).subscribe(user => {
         this.user = user;
         this.store.dispatch(appActions.setUser({user}));
         this.retrieveSettings(user);
@@ -53,18 +52,18 @@ export class AppComponent {
     // Usually I use get<MethodName> as a convention
     // but retrieve<> symbolizes touching a server more clearly.
     retrieveSettings(user: string): void {
-      fsh.getSettings$(user, this.firestore, true).pipe(take(1)).subscribe(settings => {
+      help.fsh.getSettings$(user, this.firestore, true).pipe(take(1)).subscribe(settings => {
         this.store.dispatch(appActions.setSettings({settings}));
         this.store.dispatch(appActions.setStarting({ starting: false }));
         const dobYear = parseInt(format(settings.dob, 'yyyy'));
-        const yearRange = dth.getUserYears(dobYear);
+        const yearRange = help.dth.getUserYears(dobYear);
         this.store.dispatch(blockActions.initYears({ yearRange }));
         this.retrieveBlockData(user, settings, yearRange);
       });
     }
 
     retrieveBlockData(user: string, settings: app.settings, yearRange: number[]): void {
-      const thisWeek = dth.getMondayForWeek(new Date());
+      const thisWeek = help.dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
       const yearsInDb = settings.yearHasData;
       // now retrieve this data, and for other data, use app-defaults.
@@ -75,7 +74,7 @@ export class AppComponent {
         // Retrieve non-default values from db.
         if (!!yearsInDb.find(yearN => yearN === yearNum)) {
           this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
-          fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
+          help.fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
             blocks.forEach(block => {
               this.store.dispatch(blockActions.updateWeek({ yearNum, week: block }));
             });

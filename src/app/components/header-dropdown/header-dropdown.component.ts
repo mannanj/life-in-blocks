@@ -1,11 +1,10 @@
 import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
-import * as pah from 'src/app/helpers/page.helpers';
-import * as fsh from 'src/app/helpers/firestore.helpers';
+import { help } from 'src/app/helpers/help';
 import Calendar  from "color-calendar";
 import { Store } from '@ngrx/store';
 import * as appSelectors from 'src/app/state/app.selectors';
 import * as appActions from 'src/app/state/app.actions';
-import { Subject, take, takeUntil, tap } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { isEqual } from 'date-fns';
 
@@ -63,7 +62,7 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
   }
 
   keyDown(event: any) {
-    if (event.code === pah.KEYS['escape']) {
+    if (event.code === help.pah.KEYS['escape']) {
       this.closeMenu();
       this.closeCalendar();
     }
@@ -106,7 +105,7 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
     if (!isEqual(dob, this.dob)) {
       this.store.dispatch(appActions.setDob({dob}));
       this.store.select(appSelectors.getSettings$).pipe(take(1)).subscribe(settings => {
-        fsh.setDob(this.user, dob, settings, this.firestore, true);
+        help.fsh.setDob(this.user, dob, settings, this.firestore, true);
         this.closeCalendar();
       });
     }

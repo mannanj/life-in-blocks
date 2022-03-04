@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import * as blocks from 'src/app/models/blocks.model';
-import * as pah from 'src/app/helpers/page.helpers';
+import { help } from 'src/app/helpers/help';
 import * as blockActions from 'src/app/state/blocks.actions';
 import { Store } from '@ngrx/store';
 @Component({
@@ -63,7 +63,7 @@ export class BlockComponent implements AfterViewInit {
 
   keyDown(entry: blocks.entry, event: any) {
     // console.log('entry', entry, 'key', event);
-    if (event.code === pah.KEYS['escape']) {
+    if (event.code === help.pah.KEYS['escape']) {
       this.cancelAllEdits();
     }
   }

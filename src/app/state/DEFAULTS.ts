@@ -1,8 +1,7 @@
 import { add } from 'date-fns';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
-import * as dth from 'src/app/helpers/datetime.helpers';
-import * as bh from 'src/app/helpers/blocks.helpers';
+import { help } from 'src/app/helpers/help';
 
 export const NO_USER = 'NO_USER';
 export const NO_SETTINGS: app.settings  = {
@@ -20,7 +19,7 @@ export const MAX_AGE = 90;
 
 export function GENERATE_YEAR(yearNum: number): blocks.year {
   let year = {} as blocks.year;
-  const firstWeek = dth.getFirstWeekByYear(yearNum);
+  const firstWeek = help.dth.getFirstWeekByYear(yearNum);
   for (let i = 0; i < 52; i++) {
     year[i+1] = {
       id: '',
@@ -30,7 +29,7 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
       entries: [] as blocks.entry[],
     };
     // Set flags used by our app.
-    bh.setFlags(year[i+1]);
+    help.bh.setFlags(year[i+1]);
   }
   // Set first week of data for our dummy data.
   if (yearNum === 2022) {
@@ -57,7 +56,7 @@ export function NEW_SETTINGS(user: string, year: number): app.settings {
 }
 
 // export function getFirstBlock(user: string, year: number) {
-//   const date = dth.getMondayForWeek(new Date());
+//   const date = help.dth.getMondayForWeek(new Date());
 //   const weeks = WEEKS_FOR_YEAR(year);
 //   console.log('date to find', date);
 //   const firstBlock = weeks.find(week => isEqual(week.date, date));
