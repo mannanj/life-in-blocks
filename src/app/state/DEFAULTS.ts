@@ -10,12 +10,13 @@ export const NO_SETTINGS: app.settings  = {
   user: NO_USER,
   dob: new Date(),
   zoom: 3.50,
-  hasEntriesForYears: [] as number[],
+  yearHasData: [] as number[],
 };
 export const APP_IS_STARTING = false;
 export const APP_IS_LOADING = false;
 export const BLOCKS_LOADING = false;
 export const BLOCKS_EDITING = false;
+export const MAX_AGE = 90;
 
 export function GENERATE_YEAR(yearNum: number): blocks.year {
   let year = {} as blocks.year;
@@ -51,7 +52,7 @@ export function NEW_SETTINGS(user: string, year: number): app.settings {
     user,
     dob: new Date(),
     zoom: 3.5,
-    hasEntriesForYears: [year]
+    yearHasData: [year]
   };
 }
 

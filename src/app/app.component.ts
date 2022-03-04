@@ -57,7 +57,7 @@ export class AppComponent {
         this.store.dispatch(appActions.setSettings({settings}));
         this.store.dispatch(appActions.setStarting({ starting: false }));
         const dobYear = parseInt(format(settings.dob, 'yyyy'));
-        const yearRange = range(dobYear, dobYear + 90);
+        const yearRange = dth.getUserYears(dobYear);
         this.store.dispatch(blockActions.initYears({ yearRange }));
         this.retrieveBlockData(user, settings, yearRange);
       });
@@ -66,7 +66,7 @@ export class AppComponent {
     retrieveBlockData(user: string, settings: app.settings, yearRange: number[]): void {
       const thisWeek = dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
-      const yearsInDb = settings.hasEntriesForYears;
+      const yearsInDb = settings.yearHasData;
       // now retrieve this data, and for other data, use app-defaults.
       yearRange.forEach(yearNum => {
         let year = cloneDeep(DEFAULTS.GENERATE_YEAR(yearNum));

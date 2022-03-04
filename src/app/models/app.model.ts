@@ -10,5 +10,5 @@ export interface settings {
     user: string;
     dob: Date;
     zoom: number;
-    hasEntriesForYears: number[];
+    yearHasData: number[];
 }

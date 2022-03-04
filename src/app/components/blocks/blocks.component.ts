@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take, takeUntil } from 'rxjs';
+import { combineLatest, filter, Subject, take, takeUntil } from 'rxjs';
 import * as app from 'src/app/models/app.model';
 import * as blocks from 'src/app/models/blocks.model';
-import * as pah from 'src/app/helpers/page.helpers';
-import * as fsh from 'src/app/helpers/firestore.helpers';
-import { cloneDeep, sortBy, values } from 'lodash';
+import { help } from 'src/app/helpers/help';
+import { cloneDeep, isEqual, sortBy, values } from 'lodash';
+import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
 import { Store } from '@ngrx/store';
@@ -16,6 +16,7 @@ import * as blockActions from 'src/app/state/blocks.actions';
 // 3rd Party Libs
 import 'src/app/components/custom/discrete-slider';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-blocks',
@@ -24,7 +25,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   user = '';
-  years = {} as blocks.years;
+  years!: blocks.years;
   activeBlockId!:string;
   zoom!:number;
   settings!:app.settings;
@@ -51,6 +52,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   ngOnInit(): void {
     this._getData();
+    // this._getData();
   }
 
   ngOnDestroy(): void {
@@ -62,16 +64,20 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     this.viewHasInit = true;
   }
 
-  _getData() {
-    // user
-    this.store.select(appSelectors.getUser$)
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(user => this.user = user);
-    // settings
-    this.store.select(appSelectors.getSettings$)
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(settings => this.settings = settings);
-    //zoom
+  // Get flags, user, settings, first instance of years, then update years data as it arrives from API.
+  _getData(): void {
+    this._getFlags();
+    const user$ = this.store.select(appSelectors.getUser$).pipe(filter(user => user !== DEFAULTS.NO_USER), take(1));
+    const settings$ = this.store.select(appSelectors.getSettings$).pipe(filter(settings => !isEqual(settings, DEFAULTS.NO_SETTINGS)), take(1));
+    combineLatest([user$, settings$]).subscribe(val => {
+      this.user = val[0];
+      this.settings = val[1];
+      this._initYears();
+    });
+  }
+
+  _getFlags(): void {
+    // zoom
     this.store.select(appSelectors.getZoom$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoom => {
@@ -79,51 +85,66 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         if (this.zoom) {
           setTimeout(() =>{
             this.store.dispatch(appActions.setLoading({ loading: false }));
-            pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
+            help.pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
             console.log('@TODO: blocks zoom 1s loading delay');
           }, 500);
         }
         this.zoom = zoom;
-        this.size = pah.getBlocksize(zoom) + 'px';
-        this.sizeHr = pah.getSizeHr(this.zoom);
+        this.size = help.pah.getBlocksize(zoom) + 'px';
+        this.sizeHr = help.pah.getSizeHr(this.zoom);
     });
-    this.store.select(blocksSelectors.getYears)
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(years => {
-        // @TODO: Get each year separately, rather than conedeep each set each time (costly!).
-        this.years = cloneDeep(years);
-    });
-    // loading flag
+    // loading
     this.store.select(appSelectors.getLoading$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(loading => {
         this.appLoading = loading;
-      });
-    // years loading flag
+    });
+    // years loading
     this.store.select(blocksSelectors.getYearsLoading$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(yearsLoading => {
         this.yearsLoading = yearsLoading;
-      });
-    // is editing flag
+    });
+    // is editing
     this.store.select(blocksSelectors.getEditing$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(editing => {
         this.editing = editing;
-      });
+    });
     // active block id
     this.store.select(blocksSelectors.getActiveBlockId$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(activeBlockId => {
         this.activeBlockId = activeBlockId;
-      });
+    });
+  }
+
+
+  _initYears(): void {
+    this.store.select(blocksSelectors.getYears)
+      .pipe(filter(years => !!Object.keys(years) && Object.keys(years).length > 0), take(1))
+      .subscribe(years => {
+        this.years = cloneDeep(years);
+        this._getLatestYears();
+    });
+  }
+
+  // Get latest versions of each year.
+  _getLatestYears(): void {
+    Object.keys(this.years).forEach(yearNum => {
+      this.store.select(blocksSelectors.getYear$(parseInt(yearNum)))
+        .pipe(takeUntil(this._unsubscribe$))
+        .subscribe(year => {
+          this.years[parseInt(yearNum)] = cloneDeep(year);
+        })
+    });
   }
 
   // Used for first time app loading to jump to block.
   triggerJumpToBlock(): void {
     if (!this.jumpedToBlock) {
       setTimeout(()=> {
-        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
+        help.pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
         this.jumpedToBlock = true;
       }, 500);
     }
@@ -151,7 +172,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   cancelEdits() {
-    pah.confirmChanges() ? this.store.dispatch(blockActions.setEditing({ editing: false })): null;
+    help.pah.confirmChanges() ? this.store.dispatch(blockActions.setEditing({ editing: false })): null;
   }
 
   changeZoom(event: any) {
@@ -160,13 +181,13 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     this.store.dispatch(appActions.setZoom({ zoom }));
     // Update zoom in firestore setting too.
     // @TODO: Move to effect.
-    fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
+    help.fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
     this.sizeHrTemp = '';
   }
 
   setSizeText(event: any) {
     const zoom = event.detail.value += 0.5;
-    this.sizeHrTemp = pah.getSizeHr(zoom);
+    this.sizeHrTemp = help.pah.getSizeHr(zoom);
   }
 
   floorVal(zoom: number) {
@@ -176,13 +197,13 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   // Write a week change to db, get result, and write to store.
   saveWeekChange(yearNum: number, week: blocks.week): void {
     week.user = this.user;
-    const result$ = fsh.writeBlock$(this.user, yearNum, week, this.firestore, true);
+    const result$ = help.fsh.writeBlock$(this.user, yearNum, week, this.firestore, true);
     result$.pipe(take(1)).subscribe(res => {
       if (res && res.id) {
         week.id = res.id;
       }
       if (week.id) {
-        fsh.getWeek$(this.user, yearNum, week, this.firestore, true).subscribe((weekRes: blocks.week) => {
+        help.fsh.getWeek$(this.user, yearNum, week, this.firestore, true).subscribe((weekRes: blocks.week) => {
           this.store.dispatch(blockActions.updateWeek({ yearNum, week: weekRes }));
         });
       }

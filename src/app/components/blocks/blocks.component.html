@@ -16,7 +16,7 @@
         <div class="label">Year</div>
     </div>
 </div>
-<div id="blocks" *ngIf="hasValues(years)" [ngClass]="{'enabled': !appLoading,'disabled': appLoading}">
+<div id="blocks" [ngClass]="{'enabled': !appLoading,'disabled': appLoading}">
     <!-- <app-year-row
         *ngFor="let year of years"
         [zoom]="zoom"

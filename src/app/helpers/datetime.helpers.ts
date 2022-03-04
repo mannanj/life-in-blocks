@@ -1,9 +1,10 @@
 import { format, add, sub, set } from 'date-fns';
 import * as blocks from 'src/app/models/blocks.model';
+import { range } from 'lodash';
+import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
-export function getUserYears(): number[] {
-    const years: number[] = getYearsInRange(1990, 90);
-    return years;
+export function getUserYears(dobYear: number) {
+    return range(dobYear, dobYear + DEFAULTS.MAX_AGE);
 }
 
 export function getFirstWeekByYear(year: number) {
@@ -33,16 +34,6 @@ export function getMondayForWeek(targetDate = new Date()): Date {
 
 export function matchDayMonthYear(date1: Date, date2: Date) {
     return format(date1, 'MM/dd/yyyy') === format(date2, 'MM/dd/yyyy');
-}
-
-export function getYearsInRange(startYear: number, totalYears: number): number[] {
-    const targetYear = startYear + totalYears;
-    let years = [];
-    startYear = startYear || 1990;  
-    while ( startYear < targetYear ) {
-        years.push(startYear++);
-    }   
-    return years;
 }
 
 function getDaysElapsed(today: Date): number {
