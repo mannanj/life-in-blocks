@@ -15,7 +15,7 @@
 
         .label {
             position: absolute;
-            margin-left: calc(58% - 75px);
+            left: calc(50%);
             background-color: #fdfff5;
             padding: 0 10px;
         }
@@ -52,7 +52,7 @@
             background-color: #fdfff5;
             padding: 0 10px;
             transform: rotate(-90deg);
-            margin-top: calc(48vw - 100px);
+            top: 50%;
         }
         .arrow {
             font-size: 13px;
