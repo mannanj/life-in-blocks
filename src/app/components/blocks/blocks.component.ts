@@ -79,6 +79,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         if (this.zoom) {
           setTimeout(() =>{
             this.store.dispatch(appActions.setLoading({ loading: false }));
+            pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
             console.log('@TODO: blocks zoom 1s loading delay');
           }, 500);
         }
@@ -86,8 +87,6 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         this.size = pah.getBlocksize(zoom) + 'px';
         this.sizeHr = pah.getSizeHr(this.zoom);
     });
-    // week data
-    // @TODO: this should fetch once, then smartly only fetch each year on it's specfic changes.
     this.store.select(blocksSelectors.getYears)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(years => {
@@ -124,7 +123,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   triggerJumpToBlock(): void {
     if (!this.jumpedToBlock) {
       setTimeout(()=> {
-        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 100, y: 250});
+        pah.scrollToBlock(this.activeBlockId, 'blocks', {x: 450, y: 250});
         this.jumpedToBlock = true;
       }, 500);
     }

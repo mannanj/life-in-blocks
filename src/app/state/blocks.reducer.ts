@@ -5,6 +5,15 @@ import * as blockActions from './blocks.actions';
 import * as DEFAULTS from './DEFAULTS';
 
 export const initialState: blocks.blocksState = getDefault();
+
+function getDefault() {
+  return  {
+    years: {} as blocks.years,
+    yearsLoading: [] as number[],
+    editing: DEFAULTS.BLOCKS_EDITING,
+    activeBlockId: ''
+  };
+}
  
 export const blocksReducer = createReducer(
   initialState,
@@ -59,12 +68,3 @@ export const blocksReducer = createReducer(
     }
   })
 );
-
-function getDefault() {
-  return  {
-    years: {} as blocks.years,
-    yearsLoading: [] as number[],
-    editing: DEFAULTS.BLOCKS_EDITING,
-    activeBlockId: ''
-  };
-}

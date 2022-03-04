@@ -4,6 +4,15 @@ import * as app from 'src/app/models/app.model';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 export const initialState: app.appState = getDefault();
+
+function getDefault() {
+  return  {
+    user: DEFAULTS.NO_USER,
+    settings: DEFAULTS.NO_SETTINGS,
+    starting: DEFAULTS.APP_IS_STARTING,
+    loading: DEFAULTS.APP_IS_LOADING,
+  };
+}
  
 export const appReducer = createReducer(
   initialState,
@@ -50,12 +59,3 @@ export const appReducer = createReducer(
     }
   }),
 );
-
-function getDefault() {
-  return  {
-    user: DEFAULTS.NO_USER,
-    settings: DEFAULTS.NO_SETTINGS,
-    starting: DEFAULTS.APP_IS_STARTING,
-    loading: DEFAULTS.APP_IS_LOADING,
-  };
-}
