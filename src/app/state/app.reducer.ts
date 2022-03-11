@@ -16,7 +16,7 @@ function getDefault() {
  
 export const appReducer = createReducer(
   initialState,
-  on(appActions.setStarting, (state, { starting }) => {
+  on(appActions.setStart, (state, { starting }) => {
       return {
         ...state,
         starting

@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
 
-export const setStarting = createAction(
+export const setStart = createAction(
   '[App] Starting',
   props<{ starting: boolean }>()
 );

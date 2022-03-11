@@ -43,7 +43,7 @@ function mapSettings(val: any, user: string, year: number): app.settings {
     user: settings?.user ? settings.user : newSettings.user,
     dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
     zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
-    yearHasData: settings?.yearHasData && settings.yearHasData.length > 0 ? settings.yearHasData : newSettings.yearHasData,
+    yearsWithData: settings?.yearsWithData && settings.yearsWithData.length > 0 ? settings.yearsWithData : newSettings.yearsWithData,
   }
 }
 
