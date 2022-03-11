@@ -51,7 +51,6 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   ngOnInit(): void {
     this._getData();
-    // this._getData();
   }
 
   ngOnDestroy(): void {
@@ -63,9 +62,10 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     this.viewHasInit = true;
   }
 
-  // Get flags, user, settings, first instance of years, then update years data as it arrives from API.
+  // Gets our component data: flags, user / settings, and years data.
   _getData(): void {
     this._getFlags();
+    // We only want the first user and settings instance that isn't default.
     const user$ = this.store.select(appSelectors.getUser$).pipe(filter(user => user !== DEFAULTS.NO_USER), take(1));
     const settings$ = this.store.select(appSelectors.getSettings$).pipe(filter(settings => !isEqual(settings, DEFAULTS.NO_SETTINGS)), take(1));
     combineLatest([user$, settings$]).subscribe(val => {
@@ -75,8 +75,9 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     });
   }
 
+  // Gets and sets our flags such as app loading, years loading, editing mode
+  // active block id, and zoom level.
   _getFlags(): void {
-    // zoom
     this.store.select(appSelectors.getZoom$)
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe(zoom => {
@@ -92,44 +93,32 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
         this.size = help.pah.getBlocksize(zoom) + 'px';
         this.sizeHr = help.pah.getSizeHr(this.zoom);
     });
-    // loading
     this.store.select(appSelectors.getLoading$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(loading => {
-        this.appLoading = loading;
-    });
-    // years loading
+      .subscribe(loading => this.appLoading = loading);
     this.store.select(blocksSelectors.getYearsLoading$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(yearsLoading => {
-        this.yearsLoading = yearsLoading;
-    });
-    // is editing
+      .subscribe(yearsLoading => this.yearsLoading = yearsLoading);
     this.store.select(blocksSelectors.getEditing$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(editing => {
-        this.editing = editing;
-    });
-    // active block id
+      .subscribe(editing => this.editing = editing);
     this.store.select(blocksSelectors.getActiveBlockId$)
       .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(activeBlockId => {
-        this.activeBlockId = activeBlockId;
-    });
+      .subscribe(activeBlockId => this.activeBlockId = activeBlockId);
   }
 
-
+  // This should initially return an empty array for each year
+  // of user data, then subscribe to each year of data individually.
   _initYears(): void {
     this.store.select(blocksSelectors.getYears)
       .pipe(filter(years => !!Object.keys(years) && Object.keys(years).length > 0), take(1))
       .subscribe(years => {
         this.years = cloneDeep(years);
-        this._getLatestYears();
+        this._getEachYearData();
     });
   }
 
-  // Get latest versions of each year.
-  _getLatestYears(): void {
+  _getEachYearData(): void {
     Object.keys(this.years).forEach(yearNum => {
       this.store.select(blocksSelectors.getYear$(parseInt(yearNum)))
         .pipe(takeUntil(this._unsubscribe$))
@@ -149,50 +138,6 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     }
   }
 
-  viewAndAppReady(): boolean {
-    return this.viewHasInit && !this.appLoading && !!this.activeBlockId;
-  }
-
-  hasValues(obj: any): string[] {
-    return !!obj && Object.keys(obj).length > 0 ? Object.keys(obj) : [];
-  }
-
-  getWeeksForYear(yearNum: string) {
-    const weeksMap = this.years[parseInt(yearNum)] ? this.years[parseInt(yearNum)] : {};
-    let weeksArr = [] as blocks.week[];
-    if (Object.keys(weeksMap).length > 0) {
-      weeksArr = sortBy(values(weeksMap), ['num']);
-    }
-    return weeksArr;
-  }
-
-  strToNum(str: string) {
-    return parseInt(str) ? parseInt(str) : 0;
-  }
-
-  cancelEdits() {
-    help.pah.confirmChanges() ? this.store.dispatch(blockActions.setEditing({ editing: false })): null;
-  }
-
-  changeZoom(event: any) {
-    const zoom = event.detail.value += 0.5;
-    this.store.dispatch(appActions.setLoading({ loading: true }));
-    this.store.dispatch(appActions.setZoom({ zoom }));
-    // Update zoom in firestore setting too.
-    // @TODO: Move to effect.
-    help.fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
-    this.sizeHrTemp = '';
-  }
-
-  setSizeText(event: any) {
-    const zoom = event.detail.value += 0.5;
-    this.sizeHrTemp = help.pah.getSizeHr(zoom);
-  }
-
-  floorVal(zoom: number) {
-    return Math.floor(zoom);
-  }
-
   // Write a week change to db, get result, and write to store.
   saveWeekChange(yearNum: number, week: blocks.week): void {
     week.user = this.user;
@@ -208,4 +153,50 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
       }
     })
   }
+
+  setSizeText(event: any) {
+    const zoom = event.detail.value += 0.5;
+    this.sizeHrTemp = help.pah.getSizeHr(zoom);
+  }
+
+  changeZoom(event: any) {
+    const zoom = event.detail.value += 0.5;
+    this.store.dispatch(appActions.setLoading({ loading: true }));
+    this.store.dispatch(appActions.setZoom({ zoom }));
+    // Update zoom in firestore setting too.
+    // @TODO: Move to effect.
+    help.fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
+    this.sizeHrTemp = '';
+  }
+
+  cancelEdits() {
+    help.pah.confirmChanges() ? this.store.dispatch(blockActions.setEditing({ editing: false })): null;
+  }
+
+  getWeeksForYear(yearNum: string) {
+    const weeksMap = this.years[parseInt(yearNum)] ? this.years[parseInt(yearNum)] : {};
+    let weeksArr = [] as blocks.week[];
+    if (Object.keys(weeksMap).length > 0) {
+      weeksArr = sortBy(values(weeksMap), ['num']);
+    }
+    return weeksArr;
+  }
+
+  // Helpers
+  viewAndAppReady(): boolean {
+    return this.viewHasInit && !this.appLoading && !!this.activeBlockId;
+  }
+
+  hasValues(obj: any): string[] {
+    return !!obj && Object.keys(obj).length > 0 ? Object.keys(obj) : [];
+  }
+
+  strToNum(str: string) {
+    return parseInt(str) ? parseInt(str) : 0;
+  }
+
+  floorVal(zoom: number) {
+    return Math.floor(zoom);
+  }
+
 }

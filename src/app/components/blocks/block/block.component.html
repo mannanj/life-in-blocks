@@ -1,4 +1,10 @@
 <!-- @TODO: Show year if hovered and right size? -->
+<!-- @TODO: This whole size thing needs refactoring, as I work to support these sizes:
+        1. The minimal (just block) size which can't hold more than 1-3 words in it.
+        2. The next size which has a few more words
+        3. A medium size: has a header with date
+        4. The full mode: has header with full view. (similar to pop-up view.)
+-->
 <div 
     *ngIf="year && getObjectKeys(week)"
     (mouseenter)="setHovered(week, true)"
@@ -18,6 +24,7 @@
         <div>
             {{ (zoom >= 1.50 && week?.date) ? (week.date | date:'MMM  d') : '' }}
         </div>
+        <!-- Star-icon. -->
         <div>
             <svg *ngIf="week?.now" height="10px" width="10px" version="1.1" viewBox="0 0 55.867 55.867">
                 <path stroke="black" stroke-width="5" fill="#ffd700" d="M55.818,21.578c-0.118-0.362-0.431-0.626-0.808-0.681L36.92,18.268L28.83,1.876c-0.168-0.342-0.516-0.558-0.896-0.558
@@ -29,6 +36,7 @@
         </div>
     </div>
     <!-- @TODO: replace with ng-content/ng-template style thing. -->
+    <!-- @TODO: Support phone which does not have hover, so must still be able to create for +new weeks. -->
     <div *ngIf="hasValues(week.entries)" class="body" [ngClass]="{'past-opacity': !(week?.hovered) && week?.passed, 'body-z1' : zoom < 2.50, 'body-z2' : zoom <= 5.50, 'body-z3' : zoom === 6.50}">
         <!-- @TODO: Scrolling right-to-left effect, couldn't quite crack it 2/10/22. -->
         <div *ngFor="let entry of week.entries" class="entry trim">
