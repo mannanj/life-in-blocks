@@ -88,9 +88,7 @@ export class AppComponent {
       if (!!yearsInDb.find(yearN => yearN === yearNum)) {
         this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
         help.fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
-          blocks.forEach(block => {
-            this.store.dispatch(blockActions.updateWeek({ yearNum, week: block }));
-          });
+          blocks.forEach(block => this.store.dispatch(blockActions.updateWeek({ yearNum, week: block })));
           this.store.dispatch(blockActions.setYearLoading({ loading: false, yearNum}));
         })
       }
