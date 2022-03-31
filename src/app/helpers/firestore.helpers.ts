@@ -1,7 +1,8 @@
 import { AngularFirestore, AngularFirestoreDocument } from "@angular/fire/compat/firestore";
-import { from, map, Observable, of, take, tap } from "rxjs";
+import { catchError, from, map, Observable, of, take, tap } from "rxjs";
 import * as cry from 'src/app/helpers/cryptography.helpers';
 import * as bh from 'src/app/helpers/blocks.helpers';
+import * as err from 'src/app/helpers/errors.helpers';
 import * as app from 'src/app/models/app.model';
 import * as blocks from "../models/blocks.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
@@ -20,6 +21,7 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
   const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>)
     .pipe(
       take(1),
+      catchError(error => err.handleFsError(error, 'settings')),
       map(val => {
         if (!val || val.length <= 0) {
           const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(user, year);
@@ -46,6 +48,7 @@ function mapSettings(val: any, user: string, year: number): app.settings {
     yearsWithData: settings?.yearsWithData && settings.yearsWithData.length > 0 ? settings.yearsWithData : newSettings.yearsWithData,
   }
 }
+
 
 // @TODO: how do I account for successful writes to firestore, and getting that data back? do I make a get after this?
 export function writeBlock$(user: string, year: number, week: blocks.week, fs: AngularFirestore, debug?: boolean): Observable<any> {
@@ -93,20 +96,24 @@ export function getWeeks$(user: string, year: number, fs: AngularFirestore, debu
   let result$: Observable<any>;
   logDescriptor = `Getting blocks for ${collection}`;
   result$ = fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<blocks.week[]>;
-  result$ = result$.pipe(map(blocks => {
-    blocks.forEach((block: any) => {
-      block.date = block.date.toDate();
-      block.entries = block.entries.map((entry: any) => {
-        return {
-          ...entry,
-          created: entry.created.toDate(),
-          edited: entry.edited.toDate()
-        }
+  result$ = result$.pipe(
+    take(1),
+    catchError(error => err.handleFsError(error, 'blocks')),
+    map(blocks => {
+      blocks.forEach((block: any) => {
+        block.date = block.date.toDate();
+        block.entries = block.entries.map((entry: any) => {
+          return {
+            ...entry,
+            created: entry.created.toDate(),
+            edited: entry.edited.toDate()
+          }
+        });
+        bh.setFlags(block);
       });
-      bh.setFlags(block);
-    });
-    return blocks;
-  }));
+      return blocks;
+    })
+  );
   debug ? console.log(`${logDescriptor}: `) : null;
   return result$;
 }

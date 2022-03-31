@@ -58,11 +58,11 @@ export class AppComponent {
         const dobYear = parseInt(format(settings.dob, 'yyyy'));
         const yearRange = help.dth.getUserYears(dobYear);
         this.store.dispatch(blockActions.initYears({ yearRange }));
-        this.setBlockData(user, settings, yearRange);
+        this.retrieveBlockData(user, settings, yearRange);
       });
     }
 
-    setBlockData(user: string, settings: app.settings, yearRange: number[]): void {
+    retrieveBlockData(user: string, settings: app.settings, yearRange: number[]): void {
       const thisWeek = help.dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
       const yearsInDb = settings.yearsWithData;
@@ -71,7 +71,7 @@ export class AppComponent {
         let year = cloneDeep(DEFAULTS.GENERATE_YEAR(yearNum));
         this.store.dispatch(blockActions.setYear({ year, yearNum }));
         yearNum === thisYear ? this.setActiveBlock(yearNum, year, thisWeek) : null;
-        this.retriveBlockData(yearNum, yearsInDb);
+        this.fetchBlocksByYear(yearNum, yearsInDb);
       });
       // Once all year blocks are done loading, mark the app as done loading too.
       // In reality, this should be marked as true when the PAGE itself is ready to be viewed.
@@ -84,7 +84,7 @@ export class AppComponent {
 
     // Retrieves values from db, and sets these values in store.
     // Manages a loading flag set at the year level.
-    retriveBlockData(yearNum: number, yearsInDb: number[]): void {
+    fetchBlocksByYear(yearNum: number, yearsInDb: number[]): void {
       if (!!yearsInDb.find(yearN => yearN === yearNum)) {
         this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
         help.fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
