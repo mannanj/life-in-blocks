@@ -4,43 +4,43 @@
     <div id="login" *ngIf="mode === LOGIN">
         <div>
             <label for="email">Email </label>
-            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email">
+            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email" required>
         </div>
         <div>
             <label for="password">Password </label>
-            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password">
+            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password" required>
         </div>
     </div>
     <div id="signup" *ngIf="mode === SIGNUP">
         <div>
             <label for="fname">Name </label>
-            <input id="fname" type="text" placeholder="First name" [(ngModel)]="fname">
+            <input id="fname" type="text" placeholder="First name" [(ngModel)]="fname" required>
         </div>
         <div>
             <label for="lname"></label>
-            <input id="lname" type="text" placeholder="Last name" [(ngModel)]="lname">
+            <input id="lname" type="text" placeholder="Last name" [(ngModel)]="lname" required>
         </div>
         <div>
-            <label for="dob">Date of Birth</label>
-            <input id="dob" type="date" placeholder="DOB" [(ngModel)]="dob">
+            <label for="dob">Birthdate</label>
+            <input id="dob" type="date" placeholder="DOB" [(ngModel)]="dob" required>
         </div>
         <div>
             <label for="email">Email </label>
-            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email">
+            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email" required>
         </div>
         <div>
             <label for="password">Password </label>
-            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password">
+            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password" required>
         </div>
         <div>
-            <label for="password2" class="font-small"></label>
-            <input id="password2" type="password" placeholder="Confirm password" [(ngModel)]="password">
+            <label for="password2"></label>
+            <input id="password2" type="password" placeholder="Confirm password" [(ngModel)]="cpassword" required>
         </div>
     </div>
     <div id="submit-area">
         <span *ngIf="mode === LOGIN" class="link" (click)="changeMode(SIGNUP)">Sign up instead?</span>
         <span *ngIf="mode === SIGNUP" class="link" (click)="changeMode(LOGIN)">Log in instead?</span>
-        <button *ngIf="mode === LOGIN" (click)="login()">Log in</button>
-        <button *ngIf="mode === SIGNUP" (click)="signup()">Sign up</button>
+        <button *ngIf="mode === LOGIN" (click)="login()" [ngClass]="{'disabled':  !loginValid()}" type="submit">Log in</button>
+        <button *ngIf="mode === SIGNUP" (click)="signup()" [ngClass]="{'disabled':  !signupValid()}" type="submit">Sign up</button>
     </div>
 </div>

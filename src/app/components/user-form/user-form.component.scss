@@ -27,17 +27,6 @@
     margin-top: 10px;
 }
 
-label {
-    display: inline-block;
-    margin-right: 10px;
-    width: 75px;
-}
-.font-small {
-    font-size: 9px;
-}
-input {
-    width: 200px;
-}
 
 #submit-area {
     display: flex;
@@ -51,4 +40,20 @@ input {
         cursor: pointer;
         font-size: 11px;
     }
+}
+
+label {
+    display: inline-block;
+    margin-right: 10px;
+    width: 65px;
+}
+input {
+    width: 200px;
+}
+button {
+    width: 75px;
+}
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
 }
