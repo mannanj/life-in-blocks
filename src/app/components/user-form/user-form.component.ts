@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+// Store
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
+import * as appActions from 'src/app/state/app.actions';
+import * as appSelectors from 'src/app/state/app.selectors';
+
 enum Modes {
   LOGIN = 'LOGIN',
   SIGNUP = 'SIGNUP',
@@ -23,11 +29,24 @@ export class UserFormComponent implements OnInit {
   fname = '';
   lname = '';
   dob!: Date;
+  appLoading = false;
+
+  // Flags
+  private _unsubscribe$ = new Subject<void>();
 
 
-  constructor() { }
+  constructor(
+    private store: Store) { }
 
   ngOnInit(): void {
+    this.store.select(appSelectors.getLoading$)
+    .pipe(takeUntil(this._unsubscribe$))
+    .subscribe(loading => this.appLoading = loading);
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete()
   }
 
   changeMode(mode: Modes) {
@@ -35,11 +54,13 @@ export class UserFormComponent implements OnInit {
   }
 
   login() {
-    console.log('loggingin!');
+    console.log('@TODO: Implement logging in!!');
+    this.store.dispatch(appActions.setLoading({loading: true}));
   }
 
   signup() {
-    console.log('signing up!');
+    console.log('@TODO: Implement signing up!');
+    this.store.dispatch(appActions.setLoading({loading: true}));
   }
 
   loginValid(): boolean {
