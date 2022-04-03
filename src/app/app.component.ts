@@ -13,6 +13,7 @@ import * as blockActions from 'src/app/state/blocks.actions';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as appSelectors from 'src/app/state/app.selectors';
 import * as appActions from 'src/app/state/app.actions';
+import * as userActions from 'src/app/state/user.actions';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
 
@@ -23,7 +24,7 @@ import { cloneDeep } from 'lodash';
 })
 export class AppComponent {
   title = 'life-in-blocks';
-  user = '';
+  account = '';
   loading$: Observable<boolean> = this.store.select(appSelectors.getLoading$);
 
   constructor(
@@ -42,27 +43,36 @@ export class AppComponent {
       this.store.dispatch(appActions.setStart({starting: true}));
       this.store.dispatch(appActions.setLoading({loading: true}));
       // @TODO: This is a concat operation. use concat pipe.
-      help.fsh.getUser$().pipe(take(1)).subscribe(user => {
-        this.user = user;
-        this.store.dispatch(appActions.setUser({user}));
-        this.retrieveSettings(user);
+      this.store.dispatch(userActions.setLoading({loading: true}));
+      help.fsh.getUserAccount$().pipe(take(1)).subscribe(account => {
+        this.account = account;
+        this.store.dispatch(userActions.setAccount({account}));
+        this.store.dispatch(userActions.setLoading({loading: false}));
+        if (account !== DEFAULTS.NO_ACCOUNT) {
+          this.store.dispatch(userActions.setLoggedIn({loggedIn: true}));
+          this.retrieveSettings(account);
+        } else {
+          this.store.dispatch(userActions.setLoggedIn({loggedIn: false}));
+          this.store.dispatch(appActions.setStart({ starting: false }));
+          this.store.dispatch(appActions.setLoading({ loading: false }));
+        }
       });
     }
 
     // Usually I use get<MethodName> as a convention
     // but retrieve<> symbolizes touching a server more clearly.
-    retrieveSettings(user: string): void {
-      help.fsh.getSettings$(user, this.firestore, true).pipe(take(1)).subscribe(settings => {
+    retrieveSettings(account: any): void {
+      help.fsh.getSettings$(account, this.firestore, true).pipe(take(1)).subscribe(settings => {
         this.store.dispatch(appActions.setSettings({settings}));
         this.store.dispatch(appActions.setStart({ starting: false }));
         const dobYear = parseInt(format(settings.dob, 'yyyy'));
         const yearRange = help.dth.getUserYears(dobYear);
         this.store.dispatch(blockActions.initYears({ yearRange }));
-        this.retrieveBlockData(user, settings, yearRange);
+        this.retrieveBlockData(account, settings, yearRange);
       });
     }
 
-    retrieveBlockData(user: string, settings: app.settings, yearRange: number[]): void {
+    retrieveBlockData(account: any, settings: app.settings, yearRange: number[]): void {
       const thisWeek = help.dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
       const yearsInDb = settings.yearsWithData;
@@ -87,7 +97,7 @@ export class AppComponent {
     fetchBlocksByYear(yearNum: number, yearsInDb: number[]): void {
       if (!!yearsInDb.find(yearN => yearN === yearNum)) {
         this.store.dispatch(blockActions.setYearLoading({ loading: true, yearNum}));
-        help.fsh.getWeeks$(this.user, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
+        help.fsh.getWeeks$(this.account, yearNum, this.firestore, true).subscribe((blocks: blocks.week[]) => {
           blocks.forEach(block => this.store.dispatch(blockActions.updateWeek({ yearNum, week: block })));
           this.store.dispatch(blockActions.setYearLoading({ loading: false, yearNum}));
         })

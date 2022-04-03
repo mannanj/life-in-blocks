@@ -7,7 +7,6 @@ export const initialState: app.appState = getDefault();
 
 function getDefault() {
   return  {
-    user: DEFAULTS.NO_USER,
     settings: DEFAULTS.NO_SETTINGS,
     starting: DEFAULTS.APP_IS_STARTING,
     loading: DEFAULTS.APP_IS_LOADING,
@@ -26,18 +25,6 @@ export const appReducer = createReducer(
       return {
         ...state,
         loading
-      }
-  }),
-  on(appActions.setUser, (state, { user }) => {
-      return {
-        ...state,
-        user
-      }
-  }),
-  on(appActions.setSettings, (state, { settings }) => {
-      return {
-        ...state,
-        settings
       }
   }),
   on(appActions.setDob, (state, { dob }) => {

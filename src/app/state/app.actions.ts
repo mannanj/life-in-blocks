@@ -11,11 +11,6 @@ export const setLoading = createAction(
   props<{ loading: boolean }>()
 );
 
-export const setUser = createAction(
-  '[App] User',
-  props<{ user: string }>()
-);
-
 export const setDob = createAction(
   '[App] DOB',
   props<{ dob: Date }>()
@@ -25,7 +20,6 @@ export const setSettings = createAction(
   '[App] Settings',
   props<{ settings: app.settings }>()
 );
-
 
 // Zoom
 export const setZoom = createAction(

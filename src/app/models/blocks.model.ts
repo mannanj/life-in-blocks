@@ -6,7 +6,7 @@ export interface blocksState {
 }
 export interface base {
     id: string;
-    user: string;
+    account: any;
     date: any;
     num: number;
     entries: entry[];

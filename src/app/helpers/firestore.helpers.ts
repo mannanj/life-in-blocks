@@ -9,9 +9,9 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 import { format } from "date-fns";
 
 
-export function getUser$(): Observable<string> {
-  const DEFAULT_USER$ = of('mannanj');
-  return DEFAULT_USER$;
+export function getUserAccount$(): Observable<any> {
+  const NO_ACCOUNT$ = of(DEFAULTS.NO_USER.account);
+  return NO_ACCOUNT$;
 }
 
 export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
@@ -42,7 +42,7 @@ function mapSettings(val: any, user: string, year: number): app.settings {
   // wrote to db, we use defaults here for ones that don't exist.
   return {
     id: settings?.id ? settings.id : newSettings.id,
-    user: settings?.user ? settings.user : newSettings.user,
+    account: settings?.account ? settings.account : newSettings.account,
     dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
     zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
     yearsWithData: settings?.yearsWithData && settings.yearsWithData.length > 0 ? settings.yearsWithData : newSettings.yearsWithData,

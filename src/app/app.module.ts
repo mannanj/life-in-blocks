@@ -25,8 +25,10 @@ import { blocksReducer } from './state/blocks.reducer';
 import { BlocksEffects } from './state/blocks.effects';
 import { BlockComponent } from './components/blocks/block/block.component';
 import { appReducer } from './state/app.reducer';
+import { userReducer } from './state/user.reducer';
 import { YearRowComponent } from './components/blocks/year-row/year-row.component';
 import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { HeaderDropdownComponent } from './components/header-dropdown/header-dro
     BlocksComponent,
     BlockComponent,
     YearRowComponent,
-    HeaderDropdownComponent
+    HeaderDropdownComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ import { HeaderDropdownComponent } from './components/header-dropdown/header-dro
     AngularFireModule.initializeApp(environment.firebase), // legacy firestore,
     StoreModule.forRoot({
       app: appReducer,
+      user: userReducer,
       blocks: blocksReducer,
     }),
     StoreDevtoolsModule.instrument({

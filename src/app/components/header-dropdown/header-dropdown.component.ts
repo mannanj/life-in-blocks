@@ -14,7 +14,7 @@ import { isEqual } from 'date-fns';
   styleUrls: ['./header-dropdown.component.scss']
 })
 export class HeaderDropdownComponent implements OnInit, OnDestroy {
-  @Input() user!: string;
+  @Input() account!: any;
   @Input() loading!: boolean | null;
   dob!: Date;
   hovered = false;
@@ -105,7 +105,7 @@ export class HeaderDropdownComponent implements OnInit, OnDestroy {
     if (!isEqual(dob, this.dob)) {
       this.store.dispatch(appActions.setDob({dob}));
       this.store.select(appSelectors.getSettings$).pipe(take(1)).subscribe(settings => {
-        help.fsh.setDob(this.user, dob, settings, this.firestore, true);
+        help.fsh.setDob(this.account, dob, settings, this.firestore, true);
         this.closeCalendar();
       });
     }

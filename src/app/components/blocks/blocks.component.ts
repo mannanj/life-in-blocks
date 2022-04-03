@@ -9,6 +9,7 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 // State
 import { Store } from '@ngrx/store';
 import * as appSelectors from 'src/app/state/app.selectors';
+import * as userSelectors from 'src/app/state/user.selectors';
 import * as blocksSelectors from 'src/app/state/blocks.selectors';
 import * as appActions from 'src/app/state/app.actions';
 import * as blockActions from 'src/app/state/blocks.actions';
@@ -23,7 +24,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./blocks.component.scss']
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
-  user = '';
+  account = '';
   years!: blocks.years;
   activeBlockId!:string;
   zoom!:number;
@@ -66,10 +67,10 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   _getData(): void {
     this._getFlags();
     // We only want the first user and settings instance that isn't default.
-    const user$ = this.store.select(appSelectors.getUser$).pipe(filter(user => user !== DEFAULTS.NO_USER), take(1));
+    const userAccount$ = this.store.select(userSelectors.getAccount).pipe(filter(user => user !== DEFAULTS.NO_ACCOUNT), take(1));
     const settings$ = this.store.select(appSelectors.getSettings$).pipe(filter(settings => !isEqual(settings, DEFAULTS.NO_SETTINGS)), take(1));
-    combineLatest([user$, settings$]).subscribe(val => {
-      this.user = val[0];
+    combineLatest([userAccount$, settings$]).subscribe(val => {
+      this.account = val[0];
       this.settings = val[1];
       this._initYears();
     });
@@ -140,14 +141,14 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   // Write a week change to db, get result, and write to store.
   saveWeekChange(yearNum: number, week: blocks.week): void {
-    week.user = this.user;
-    const result$ = help.fsh.writeBlock$(this.user, yearNum, week, this.firestore, true);
+    week.account = this.account;
+    const result$ = help.fsh.writeBlock$(this.account, yearNum, week, this.firestore, true);
     result$.pipe(take(1)).subscribe(res => {
       if (res && res.id) {
         week.id = res.id;
       }
       if (week.id) {
-        help.fsh.getWeek$(this.user, yearNum, week, this.firestore, true).subscribe((weekRes: blocks.week) => {
+        help.fsh.getWeek$(this.account, yearNum, week, this.firestore, true).subscribe((weekRes: blocks.week) => {
           this.store.dispatch(blockActions.updateWeek({ yearNum, week: weekRes }));
         });
       }
@@ -165,7 +166,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
     this.store.dispatch(appActions.setZoom({ zoom }));
     // Update zoom in firestore setting too.
     // @TODO: Move to effect.
-    help.fsh.setZoom(this.user, zoom, this.settings, this.firestore, true);
+    help.fsh.setZoom(this.account, zoom, this.settings, this.firestore, true);
     this.sizeHrTemp = '';
   }
 

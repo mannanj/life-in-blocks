@@ -1,12 +1,18 @@
 import { add } from 'date-fns';
 import * as app from 'src/app/models/app.model';
+import * as user from 'src/app/models/user.model';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
 
-export const NO_USER = 'NO_USER';
+export const NO_ACCOUNT = 'NO_ACCOUNT';
+export const NO_USER: user.userState = {
+  account: NO_ACCOUNT,
+  loggedIn: false,
+  loading: false
+}
 export const NO_SETTINGS: app.settings  = {
   id: '',
-  user: NO_USER,
+  account: NO_ACCOUNT,
   dob: new Date(),
   zoom: 3.50,
   yearsWithData: [] as number[],
@@ -23,7 +29,7 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
   for (let i = 0; i < 52; i++) {
     year[i+1] = {
       id: '',
-      user: NO_USER,
+      account: NO_ACCOUNT,
       date: add(firstWeek, { weeks: i}),
       num: i + 1,
       entries: [] as blocks.entry[],
@@ -45,10 +51,10 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
   return year;
 }
 
-export function NEW_SETTINGS(user: string, year: number): app.settings {
+export function NEW_SETTINGS(account: any, year: number): app.settings {
   return {
     id: '',
-    user,
+    account,
     dob: new Date(),
     zoom: 3.5,
     yearsWithData: [year]
