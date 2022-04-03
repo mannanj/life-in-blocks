@@ -1,6 +1,6 @@
 <div id="page">
   <span id="header" [ngClass]="{'enabled': !(loading$ | async),'disabled': loading$ | async}">Life In Blocks</span>
-  <app-header-dropdown [account]="account" [loading]="(loading$ | async)"></app-header-dropdown>
+  <app-header-dropdown *ngIf="!!account" [account]="account" [loading]="(loading$ | async)"></app-header-dropdown>
   <div id="main">
     <router-outlet></router-outlet>
   </div>

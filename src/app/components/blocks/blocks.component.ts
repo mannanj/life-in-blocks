@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, filter, Subject, take, takeUntil } from 'rxjs';
 import * as app from 'src/app/models/app.model';
+import * as user from 'src/app/models/user.model';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
 import { cloneDeep, isEqual, sortBy, values } from 'lodash';
@@ -24,7 +25,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
   styleUrls: ['./blocks.component.scss']
 })
 export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
-  account = '';
+  account!: user.account;
   years!: blocks.years;
   activeBlockId!:string;
   zoom!:number;
@@ -67,9 +68,9 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
   _getData(): void {
     this._getFlags();
     // We only want the first user and settings instance that isn't default.
-    const userAccount$ = this.store.select(userSelectors.getAccount).pipe(filter(user => user !== DEFAULTS.NO_ACCOUNT), take(1));
+    const account$ = this.store.select(userSelectors.getAccount).pipe(filter(user => user !== DEFAULTS.NO_ACCOUNT), take(1));
     const settings$ = this.store.select(appSelectors.getSettings$).pipe(filter(settings => !isEqual(settings, DEFAULTS.NO_SETTINGS)), take(1));
-    combineLatest([userAccount$, settings$]).subscribe(val => {
+    combineLatest([account$, settings$]).subscribe(val => {
       this.account = val[0];
       this.settings = val[1];
       this._initYears();
@@ -141,7 +142,7 @@ export class BlocksComponent implements OnInit, OnDestroy, AfterViewInit{
 
   // Write a week change to db, get result, and write to store.
   saveWeekChange(yearNum: number, week: blocks.week): void {
-    week.account = this.account;
+    week.accountId = this.account.id;
     const result$ = help.fsh.writeBlock$(this.account, yearNum, week, this.firestore, true);
     result$.pipe(take(1)).subscribe(res => {
       if (res && res.id) {

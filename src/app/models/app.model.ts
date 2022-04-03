@@ -6,7 +6,7 @@ export interface appState {
 
 export interface settings {
     id: string;
-    account: any;
+    accountId: string;
     dob: Date;
     zoom: number;
     yearsWithData: number[];

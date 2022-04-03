@@ -1,5 +1,12 @@
 export interface userState {
-    account: any;
+    account: account;
     loggedIn: boolean;
     loading: boolean;
+}
+
+export interface account {
+    id: string;
+    firstName: string;
+    lastName: string;
+    dob: Date; 
 }

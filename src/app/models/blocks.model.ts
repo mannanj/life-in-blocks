@@ -1,3 +1,4 @@
+import * as user from 'src/app/models/user.model';
 export interface blocksState {
     years: years;
     yearsLoading: number[]; // track which years are still loading.
@@ -6,7 +7,7 @@ export interface blocksState {
 }
 export interface base {
     id: string;
-    account: any;
+    accountId: string;
     date: any;
     num: number;
     entries: entry[];

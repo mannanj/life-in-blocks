@@ -4,7 +4,12 @@ import * as user from 'src/app/models/user.model';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
 
-export const NO_ACCOUNT = 'NO_ACCOUNT';
+export const NO_ACCOUNT: user.account = {
+  id: 'NO_ACCOUNT',
+  firstName: '',
+  lastName: '',
+  dob: new Date()
+};
 export const NO_USER: user.userState = {
   account: NO_ACCOUNT,
   loggedIn: false,
@@ -12,7 +17,7 @@ export const NO_USER: user.userState = {
 }
 export const NO_SETTINGS: app.settings  = {
   id: '',
-  account: NO_ACCOUNT,
+  accountId: NO_ACCOUNT.id,
   dob: new Date(),
   zoom: 3.50,
   yearsWithData: [] as number[],
@@ -29,7 +34,7 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
   for (let i = 0; i < 52; i++) {
     year[i+1] = {
       id: '',
-      account: NO_ACCOUNT,
+      accountId: NO_ACCOUNT.id,
       date: add(firstWeek, { weeks: i}),
       num: i + 1,
       entries: [] as blocks.entry[],
@@ -54,21 +59,9 @@ export function GENERATE_YEAR(yearNum: number): blocks.year {
 export function NEW_SETTINGS(account: any, year: number): app.settings {
   return {
     id: '',
-    account,
+    accountId: account,
     dob: new Date(),
     zoom: 3.5,
     yearsWithData: [year]
   };
 }
-
-// export function getFirstBlock(user: string, year: number) {
-//   const date = help.dth.getMondayForWeek(new Date());
-//   const weeks = WEEKS_FOR_YEAR(year);
-//   console.log('date to find', date);
-//   const firstBlock = weeks.find(week => isEqual(week.date, date));
-//   console.log('first block!', firstBlock);
-//   return {
-//     ...firstBlock,
-//     user,
-//   }
-// }

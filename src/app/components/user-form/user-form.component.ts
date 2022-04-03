@@ -18,7 +18,8 @@ export class UserFormComponent implements OnInit {
   password = '';
   fname = '';
   lname = '';
-  dob = new Date().toISOString().substring(0,10);
+  // dob = new Date().toISOString().substring(0,10);
+  dob!:Date;
 
 
   constructor() { }

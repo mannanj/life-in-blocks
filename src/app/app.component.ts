@@ -7,6 +7,7 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 // State
 import { Store } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
+import * as user from 'src/app/models/user.model';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
 import * as blockActions from 'src/app/state/blocks.actions';
@@ -25,7 +26,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'life-in-blocks';
-  account = '';
+  account!: user.account;
   loading$: Observable<boolean> = this.store.select(appSelectors.getLoading$);
 
   constructor(
@@ -65,7 +66,7 @@ export class AppComponent {
 
     // Usually I use get<MethodName> as a convention
     // but retrieve<> symbolizes touching a server more clearly.
-    retrieveSettings(account: any): void {
+    retrieveSettings(account: user.account): void {
       help.fsh.getSettings$(account, this.firestore, true).pipe(take(1)).subscribe(settings => {
         this.store.dispatch(appActions.setSettings({settings}));
         this.store.dispatch(appActions.setStart({ starting: false }));
@@ -76,7 +77,7 @@ export class AppComponent {
       });
     }
 
-    retrieveBlockData(account: any, settings: app.settings, yearRange: number[]): void {
+    retrieveBlockData(account: user.account, settings: app.settings, yearRange: number[]): void {
       const thisWeek = help.dth.getMondayForWeek(new Date());
       const thisYear = parseInt(format(thisWeek, 'y'));
       const yearsInDb = settings.yearsWithData;

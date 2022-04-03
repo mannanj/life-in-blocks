@@ -4,19 +4,20 @@ import * as cry from 'src/app/helpers/cryptography.helpers';
 import * as bh from 'src/app/helpers/blocks.helpers';
 import * as err from 'src/app/helpers/errors.helpers';
 import * as app from 'src/app/models/app.model';
+import * as user from "../models/user.model";
 import * as blocks from "../models/blocks.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 import { format } from "date-fns";
 
 
-export function getUserAccount$(): Observable<any> {
+export function getUserAccount$(): Observable<user.account> {
   const NO_ACCOUNT$ = of(DEFAULTS.NO_USER.account);
   return NO_ACCOUNT$;
 }
 
-export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
+export function getSettings$(account: user.account, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {
   const year = parseInt(format(new Date(), 'yyyy'));
-  const collection = `${user}_settings`;
+  const collection = `${account.id}_settings`;
   const logDescriptor = `Firestore pinged for ${collection}`;
   const obs$ = (fs.collection(collection).valueChanges({ idField: 'id' }) as Observable<any>)
     .pipe(
@@ -24,25 +25,25 @@ export function getSettings$(user: string, fs: AngularFirestore, debug?: boolean
       catchError(error => err.handleFsError(error, 'settings')),
       map(val => {
         if (!val || val.length <= 0) {
-          const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(user, year);
+          const newSettings: app.settings = DEFAULTS.NEW_SETTINGS(account, year);
           fs.collection(collection).add(newSettings);
           debug ? console.log(`Firestore written new value to ${collection}: `, newSettings) : null;
           return newSettings;
         } else {
-          return mapSettings(val, user, year);
+          return mapSettings(val, account, year);
         }
       }));
   return obs$;
 }
 
-function mapSettings(val: any, user: string, year: number): app.settings {
+function mapSettings(val: any, account: user.account, year: number): app.settings {
   const settings = val[0];
-  const newSettings = DEFAULTS.NEW_SETTINGS(user, year);
+  const newSettings = DEFAULTS.NEW_SETTINGS(account, year);
   // because we may have added new settings since the last time user
   // wrote to db, we use defaults here for ones that don't exist.
   return {
     id: settings?.id ? settings.id : newSettings.id,
-    account: settings?.account ? settings.account : newSettings.account,
+    accountId: settings?.accountId ? settings.accountId : newSettings.accountId,
     dob: settings?.dob ? settings.dob.toDate() : newSettings.dob,
     zoom: settings?.zoom ? settings.zoom : newSettings.zoom,
     yearsWithData: settings?.yearsWithData && settings.yearsWithData.length > 0 ? settings.yearsWithData : newSettings.yearsWithData,
@@ -51,8 +52,8 @@ function mapSettings(val: any, user: string, year: number): app.settings {
 
 
 // @TODO: how do I account for successful writes to firestore, and getting that data back? do I make a get after this?
-export function writeBlock$(user: string, year: number, week: blocks.week, fs: AngularFirestore, debug?: boolean): Observable<any> {
-  const collection = `${user}_${year}_weeks`;
+export function writeBlock$(account: user.account, year: number, week: blocks.week, fs: AngularFirestore, debug?: boolean): Observable<any> {
+  const collection = `${account.id}_${year}_weeks`;
   let logDescriptor;
   let result$: Observable<any>;
   if (!!week.id) {
@@ -68,8 +69,8 @@ export function writeBlock$(user: string, year: number, week: blocks.week, fs: A
   return result$;
 }
 
-export function getWeek$(user: string, year: number, week: blocks.week, fs: AngularFirestore, debug?: boolean): Observable<blocks.week> {
-  const collection = `${user}_${year}_weeks`;
+export function getWeek$(account: user.account, year: number, week: blocks.week, fs: AngularFirestore, debug?: boolean): Observable<blocks.week> {
+  const collection = `${account.id}_${year}_weeks`;
   let logDescriptor;
   let result$: Observable<any>;
   logDescriptor = `Getting block for ${collection}`;
@@ -90,8 +91,8 @@ export function getWeek$(user: string, year: number, week: blocks.week, fs: Angu
   return result$;
 }
 
-export function getWeeks$(user: string, year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
-  const collection = `${user}_${year}_weeks`;
+export function getWeeks$(account: user.account, year: number, fs: AngularFirestore, debug?: boolean): Observable<blocks.week[]> {
+  const collection = `${account.id}_${year}_weeks`;
   let logDescriptor;
   let result$: Observable<any>;
   logDescriptor = `Getting blocks for ${collection}`;
@@ -118,8 +119,8 @@ export function getWeeks$(user: string, year: number, fs: AngularFirestore, debu
   return result$;
 }
 
-export function setZoom(user: string, zoom: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
-  const collection = `${user}_settings`;
+export function setZoom(account: user.account, zoom: number, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
+  const collection = `${account.id}_settings`;
   const logDescriptor = `Updating zoom setting for: ${collection}`;
   fs.collection(collection).doc(settings.id).update({
     ...settings,
@@ -127,8 +128,8 @@ export function setZoom(user: string, zoom: number, settings: app.settings, fs: 
   });
 }
 
-export function setDob(user: string, dob: Date, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
-  const collection = `${user}_settings`;
+export function setDob(account: user.account, dob: Date, settings: app.settings, fs: AngularFirestore, debug?: boolean) {
+  const collection = `${account.id}_settings`;
   const logDescriptor = `Updating date setting for: ${collection}`;
   fs.collection(collection).doc(settings.id).update({
     ...settings,
@@ -138,8 +139,8 @@ export function setDob(user: string, dob: Date, settings: app.settings, fs: Angu
 }
 
 // Back write year as a batch of documents to a collection.
-export function createYearWeeks$(year: number, weeks: blocks.week[], user: string, fs: AngularFirestore, debug?: boolean): Observable<any> {
-  const collection = `${user}_${year}_weeks`;
+export function createYearWeeks$(year: number, weeks: blocks.week[], account: user.account, fs: AngularFirestore, debug?: boolean): Observable<any> {
+  const collection = `${account.id}_${year}_weeks`;
   const logDescriptor = `Firestore written new value to ${collection}`;
   const batch = fs.firestore.batch();
 

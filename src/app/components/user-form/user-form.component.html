@@ -4,21 +4,21 @@
     <div id="login" *ngIf="mode === LOGIN">
         <div>
             <label for="email">Email </label>
-            <input id="email" type="email" placeholder="mannanjavid@gmail.com" [(ngModel)]="email">
+            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email">
         </div>
         <div>
             <label for="password">Password </label>
-            <input id="password" type="password" [(ngModel)]="password">
+            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password">
         </div>
     </div>
     <div id="signup" *ngIf="mode === SIGNUP">
         <div>
-            <label for="fname">First Name </label>
-            <input id="fname" type="text" placeholder="Mannan" [(ngModel)]="fname">
+            <label for="fname">Name </label>
+            <input id="fname" type="text" placeholder="First name" [(ngModel)]="fname">
         </div>
         <div>
-            <label for="lname">Last Name </label>
-            <input id="lname" type="text" placeholder="Javid" [(ngModel)]="lname">
+            <label for="lname"></label>
+            <input id="lname" type="text" placeholder="Last name" [(ngModel)]="lname">
         </div>
         <div>
             <label for="dob">Date of Birth</label>
@@ -26,11 +26,11 @@
         </div>
         <div>
             <label for="email">Email </label>
-            <input id="email" type="email" placeholder="mannanjavid@gmail.com" [(ngModel)]="email">
+            <input id="email" type="email" placeholder="Enter your email" [(ngModel)]="email">
         </div>
         <div>
             <label for="password">Password </label>
-            <input id="password" type="password" placeholder="Secure password" [(ngModel)]="password">
+            <input id="password" type="password" placeholder="Enter a password" [(ngModel)]="password">
         </div>
         <div>
             <label for="password2" class="font-small"></label>

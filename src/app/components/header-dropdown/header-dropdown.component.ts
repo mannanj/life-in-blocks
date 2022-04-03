@@ -3,6 +3,7 @@ import { help } from 'src/app/helpers/help';
 import Calendar  from "color-calendar";
 import { Store } from '@ngrx/store';
 import * as appSelectors from 'src/app/state/app.selectors';
+import * as user from 'src/app/models/user.model';
 import * as appActions from 'src/app/state/app.actions';
 import { Subject, take, takeUntil } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -14,7 +15,7 @@ import { isEqual } from 'date-fns';
   styleUrls: ['./header-dropdown.component.scss']
 })
 export class HeaderDropdownComponent implements OnInit, OnDestroy {
-  @Input() account!: any;
+  @Input() account!: user.account;
   @Input() loading!: boolean | null;
   dob!: Date;
   hovered = false;
