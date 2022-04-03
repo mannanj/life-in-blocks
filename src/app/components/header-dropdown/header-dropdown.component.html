@@ -2,7 +2,7 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"
 />
-<div id="dropdown">
+<div id="dropdown" [ngClass]="{'disabled':  account === 'NO_ACCOUNT'}">
     <span (click)="setKeepOpen()" (mouseenter)="setHovered(true)" (mouseleave)="setHovered(false)">
         <img src="assets/icons/settings-icon.png" [ngClass]="{'selected': hovered || keepOpen, 'disabled': loading}">
     </span>

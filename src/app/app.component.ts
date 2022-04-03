@@ -16,6 +16,7 @@ import * as appActions from 'src/app/state/app.actions';
 import * as userActions from 'src/app/state/user.actions';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,9 @@ export class AppComponent {
 
   constructor(
     private store: Store,
-    private firestore: AngularFirestore) {
+    private firestore: AngularFirestore,
+    private router: Router
+    ) {
       this.initializeApp();
     }
 
@@ -55,6 +58,7 @@ export class AppComponent {
           this.store.dispatch(userActions.setLoggedIn({loggedIn: false}));
           this.store.dispatch(appActions.setStart({ starting: false }));
           this.store.dispatch(appActions.setLoading({ loading: false }));
+          this.router.navigate(['user']);
         }
       });
     }
