@@ -1,1 +1,46 @@
-<p>user-form works!</p>
+<div id="container">
+    <h1 *ngIf="mode === LOGIN">Log In</h1>
+    <h1 *ngIf="mode === SIGNUP">Sign Up</h1>
+    <div id="login" *ngIf="mode === LOGIN">
+        <div>
+            <label for="email">Email </label>
+            <input id="email" type="email" placeholder="mannanjavid@gmail.com" [(ngModel)]="email">
+        </div>
+        <div>
+            <label for="password">Password </label>
+            <input id="password" type="password" [(ngModel)]="password">
+        </div>
+    </div>
+    <div id="signup" *ngIf="mode === SIGNUP">
+        <div>
+            <label for="fname">First Name </label>
+            <input id="fname" type="text" placeholder="Mannan" [(ngModel)]="fname">
+        </div>
+        <div>
+            <label for="lname">Last Name </label>
+            <input id="lname" type="text" placeholder="Javid" [(ngModel)]="lname">
+        </div>
+        <div>
+            <label for="dob">Date of Birth</label>
+            <input id="dob" type="date" placeholder="DOB" [(ngModel)]="dob">
+        </div>
+        <div>
+            <label for="email">Email </label>
+            <input id="email" type="email" placeholder="mannanjavid@gmail.com" [(ngModel)]="email">
+        </div>
+        <div>
+            <label for="password">Password </label>
+            <input id="password" type="password" placeholder="Secure password" [(ngModel)]="password">
+        </div>
+        <div>
+            <label for="password2" class="font-small"></label>
+            <input id="password2" type="password" placeholder="Confirm password" [(ngModel)]="password">
+        </div>
+    </div>
+    <div id="submit-area">
+        <span *ngIf="mode === LOGIN" class="link" (click)="changeMode(SIGNUP)">Sign up instead?</span>
+        <span *ngIf="mode === SIGNUP" class="link" (click)="changeMode(LOGIN)">Log in instead?</span>
+        <button *ngIf="mode === LOGIN" (click)="login()">Log in</button>
+        <button *ngIf="mode === SIGNUP" (click)="signup()">Sign up</button>
+    </div>
+</div>
