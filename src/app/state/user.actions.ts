@@ -14,3 +14,13 @@ export const setLoading = createAction(
   '[User] Loading',
   props<{ loading: boolean }>()
 );
+
+export const createAccount = createAction(
+  '[User] Create Account',
+  props<{ account: any }>()
+);
+
+export const signIn = createAction(
+  '[User] Sign In',
+  props<{ account: any }>()
+);

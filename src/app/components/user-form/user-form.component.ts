@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 import * as appActions from 'src/app/state/app.actions';
+import * as userActions from 'src/app/state/user.actions';
 import * as appSelectors from 'src/app/state/app.selectors';
 
 enum Modes {
@@ -39,9 +40,17 @@ export class UserFormComponent implements OnInit {
     private store: Store) { }
 
   ngOnInit(): void {
+    // set samples for test
+    // this.email = 'mannanjavid@gmail.com';
+    // this.password = 'asdfghjj!@#4ascd';
+    // this.cpassword = 'asdfghjj!@#4ascd';
+    // this.fname = 'Mannan';
+    // this.lname = 'Javid';
+    // this.dob! = new Date();
+    // end test
     this.store.select(appSelectors.getLoading$)
-    .pipe(takeUntil(this._unsubscribe$))
-    .subscribe(loading => this.appLoading = loading);
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(loading => this.appLoading = loading);
   }
 
   ngOnDestroy(): void {
@@ -54,13 +63,21 @@ export class UserFormComponent implements OnInit {
   }
 
   login() {
-    console.log('@TODO: Implement logging in!!');
-    this.store.dispatch(appActions.setLoading({loading: true}));
+    this.store.dispatch(userActions.signIn({ account: this.getAccount() }));
   }
 
   signup() {
-    console.log('@TODO: Implement signing up!');
-    this.store.dispatch(appActions.setLoading({loading: true}));
+    this.store.dispatch(userActions.createAccount({ account: this.getAccount() }));
+  }
+
+  getAccount(): any {
+    return {
+      fName: this.fname,
+      lName: this.lname,
+      dob: this.dob,
+      email: this.email,
+      password: this.password
+    }
   }
 
   loginValid(): boolean {
