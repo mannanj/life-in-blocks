@@ -10,11 +10,11 @@ import * as app from 'src/app/models/app.model';
 import * as user from 'src/app/models/user.model';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
-import * as blockActions from 'src/app/state/blocks.actions';
-import * as blocksSelectors from 'src/app/state/blocks.selectors';
-import * as appSelectors from 'src/app/state/app.selectors';
-import * as appActions from 'src/app/state/app.actions';
-import * as userActions from 'src/app/state/user.actions';
+import * as blockActions from 'src/app/state/actions/blocks.actions';
+import * as blocksSelectors from 'src/app/state/selectors/blocks.selectors';
+import * as appSelectors from 'src/app/state/selectors/app.selectors';
+import * as appActions from 'src/app/state/actions/app.actions';
+import * as userActions from 'src/app/state/actions/user.actions';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
 import { Router } from '@angular/router';
@@ -37,6 +37,7 @@ export class AppComponent {
       this.initializeApp();
     }
 
+    // @TODO: move this to an effect.liv
     // @TODO: Could make more robust by adding retries to the chains if an action fails.
     /**
      * App starts, and is done when we get user and their settings.

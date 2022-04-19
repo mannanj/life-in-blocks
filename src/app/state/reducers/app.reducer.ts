@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import * as appActions from './app.actions';
+import * as appActions from '../actions/app.actions';
 import * as app from 'src/app/models/app.model';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 

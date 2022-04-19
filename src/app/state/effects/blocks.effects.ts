@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { HttpClient } from '@angular/common/http';
 
-import * as blocksActions from 'src/app/state/blocks.actions';
+import * as blocksActions from 'src/app/state/actions/blocks.actions';
 
 @Injectable()
 export class BlocksEffects {

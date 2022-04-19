@@ -2,9 +2,9 @@ import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core
 import { help } from 'src/app/helpers/help';
 import Calendar  from "color-calendar";
 import { Store } from '@ngrx/store';
-import * as appSelectors from 'src/app/state/app.selectors';
+import * as appSelectors from 'src/app/state/selectors/app.selectors';
 import * as user from 'src/app/models/user.model';
-import * as appActions from 'src/app/state/app.actions';
+import * as appActions from 'src/app/state/actions/app.actions';
 import { Subject, take, takeUntil } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { isEqual } from 'date-fns';

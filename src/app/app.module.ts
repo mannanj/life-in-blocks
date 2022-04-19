@@ -21,15 +21,15 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { blocksReducer } from './state/blocks.reducer';
-import { BlocksEffects } from './state/blocks.effects';
+import { blocksReducer } from 'src/app/state/reducers/blocks.reducer';
+import { BlocksEffects } from './state/effects/blocks.effects';
 import { BlockComponent } from './components/blocks/block/block.component';
-import { appReducer } from './state/app.reducer';
-import { userReducer } from './state/user.reducer';
+import { appReducer } from 'src/app/state/reducers/app.reducer';
+import { userReducer } from 'src/app/state/reducers/user.reducer';
 import { YearRowComponent } from './components/blocks/year-row/year-row.component';
 import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
-import { UserEffects } from './state/user.effects';
+import { UserEffects } from './state/effects/user.effects';
 
 @NgModule({
   declarations: [

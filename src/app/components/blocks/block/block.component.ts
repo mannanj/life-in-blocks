@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import * as blocks from 'src/app/models/blocks.model';
 import { help } from 'src/app/helpers/help';
-import * as blockActions from 'src/app/state/blocks.actions';
+import * as blockActions from 'src/app/state/actions/blocks.actions';
 import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-block',

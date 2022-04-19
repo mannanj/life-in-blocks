@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
-import * as blocks from '../models/blocks.model';
-import * as blockActions from './blocks.actions';
-import * as DEFAULTS from './DEFAULTS';
+import * as blocks from 'src/app/models/blocks.model';
+import * as blockActions from 'src/app/state/actions/blocks.actions';
+import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 export const initialState: blocks.blocksState = getDefault();
 

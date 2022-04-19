@@ -9,11 +9,11 @@ import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
 // State
 import { Store } from '@ngrx/store';
-import * as appSelectors from 'src/app/state/app.selectors';
-import * as userSelectors from 'src/app/state/user.selectors';
-import * as blocksSelectors from 'src/app/state/blocks.selectors';
-import * as appActions from 'src/app/state/app.actions';
-import * as blockActions from 'src/app/state/blocks.actions';
+import * as appSelectors from 'src/app/state/selectors/app.selectors';
+import * as userSelectors from 'src/app/state/selectors/user.selectors';
+import * as blocksSelectors from 'src/app/state/selectors/blocks.selectors';
+import * as appActions from 'src/app/state/actions/app.actions';
+import * as blockActions from 'src/app/state/actions/blocks.actions';
 
 // 3rd Party Libs
 import 'src/app/components/custom/discrete-slider';

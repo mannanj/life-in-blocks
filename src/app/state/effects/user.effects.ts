@@ -5,8 +5,8 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { HttpClient } from '@angular/common/http';
-import * as userActions from 'src/app/state/user.actions';
-import * as appActions from 'src/app/state/app.actions';
+import * as userActions from 'src/app/state/actions/user.actions';
+import * as appActions from 'src/app/state/actions/app.actions';
 import { of } from 'rxjs';
 
 

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import * as blocks from '../models/blocks.model';
+import * as blocks from 'src/app/models/blocks.model';
 
 // Weeks
 export const initYears = createAction(

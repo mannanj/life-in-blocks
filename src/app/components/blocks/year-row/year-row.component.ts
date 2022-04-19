@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
 import { delay, filter, Subject, takeUntil } from 'rxjs';
 import * as blocks from 'src/app/models/blocks.model';
-import * as blocksSelectors from 'src/app/state/blocks.selectors';
+import * as blocksSelectors from 'src/app/state/selectors/blocks.selectors';
 
 @Component({
   selector: 'app-year-row',

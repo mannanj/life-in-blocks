@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 // Store
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
-import * as appActions from 'src/app/state/app.actions';
-import * as userActions from 'src/app/state/user.actions';
-import * as appSelectors from 'src/app/state/app.selectors';
+import * as appActions from 'src/app/state/actions/app.actions';
+import * as userActions from 'src/app/state/actions/user.actions';
+import * as appSelectors from 'src/app/state/selectors/app.selectors';
 
 enum Modes {
   LOGIN = 'LOGIN',
