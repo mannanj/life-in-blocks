@@ -1,6 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
 
+export const initApp = createAction('[App] Initializing');
+export const retrieveSettings = createAction(
+  '[App] Retrieve Settings',
+  props<{ account: any }>()
+);
+export const retrieveBlockData = createAction(
+  '[App] Retrieve Block Data',
+  props<{ settings: app.settings, yearRange: number[]}>()
+);
+
 export const setStart = createAction(
   '[App] Starting',
   props<{ starting: boolean }>()
@@ -16,10 +26,12 @@ export const setDob = createAction(
   props<{ dob: Date }>()
 );
 
+
 export const setSettings = createAction(
   '[App] Settings',
   props<{ settings: app.settings }>()
 );
+
 
 // Zoom
 export const setZoom = createAction(

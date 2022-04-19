@@ -30,6 +30,7 @@ import { YearRowComponent } from './components/blocks/year-row/year-row.componen
 import { HeaderDropdownComponent } from './components/header-dropdown/header-dropdown.component';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserEffects } from './state/effects/user.effects';
+import { AppEffects } from './state/effects/app.effects';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,12 @@ import { UserEffects } from './state/effects/user.effects';
       name: 'Year In Review',
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([BlocksEffects, UserEffects]),
+    EffectsModule.forRoot([
+      AppEffects,
+      UserEffects,
+      BlocksEffects
+    
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],

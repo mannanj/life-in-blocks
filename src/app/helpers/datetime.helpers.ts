@@ -3,7 +3,7 @@ import * as blocks from 'src/app/models/blocks.model';
 import { range } from 'lodash';
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 
-export function getUserYears(dobYear: number) {
+export function getUserYears(dobYear: number): number[] {
     return range(dobYear, dobYear + DEFAULTS.MAX_AGE);
 }
 
