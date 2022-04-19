@@ -8,11 +8,19 @@ import * as user from "../models/user.model";
 import * as blocks from "../models/blocks.model";
 import * as DEFAULTS from 'src/app/state/DEFAULTS';
 import { format } from "date-fns";
+import { AngularFireAuth } from "@angular/fire/compat/auth";
 
 
-export function getUserAccount$(): Observable<user.account> {
-  const NO_ACCOUNT$ = of(DEFAULTS.NO_USER.account);
-  return NO_ACCOUNT$;
+export function getUserAccount$(afAuth: AngularFireAuth): Observable<user.account> {
+  return afAuth.authState.pipe(map(user => !!user ? convertFsUser(user): DEFAULTS.NO_USER.account));
+}
+
+function convertFsUser(user: any) {
+  return {
+    ...DEFAULTS.NO_USER.account,
+    email: user.email,
+    id: user.uid
+  }
 }
 
 export function getSettings$(account: user.account, fs: AngularFirestore, debug?: boolean): Observable<app.settings> {

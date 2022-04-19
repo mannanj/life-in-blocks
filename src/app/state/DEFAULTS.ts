@@ -8,7 +8,9 @@ export const NO_ACCOUNT: user.account = {
   id: 'NO_ACCOUNT',
   firstName: '',
   lastName: '',
-  dob: new Date()
+  dob: new Date(),
+  email: '',
+  password: ''
 };
 export const NO_USER: user.userState = {
   account: NO_ACCOUNT,

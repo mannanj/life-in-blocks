@@ -3,9 +3,12 @@ import { Component, OnInit } from '@angular/core';
 // Store
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
+import { help } from 'src/app/helpers/help';
 import * as appActions from 'src/app/state/actions/app.actions';
 import * as userActions from 'src/app/state/actions/user.actions';
 import * as appSelectors from 'src/app/state/selectors/app.selectors';
+import * as user from 'src/app/models/user.model';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 enum Modes {
   LOGIN = 'LOGIN',
@@ -37,16 +40,18 @@ export class UserFormComponent implements OnInit {
 
 
   constructor(
-    private store: Store) { }
+    private store: Store,
+    private afAuth: AngularFireAuth
+    ) { }
 
   ngOnInit(): void {
     // set samples for test
-    // this.email = 'mannanjavid@gmail.com';
-    // this.password = 'asdfghjj!@#4ascd';
-    // this.cpassword = 'asdfghjj!@#4ascd';
-    // this.fname = 'Mannan';
-    // this.lname = 'Javid';
-    // this.dob! = new Date();
+    this.email = 'mannanjavid@gmail.com';
+    this.password = '1234asdf!@#$ASDF';
+    this.cpassword = '1234asdf!@#$ASDF';
+    this.fname = 'Mannan';
+    this.lname = 'Javid';
+    this.dob! = new Date();
     // end test
     this.store.select(appSelectors.getLoading$)
       .pipe(takeUntil(this._unsubscribe$))
@@ -70,10 +75,11 @@ export class UserFormComponent implements OnInit {
     this.store.dispatch(userActions.createAccount({ account: this.getAccount() }));
   }
 
-  getAccount(): any {
+  getAccount(): user.account {
     return {
-      fName: this.fname,
-      lName: this.lname,
+      id: help.cry.genUid(),
+      firstName: this.fname,
+      lastName: this.lname,
       dob: this.dob,
       email: this.email,
       password: this.password

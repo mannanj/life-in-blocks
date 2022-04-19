@@ -1,10 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import * as app from 'src/app/models/app.model';
+import * as user from 'src/app/models/user.model';
 
 export const initApp = createAction('[App] Initializing');
 export const retrieveSettings = createAction(
   '[App] Retrieve Settings',
-  props<{ account: any }>()
+  props<{ account: user.account }>()
 );
 export const retrieveBlockData = createAction(
   '[App] Retrieve Block Data',

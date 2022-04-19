@@ -24,6 +24,7 @@ import { map, switchMap, tap, take} from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { format } from 'date-fns';
 import { cloneDeep } from 'lodash';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable()
 export class AppEffects {
@@ -39,14 +40,14 @@ export class AppEffects {
                 this.setFlags();
             }),
             switchMap(() => {
-                return help.fsh.getUserAccount$().pipe(take(1));
+                return help.fsh.getUserAccount$(this.afAuth).pipe(take(1));
             }),
-            map((account: any) => {
+            map((account: user.account) => {
                 this.store.dispatch(userActions.setAccount({account}));
                 this.store.dispatch(userActions.setLoading({loading: false}));
                 if (account !== DEFAULTS.NO_ACCOUNT) {
                   this.store.dispatch(userActions.setLoggedIn({loggedIn: true}));
-                  return appActions.retrieveSettings(account);
+                  return appActions.retrieveSettings({ account });
                 } else {
                   this.store.dispatch(userActions.setLoggedIn({loggedIn: false}));
                   this.store.dispatch(appActions.setLoading({ loading: false }));
@@ -157,6 +158,7 @@ export class AppEffects {
         private store: Store,
         private http: HttpClient,
         private firestore: AngularFirestore,
+        private afAuth: AngularFireAuth,
         private router: Router
     ) {}
 }

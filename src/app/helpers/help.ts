@@ -3,5 +3,6 @@ import * as fsh from 'src/app/helpers/firestore.helpers';
 import * as dth from 'src/app/helpers/datetime.helpers';
 import * as bh from 'src/app/helpers/blocks.helpers';
 import * as err from 'src/app/helpers/errors.helpers';
+import * as cry from 'src/app/helpers/cryptography.helpers';
 
-export const help = {dth, pah, fsh, bh, err};
+export const help = {dth, pah, fsh, bh, err, cry };

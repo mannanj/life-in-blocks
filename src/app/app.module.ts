@@ -31,6 +31,7 @@ import { HeaderDropdownComponent } from './components/header-dropdown/header-dro
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserEffects } from './state/effects/user.effects';
 import { AppEffects } from './state/effects/app.effects';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { AppEffects } from './state/effects/app.effects';
     CommonModule,
     FormsModule,
     HttpClientModule,
+    AngularFireAuthModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

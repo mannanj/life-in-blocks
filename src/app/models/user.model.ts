@@ -8,5 +8,7 @@ export interface account {
     id: string;
     firstName: string;
     lastName: string;
-    dob: Date; 
+    dob: Date;
+    email: string;
+    password: string;
 }
